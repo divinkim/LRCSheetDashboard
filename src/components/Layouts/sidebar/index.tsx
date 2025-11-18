@@ -107,7 +107,8 @@ export function Sidebar() {
         },
         {
           li: "Liste des collaborateurs",
-          icon: faUsers                // Groupe d’utilisateurs
+          icon: faUsers,
+          href:"dashboard/RH/usersList"
         },
         {
           li: "Ajouter un collaborateur",

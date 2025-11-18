@@ -8,7 +8,7 @@ import { controllers, urlAPI } from "@/app/main";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-type PresencesDats = {
+type PresencesDatas = {
     arrivalTime: string | null,
     departureTime: string | null,
     breakingStartTime: string | null,
@@ -38,12 +38,13 @@ type PresencesDats = {
 }
 
 export default function PresencesList() {
-    const [presencesList, setPresencesList] = useState<PresencesDats[]>([]);
-    const [savedPresencesList, setSavedPresencesList] = useState<PresencesDats[]>([]);
+    const [presencesList, setPresencesList] = useState<PresencesDatas[]>([]);
+    const [savedPresencesList, setSavedPresencesList] = useState<PresencesDatas[]>([]);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);             // page courante
     const limit = 5;                                 // items par page
-    const [currentMonthValue, setCurrenMonthValue] = useState(new Date().getMonth())
+    const [currentMonthValue, setCurrenMonthValue] = useState(new Date().getMonth());
+
 
     useEffect(() => {
         (async () => {
@@ -55,7 +56,7 @@ export default function PresencesList() {
             }
         })()
     }, []);
-    console.log("la putain de liste", presencesList)
+
     // 🔎 Filtrer par recherche
 
     function onSearch(value: string) {
@@ -79,7 +80,7 @@ export default function PresencesList() {
                         <input
                             type="text"
                             placeholder="Rechercher..."
-                            className="border shadow-xl outline-none dark:border-gray-200 dark:bg-transparent px-3 py-2.5 rounded-full my-4 w-full"
+                            className="border shadow-xl outline-none dark:border-gray-200 dark:bg-transparent px-3 py-2.5 rounded-full my-6 w-full"
                             value={search}
                             onChange={(e) => {
                                 setSearch(e.target.value)
@@ -87,7 +88,7 @@ export default function PresencesList() {
                                 setPage(1); // reset page quand on tape
                             }}
                         />
-                        <FontAwesomeIcon icon={faSearch} className="absolute text-gray-400 right-3 top-8" />
+                        <FontAwesomeIcon icon={faSearch} className="absolute text-gray-400 right-3 top-[38px]" />
                     </div>
 
 

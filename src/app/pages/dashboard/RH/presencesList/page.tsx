@@ -16,7 +16,7 @@ type PresencesDats = {
     UserId: number | null,
     mounth: number | null,
     day: string | null,
-    createdAt: Date | null
+    createdAt: string | null
     updatedAt: string | null,
     status: string | null
     EnterpriseId: number | null,
@@ -40,17 +40,18 @@ type PresencesDats = {
 export default function PresencesList() {
     const [presencesList, setPresencesList] = useState<PresencesDats[]>([]);
     const [savedPresencesList, setSavedPresencesList] = useState<PresencesDats[]>([]);
-    const [search, setSearch] = useState("");      
+    const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);             // page courante
-    const limit = 10;                                 // items par page
+    const limit = 5;                                 // items par page
+    const [currentMonthValue, setCurrenMonthValue] = useState(new Date().getMonth())
 
     useEffect(() => {
         (async () => {
             const presencesList = await controllers.API.getAll(urlAPI, "getAllAttendances", null);
             if (Array.isArray(presencesList)) {
+                const filterPresencesByMonth = presencesList.filter(presence => presence.mounth === currentMonthValue)
+                setSavedPresencesList(filterPresencesByMonth);
                 setPresencesList(presencesList);
-                setSavedPresencesList(presencesList)
-
             }
         })()
     }, []);
@@ -71,7 +72,7 @@ export default function PresencesList() {
             <Header />
             <div className="flex">
                 <Sidebar />
-                <main className='m-4 bg-[#f2f2f2] dark:bg-transparent'>
+                <main className='m-4 bg-gray-100 dark:bg-transparent'>
                     <h1 className="text-[20px] my-4 font-bold dark:text-gray-300">Liste des présences enregistrées</h1>
                     <hr />
                     <div className="relative w-[250px]">
@@ -118,11 +119,11 @@ export default function PresencesList() {
                                         <td className="border p-2 border-gray-400 dark:border-gray-300 dark:text-gray-300 text-center font-semibold">{u.arrivalTime} - {u?.breakingStartTime ?? "--"}</td>
                                         <td className="border p-2 border-gray-400 dark:border-gray-300 dark:text-gray-300 text-center font-semibold">{u?.resumeTime ?? "--"} - {u?.departureTime ?? "--"}</td>
                                         <td className="border p-2 border-gray-400 dark:border-gray-300 dark:text-gray-300 text-center font-semibold">{u.Planning?.startTime ? u.Planning.startTime.slice(0, 5) : "--"} - {u.Planning?.endTime ? u.Planning.endTime.slice(0, 5) : "--"}</td>
-                                        <td className="border p-2 border-gray-400 dark:border-gray-300 dark:text-gray-300 text-center font-semibold">{new Date(u.createdAt).toLocaleString("Fr-fr", {
+                                        <td className="border w-[155px] p-2 border-gray-400 dark:border-gray-300 dark:text-gray-300 text-center font-semibold">{new Date(u.createdAt ?? "").toLocaleDateString('fr-Fr', {
+                                            day: "numeric",
                                             weekday: "short",
                                             month: "short",
                                             year: "numeric",
-
                                         })}</td>
                                         <td className="p-2 border border-gray-400 dark:border-gray-300 dark:text-gray-300 text-center font-semibold">{u.status === "A temps" ? "✅ A temps" : u.status === "⏳ En retard" ? "En retard" : "❌ Absent"}</td>
 
@@ -149,23 +150,23 @@ export default function PresencesList() {
                     </table>
 
                     {/* 🔄 Pagination */}
-                    <div className="flex items-center gap-4 mt-8">
+                    <div className="flex items-center justify-center  gap-4 mt-10">
                         <button
-                            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-40"
+                            className="px-4 py-2 bg-green-500 ease duration-500 hover:bg-green-600 text-white font-semibold rounded disabled:opacity-40"
                             onClick={() => setPage(page - 1)}
                             disabled={page === 1}
                         >
-                            Prev
+                            Suivant
                         </button>
 
                         <span>Page {page} / {maxPage}</span>
 
                         <button
-                            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-40"
+                            className="px-4 py-2  font-semibold text-white ease duration-500 hover:bg-red-600 bg-red-500 rounded disabled:opacity-40"
                             onClick={() => setPage(page + 1)}
                             disabled={page === maxPage}
                         >
-                            Next
+                            Précédent
                         </button>
                     </div>
                 </main>

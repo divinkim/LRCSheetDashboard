@@ -9,7 +9,6 @@ export default function UsersList() {
                 <Sidebar />
                 <div className="m-4">
                     <h2 className="font-bold text-[19px]">Ajouter un collaborateur</h2>
-                    
                 </div>
             </div>
         </main>

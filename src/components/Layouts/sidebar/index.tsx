@@ -69,31 +69,6 @@ export function Sidebar() {
     },
 
     // Onglet Administration
-    {
-      index: 1,
-      title: "📑 Administration",
-      ItemLists: [
-        {
-          li: "Rapports",
-          href: "pages/dashboard/repports",
-          icon: faFileAlt              // Icône de rapport/document
-        },
-        {
-          li: "Permissions",
-          href: "pages/dashboard/permissions",
-          icon: faShieldAlt            // Icône de sécurité/autorisations
-        },
-        {
-          li: "Attribuer un congé",
-          href: "pages/dashboard/permissions",
-          icon: faUserClock            // Icône congé / temps
-        },
-        {
-          li: "Liste de congé",
-          icon: faList                 // Liste de congés
-        },
-      ]
-    },
 
     // Onglet Ressources humaines
     {

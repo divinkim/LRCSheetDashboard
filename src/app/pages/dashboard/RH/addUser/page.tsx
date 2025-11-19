@@ -11,6 +11,7 @@ export default function UsersList() {
                     <h2 className="font-bold text-[19px]">Ajouter un collaborateur</h2>
                 </div>
             </div>
+            
         </main>
     )
 }

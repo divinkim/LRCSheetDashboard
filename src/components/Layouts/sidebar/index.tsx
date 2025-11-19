@@ -56,12 +56,12 @@ export function Sidebar() {
       title: "🔔 Notification",
       ItemLists: [
         {
-          li: "Envoyer une notification",
+          title: "Envoyer une notification",
           href: "pages/dashboard/notification/sendNotification",
           icon: faPaperPlane           // Icône d’envoi
         },
         {
-          li: "Liste de notification",
+          title: "Liste de notification",
           href: "pages/dashboard/notifications/getAllNotifications",
           icon: faBell                 // Icône de notification
         },
@@ -76,22 +76,22 @@ export function Sidebar() {
       title: "🧑‍💼 Ressources humaines",
       ItemLists: [
         {
-          li: "Présences au poste",
+          title: "Présences au poste",
           href: "dashboard/RH/presencesList",
           icon: faClipboardList        // Feuille de présence
         },
         {
-          li: "Liste des collaborateurs",
+          title: "Liste des collaborateurs",
           icon: faUsers,
           href: "dashboard/RH/usersList"
         },
         {
-          li: "Ajouter un collaborateur",
+          title: "Ajouter un collaborateur",
           href: "dashboard/RH/addUser",
           icon: faUserPlus             // Ajouter un utilisateur
         },
         {
-          li: "Liste de congé",
+          title: "Liste de congé",
           icon: faList                 // Liste
         },
       ]
@@ -123,7 +123,7 @@ export function Sidebar() {
         <div className="flex h-full flex-col py-10 pl-[25px] pr-[7px]">
           {/* Navigation */}
           <div className="custom-scrollbar flex-1 overflow-y-auto pr-3">
-            
+
             <div className="w-[100px] h-[100px] mx-auto mb-5">
               <img src="/images/logo/logo.png" alt="" className='w-full h-full object-cover' />
             </div>
@@ -146,7 +146,7 @@ export function Sidebar() {
 
                       {aside.ItemLists.map((list) => (
                         <Link href={list.href ?? "/"} className=" flex flex-col">
-                          <li className="hover:text-blue-600 pb-2  text-gray-300 ease duration-500"><span><FontAwesomeIcon icon={list.icon} /></span> {list.li}
+                          <li className="hover:text-blue-600 pb-2  text-gray-300 ease duration-500"><span><FontAwesomeIcon icon={list.icon} /></span> {list.title}
                           </li>
                         </Link>
                       ))}

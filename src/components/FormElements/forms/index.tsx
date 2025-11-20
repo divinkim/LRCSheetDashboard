@@ -1,4 +1,10 @@
-import { faEye } from "@fortawesome/free-solid-svg-icons"
+import {
+    faEye,
+    faUsers,        // Liste des utilisateurs
+    faPlusCircle,   // Ajouter un poste
+    faBuilding,     // Ajouter un département
+    faMoneyBillWave // Ajouter un salaire
+} from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 export const formElements = [
@@ -8,12 +14,22 @@ export const formElements = [
                 {
                     title: "Liste des utilisateurs",
                     href: "/dashboard/RH/usersList",
-                    icon: faEye
+                    icon: faUsers
                 },
                 {
                     title: "Ajouter un poste",
                     href: "/dashboard/ADMIN/addPost",
-                    icon: faEye
+                    icon: faPlusCircle
+                },
+                {
+                    title: "Ajouter un département",
+                    href: "/dashboard/ADMIN/addDepartment",
+                    icon: faBuilding
+                },
+                {
+                    title: "Ajouter un salaire",
+                    href: "/dashboard/ADMIN/addSalary",
+                    icon: faMoneyBillWave
                 }
             ],
 
@@ -22,9 +38,40 @@ export const formElements = [
             inputs: [
                 // ---- Inputs classiques ----
                 {
+                    label: "Image",
+                    placeholder: "Sélectionnez une image...",
+                    requireField: false,
+                    type: "file",
+                    selectedInput: false,
+                    alias: "photo"
+                },
+                {
+                    label: "Rôle",
+                    placeholder: "Sélectionnez un rôle",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: false
+                    },
+
+                    alias: "role"
+                },
+                {
+                    label: "Service à superviser",
+                    placeholder: "Sélectionnez un service...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: false
+                    },
+                    alias: "adminService"
+                },
+                {
                     label: "Noms",
                     placeholder: "Saisissez un nom...",
-                    inputStatus: true,
+                    requireField: true,
                     type: "text",
                     selectedInput: false,
                     alias: "firstname"
@@ -32,7 +79,7 @@ export const formElements = [
                 {
                     label: "Prénoms",
                     placeholder: "Saisissez un prénom...",
-                    inputStatus: true,
+                    requireField: true,
                     type: "text",
                     selectedInput: false,
                     alias: "lastname"
@@ -40,7 +87,7 @@ export const formElements = [
                 {
                     label: "Date de naissance",
                     placeholder: "Sélectionnez une date...",
-                    inputStatus: true,
+                    requireField: true,
                     type: "date",
                     selectedInput: false,
                     alias: "birthdate"
@@ -48,23 +95,18 @@ export const formElements = [
                 {
                     label: "Genre",
                     placeholder: "Sélectionnez un genre...",
-                    inputStatus: true,
+                    requireField: true,
                     type: "text",
                     selectedInput: true,
                     dynamicOptions: {
-                        status: true,
-                        options: {
-                            option1: "Homme",
-                            option2: "Femme",
-                            option3: "Aucun",
-                        }
+                        status: false,
                     },
                     alias: "gender"
                 },
                 {
                     label: "Email",
                     placeholder: "Saisissez un email...",
-                    inputStatus: true,
+                    requireField: true,
                     type: "email",
                     selectedInput: false,
                     alias: "email"
@@ -72,7 +114,7 @@ export const formElements = [
                 {
                     label: "Mot de passe",
                     placeholder: "Saisissez un mot de passe...",
-                    inputStatus: false,
+                    requireField: false,
                     type: "password",
                     selectedInput: false,
                     alias: "password"
@@ -80,7 +122,7 @@ export const formElements = [
                 {
                     label: "Téléphone",
                     placeholder: "Saisissez un numéro...",
-                    inputStatus: false,
+                    requireField: true,
                     type: "tel",
                     selectedInput: false,
                     alias: "phone"
@@ -90,90 +132,93 @@ export const formElements = [
                 {
                     label: "Entreprise",
                     placeholder: "Sélectionnez une entreprise...",
-                    inputStatus: false,
-                    type: "",
+                    requireField: false,
+                    type: "number",
                     selectedInput: true,
                     dynamicOptions: {
-                        status: false
+                        status: true
                     },
                     alias: "EnterpriseId"
                 },
                 {
                     label: "Département",
                     placeholder: "Sélectionnez un département...",
-                    inputStatus: false,
-                    type: "",
+                    requireField: false,
+                    type: "number",
                     selectedInput: true,
                     dynamicOptions: {
-                        status: false
+                        status: true
                     },
                     alias: "departmentPostId"
                 },
                 {
                     label: "Type de contrat",
                     placeholder: "Sélectionnez un type de contrat...",
-                    inputStatus: false,
-                    type: "",
+                    requireField: false,
+                    type: "number",
                     selectedInput: true,
                     dynamicOptions: {
-                        status: false
+                        status: true,
                     },
                     alias: "ContractTypeId"
                 },
                 {
                     label: "Poste",
                     placeholder: "Sélectionnez un poste...",
-                    inputStatus: false,
-                    type: "",
+                    requireField: false,
+                    type: "number",
                     selectedInput: true,
                     dynamicOptions: {
-                        status: false
+                        status: true
                     },
                     alias: "PostId"
                 },
                 {
                     label: "Salaire",
-                    placeholder: "Saisissez un salaire...",
-                    inputStatus: false,
-                    type: "",
+                    placeholder: "Sélectionnez un salaire...",
+                    requireField: false,
+                    type: "number",
                     selectedInput: true,
-                    alias: "SalaryId"
+                    alias: "SalaryId",
+                    dynamicOptions: {
+                        status: true
+                    },
                 },
                 {
                     label: "Pays",
                     placeholder: "Sélectionnez un pays...",
-                    inputStatus: false,
-                    type: "",
+                    requireField: false,
+                    type: "number",
                     selectedInput: true,
                     alias: "CountryId"
                 },
                 {
                     label: "Ville",
                     placeholder: "Sélectionnez une ville...",
-                    inputStatus: false,
-                    type: "",
+                    requireField: false,
+                    type: "number",
                     selectedInput: true,
                     alias: "CityId"
                 },
                 {
                     label: "Arrondissement",
                     placeholder: "Sélectionnez un arrondissement...",
-                    inputStatus: false,
-                    type: "",
+                    requireField: false,
+                    type: "number",
                     selectedInput: true,
                     dynamicOptions: {
-                        status: false
+                        status: true
                     },
                     alias: "DistrictId"
                 },
                 {
                     label: "Quartier",
                     placeholder: "Sélectionnez un quartier...",
-                    inputStatus: false,
-                    type: "",
+                    requireField: false,
+                    type: "number",
                     selectedInput: true,
                     dynamicOptions: {
-                        status: false
+                        status: true
                     },
                     alias: "QuarterId"
                 },

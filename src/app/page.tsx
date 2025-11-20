@@ -95,7 +95,7 @@ export default function SingIn() {
                                     ...signInData,
                                     email: e.target.value
                                 })
-                            }} placeholder="Email" className="py-3 dark:bg-white px-8 w-full outline-none text-gray-600 " type="email" name="" id="" />
+                            }} placeholder="Email" className="py-3 dark:bg-transparent dark:border border-gray-300 dark:placeholder-gray-300 dark:text-gray-300  px-8 w-full outline-none text-gray-600 " type="email" name="" id="" />
                         </div>
                         <div className='w-full relative'>
                             <FontAwesomeIcon icon={faLock} className='text-gray-600 dark:text-white  text-[18px] absolute font-semibold top-4 left-2' />
@@ -104,14 +104,14 @@ export default function SingIn() {
                                     ...signInData,
                                     password: e.target.value
                                 })
-                            }} placeholder="Mot de passe" className="py-3 dark:bg-white  px-8 w-full outline-none text-gray-600" type={showPassword ? "text" : "password"} maxLength={12} name="" id="" />
+                            }} placeholder="Mot de passe" className="py-3 dark:text-gray-300 dark:border border-gray-300 dark:bg-transparent  dark:placeholder-gray-300 px-8 w-full outline-none text-gray-600" type={showPassword ? "text" : "password"} maxLength={12} name="" id="" />
                             <FontAwesomeIcon onClick={() => {
                                 setShowPassword(!showPassword)
-                            }} icon={showPassword ? faEye : faEyeSlash} className='text-gray-600 dark:text-white cursor-pointer text-[18px] absolute top-4 right-2' />
+                            }} icon={showPassword ? faEye : faEyeSlash} className='text-gray-600  dark:text-white cursor-pointer text-[18px] absolute top-4 right-2' />
                         </div>
                         <button type="button" onClick={() => {
                             handleSingnIn()
-                        }} className="bg-blue-600 text-white  py-3.5 hover:bg-blue-700 ease duration-500 rounded-full font-semibold">
+                        }} className="bg-blue-600 text-white  py-3.5 hover:bg-blue-700 outline-none ease duration-500 rounded-full font-semibold">
                             <p className={loadingHandleSignIn ? "hidden" : "block"}>Connexion</p>
                             <p className={loadingHandleSignIn ? "block" : "hidden"}>
                                 <ClipLoader size={15} color='#fff' />

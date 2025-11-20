@@ -72,6 +72,7 @@ export default function UsersList() {
         maritalStatus: null,
         adminService: null,
     });
+
     const requireRoles = ['Super-Admin', 'Supervisor-Admin', 'Moderator-Admin'];
 
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
@@ -275,11 +276,12 @@ export default function UsersList() {
             DistrictId: inputs.DistrictId ?? null,
             QuarterId: inputs.QuarterId ?? null,
             adminService: inputs.adminService ?? "no data",
+
         }
 
         console.log(requireFields);
-
         return
+
         const response = await controllers.API.SendOne(urlAPI, "createUser", null, requireFields);
 
         controllers.alertMessage(
@@ -293,16 +295,16 @@ export default function UsersList() {
     };
 
     return (
-        <main>
+        <main className="bg-gray-100 dark:bg-transparent">
             <Header />
             <div className="flex">
                 <Sidebar />
-                <div className="m-4 w-full">
+                <div className="mx-4 mt-6 mb-4 w-full">
                     {
                         formElements.map((element) => (
-                            <div className="flex flex-wrap w-full space-y-4 md:space-y-0 items-center justify-between">
-                                <h1 className="font-bold text-[20px] dark:text-gray-300">{element.addOrUpdateUser.titleForm}</h1>
-                                <div className="flex flex-wrap space-y-4 md:space-y-0 space-x-3 items-center">
+                            <div className="flex flex-wrap text-gray-700 w-full space-y-4 md:space-y-0 items-center justify-between">
+                                <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Ajouter un nouveau collaborateur</h1>
+                                <div className="flex flex-wrap space-y-4 xl:space-y-0 space-x-3 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element) => (
                                             <Link href={element.href} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded">
@@ -319,24 +321,34 @@ export default function UsersList() {
                         {
                             formElements.map((element) => (
 
-                                <div className="flex flex-wrap space-y-4 justify-between mb-2 items-center dark:text-gray-300">
+                                <div className="flex flex-wrap space-y-4 justify-between mb-2 items-center dark:text-gray-300 text-gray-700">
                                     <h2 className="font-bold">{element.addOrUpdateUser.titleForm}</h2>
                                     <p className="font-semibold"> <span className="text-red-600">*</span> Champs obligatoires</p>
                                 </div>
                             ))
                         }
                         <hr />
-                        <div className='grid grid-cols-1 mt-4 md:grid-cols-2 w-full'>
+                        <div className='grid grid-cols-1 mt-4 md:grid-cols-2  w-full'>
                             {
                                 formElements.map((element) => (
                                     element.addOrUpdateUser.inputs.map((e) => (
-                                        <div className="flex justify-between flex-col">
-                                            <div className='w-full mb-4'>
-                                                <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300"><span className={e.inputStatus ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
+                                        <div className="grid grid-cols-1 xl:grid-cols-2 w-full">
+                                            <div className='w-full  xl:w-[440px] 2xl:w-[570px] xl:pl-4 2xl:pl-3 mb-4'>
+                                                <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
                                                 {!e.selectedInput ?
-                                                    <input onChange={(v) => {
+                                                    <input onChange={async (v) => {
                                                         for (const [key, _] of Object.entries(inputs)) {
                                                             if (key === e.alias) {
+                                                                if (e.type === "file") {
+                                                                    const files = v.target.files?.[0];
+                                                                    const response = await controllers.API.SendOne(urlAPI, "sendFiles", null, { files });
+                                                                    if (response.status) {
+                                                                        setInputs({
+                                                                            ...inputs,
+                                                                            [e.alias]: response.filename
+                                                                        })
+                                                                    }
+                                                                }
                                                                 setInputs({
                                                                     ...inputs,
                                                                     [e.alias]: v.target.value
@@ -344,33 +356,82 @@ export default function UsersList() {
                                                             }
                                                         }
 
-                                                    }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300" /> :
+                                                    }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
+                                                    :
                                                     <select onChange={(v) => {
                                                         for (const [key, _] of Object.entries(inputs)) {
                                                             if (key === e.alias) {
                                                                 setInputs({
                                                                     ...inputs,
-                                                                    [e.alias]: parseInt(v.target.value)
+                                                                    [e.alias]: e.type === "number" ? parseInt(v.target.value) : v.target.value
                                                                 })
                                                             }
                                                         }
 
-                                                    }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300">
+                                                    }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
                                                         <option value="" selected disabled>
                                                             {e.placeholder}
                                                         </option>
                                                         {
-                                                            arrayDatas
+                                                            e.dynamicOptions?.status ? arrayDatas
                                                                 .find(item => item.alias === e.alias)
                                                                 ?.value
                                                                 ?.map(option => (
                                                                     <option value={option.id}>
                                                                         {option.value}
                                                                     </option>
-                                                                ))
+                                                                )) :
+                                                                <div>
+                                                                    {/* Genre */}
+                                                                    <div className={e.alias === "gender" ? "block" : "hidden"}>
+                                                                        <option value="Homme">
+                                                                            Homme
+                                                                        </option>
+                                                                        <option value="Femme">
+                                                                            Femme
+                                                                        </option>
+                                                                        <option value="Aucun">
+                                                                            Aucun
+                                                                        </option>
+                                                                    </div>
+                                                                    {/* Rôle */}
+                                                                    <div className={e.alias === "role" ? "block" : "hidden"}>
+                                                                        <option value="Super-Admin" className={requireRoles.includes(getAdminRole ?? "") ? "hidden" : "block"}>
+                                                                            Super administrateur
+                                                                        </option>
+                                                                        <option value="Supervisor-Admin" className={getAdminRole === "Supervisor-Admin" ? "hidden" : "block"}>
+                                                                            Administrateur de supervision
+                                                                        </option>
+                                                                        <option value="Controller-Admin" className={getAdminRole === "Controller-Admin" ? "hidden" : "block"}>
+                                                                            Administrateur de contrôle
+                                                                        </option>
+                                                                        <option value="User-Cient">
+                                                                            Utiisateur client
+                                                                        </option>
+                                                                    </div>
+                                                                    {/* Admin Service */}
+                                                                    <div className={e.alias === "adminService" && inputs.role === "Controller-Admin" ? "block" : "hidden"}>
+                                                                        <option value="RH">
+                                                                            Ressources humaines
+                                                                        </option>
+                                                                        <option value="COMPTA">
+                                                                            Comptabilité
+                                                                        </option>
+                                                                        <option value="ADMINISTRATION">
+                                                                            Administration
+                                                                        </option>
+                                                                        <option value="HOME">
+                                                                            Accueil
+                                                                        </option>
+                                                                    </div>
+                                                                </div>
                                                         }
                                                     </select>
+
                                                 }
+                                                <div className={inputs.photo && e.alias === "photo" ? "block w-[200px] h-[200px]" : "hidden"}>
+                                                    <img src={`${urlAPI}/images/${inputs.photo}`} alt="" className="w-full h-full object-cover" />
+                                                </div>
                                             </div>
                                         </div>
 
@@ -382,7 +443,7 @@ export default function UsersList() {
                         <div className="flex w-full justify-end ">
                             <button type="button" onClick={() => {
                                 handleSubmit()
-                            }} className="bg-blue-600 mt-4 hover:bg-blue-700 font-semibold ease duration-500 text-white py-2.5 px-8">
+                            }} className="bg-blue-600 my-2 hover:bg-blue-700 relative xl:right-5 font-semibold ease duration-500 text-white py-2.5 px-8">
                                 <p className={isLoading ? "hidden" : "block"}> Exécuter</p>
                                 <p className={isLoading ? "block" : "hidden"}><ClipLoader color="#fff" size={16} /></p>
                             </button>
@@ -390,7 +451,7 @@ export default function UsersList() {
                     </div>
                 </div>
             </div>
-            
+
         </main>
     )
 }

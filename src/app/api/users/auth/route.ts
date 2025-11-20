@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
     try {
-        try {
+        try { 
             await prisma.$queryRaw`SELECT 1`;
             console.log("DB OK");
         } catch (e) {

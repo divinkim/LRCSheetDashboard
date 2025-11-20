@@ -12,8 +12,10 @@ import { useSidebarContext } from "./sidebar-context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown, faChevronUp, faUser, faUserGroup, faBell, faPaperPlane, faList, faFileAlt, faShieldAlt,
-  faUserClock, faUsers, faUserPlus, faClipboardList
+  faUserClock, faUsers, faUserPlus, faClipboardList, faUserShield, 
 } from "@fortawesome/free-solid-svg-icons";
+import { title } from "process";
+import { icon } from "@fortawesome/fontawesome-svg-core";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -90,12 +92,35 @@ export function Sidebar() {
           href: "dashboard/RH/addUser",
           icon: faUserPlus             // Ajouter un utilisateur
         },
+        
         {
           title: "Liste de congé",
           icon: faList                 // Liste
         },
       ]
+    },
+
+    {
+      index: 3,
+      title: "🔑 Administration",
+      ItemLists: [
+        {
+          title: "Permission",
+          href: "dashboard/ADMIN/permission",
+          icon: faUserShield
+        }, 
+        {
+          title: "Liste formulaire",
+          href: "dashboard/ADMIN/listForm",
+          icon: faList
+        }
+      ]
     }
+
+    
+
+
+
   ];
 
   console.log("le comportement de", toggleAsideSections)

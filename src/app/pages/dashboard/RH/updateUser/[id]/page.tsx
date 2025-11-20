@@ -33,9 +33,10 @@ type InputsValue = {
     DepartmentPostId: number | null,
     maritalStatus: string | null,
     adminService: string | null,
+    [key: string]: string | number | null | undefined,
 }
 
-export default function AddUser() {
+export default function UpdateUser() {
     const [getEnterprises, setGetEnterprises] = useState<any[]>([]);
     const [getDepartmentPosts, setGetDepartmentPosts] = useState<any[]>([]);
     const [getPosts, setPosts] = useState<any[]>([]);
@@ -111,6 +112,39 @@ export default function AddUser() {
             console.log(getEnterprises);
         })()
     }, []);
+
+    //Récupération des données de l'utilisateur en fonction de l'id sur le navigateur
+
+    useEffect(() => {
+        (async () => {
+            const getUserId = window.location.href.split('/').pop();
+            const getUser = await controllers.API.getOne(urlAPI, "getUser", parseInt(getUserId ?? ""));
+            console.log("l'utilisateur", getUser)
+            setInputs({
+                firstname: getUser.firstname ?? null,
+                lastname: getUser.lastname ?? null,
+                birthDate: new Date(getUser.birthDate).toLocaleDateString() ?? null,
+                gender: getUser.gender ?? null,
+                email: getUser.email ?? null,
+                password: getUser.password ?? null,
+                phone: getUser.phone ?? null,
+                EnterpriseId: getUser.EnterpriseId ?? null,
+                PostId: getUser.PostId ?? null,
+                SalaryId: getUser.SalaryId ?? null,
+                ContractTypeId: getUser.ContractTypeId ?? null,
+                ContractId: getUser.ContractId ?? null,
+                CountryId: getUser.CountryId ?? null,
+                CityId: getUser.CityId ?? null,
+                DistrictId: getUser.DistrictId ?? null,
+                QuarterId: getUser.QuarterId ?? null,
+                photo: getUser.photo ?? null,
+                role: getUser.role ?? null,
+                DepartmentPostId: getUser.DepartmentPostId ?? null,
+                maritalStatus: getUser.marialStatus ?? null,
+                adminService: getUser.adminService ?? null,
+            })
+        })()
+    }, [getAdminRole])
 
     // Récupération des départements d'entreprises
     useEffect(() => {
@@ -219,7 +253,7 @@ export default function AddUser() {
             value: getEnterprises.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
         },
         {
-            alias: "DepartmentPostId",
+            alias: "departmentPostId",
             value: getDepartmentPosts.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
         },
         {
@@ -305,7 +339,7 @@ export default function AddUser() {
                     {
                         formElements.map((element) => (
                             <div className="flex flex-wrap text-gray-700 w-full space-y-4 md:space-y-0 items-center justify-between">
-                                <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Ajouter un nouveau collaborateur</h1>
+                                <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Modifier un collaborateur existant</h1>
                                 <div className="flex flex-wrap space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element, index) => (
@@ -318,13 +352,12 @@ export default function AddUser() {
                             </div>
                         ))
                     }
-
                     <div className='dark:border mt-8 w-full h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none p-4'>
                         {
                             formElements.map((element) => (
 
                                 <div className="flex flex-wrap space-y-4 justify-between mb-2 items-center dark:text-gray-300 text-gray-700">
-                                    <h2 className="font-bold">{element.addOrUpdateUser.addUserTitleForm}</h2>
+                                    <h2 className="font-bold">{element.addOrUpdateUser.updateUserTitleForm}</h2>
                                     <p className="font-semibold"> <span className="text-red-600">*</span> Champs obligatoires</p>
                                 </div>
                             ))
@@ -333,12 +366,12 @@ export default function AddUser() {
                         <div className='grid grid-cols-1 mt-4 md:grid-cols-2  w-full'>
                             {
                                 formElements.map((element) => (
-                                    element.addOrUpdateUser.inputs.map((e) => (
-                                        <div className="grid grid-cols-1 xl:grid-cols-2 w-full">
+                                    element.addOrUpdateUser.inputs.map((e, index) => (
+                                        <div key={index} className="grid grid-cols-1 xl:grid-cols-2 w-full">
                                             <div className='w-full  xl:w-[440px] 2xl:w-[570px] xl:pl-4 2xl:pl-3 mb-4'>
                                                 <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
                                                 {!e.selectedInput ?
-                                                    <input onChange={async (v) => {
+                                                    <input value={e.type !== "file" && e.type !== "password" ? (inputs[e.alias] ?? "") : ""} onChange={async (v) => {
                                                         for (const [key, _] of Object.entries(inputs)) {
                                                             if (key === e.alias) {
                                                                 if (e.type === "file") {
@@ -361,7 +394,7 @@ export default function AddUser() {
 
                                                     }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
                                                     :
-                                                    <select onChange={(v) => {
+                                                    <select value={e.type !== "file" ? inputs[e.alias] ?? "" : ""} onChange={(v) => {
                                                         for (const [key, _] of Object.entries(inputs)) {
                                                             if (key === e.alias) {
                                                                 setInputs({
@@ -387,43 +420,43 @@ export default function AddUser() {
                                                                 <div>
                                                                     {/* Genre */}
                                                                     <div className={e.alias === "gender" ? "block" : "hidden"}>
-                                                                        <option value="Homme">
+                                                                        <option>
                                                                             Homme
                                                                         </option>
                                                                         <option value="Femme">
                                                                             Femme
                                                                         </option>
-                                                                        <option value="Aucun">
+                                                                        <option>
                                                                             Aucun
                                                                         </option>
                                                                     </div>
                                                                     {/* Rôle */}
                                                                     <div className={e.alias === "role" ? "block" : "hidden"}>
-                                                                        <option value="Super-Admin" className={requireRoles.includes(getAdminRole ?? "") ? "hidden" : "block"}>
+                                                                        <option className={requireRoles.includes(getAdminRole ?? "") ? "hidden" : "block"}>
                                                                             Super administrateur
                                                                         </option>
-                                                                        <option value="Supervisor-Admin" className={getAdminRole === "Supervisor-Admin" ? "hidden" : "block"}>
+                                                                        <option className={getAdminRole === "Supervisor-Admin" ? "hidden" : "block"}>
                                                                             Administrateur de supervision
                                                                         </option>
-                                                                        <option value="Controller-Admin" className={getAdminRole === "Controller-Admin" ? "hidden" : "block"}>
+                                                                        <option className={getAdminRole === "Controller-Admin" ? "hidden" : "block"}>
                                                                             Administrateur de contrôle
                                                                         </option>
-                                                                        <option value="User-Cient">
+                                                                        <option>
                                                                             Utiisateur client
                                                                         </option>
                                                                     </div>
                                                                     {/* Admin Service */}
                                                                     <div className={e.alias === "adminService" && inputs.role === "Controller-Admin" ? "block" : "hidden"}>
-                                                                        <option value="RH">
+                                                                        <option>
                                                                             Ressources humaines
                                                                         </option>
-                                                                        <option value="COMPTA">
+                                                                        <option>
                                                                             Comptabilité
                                                                         </option>
-                                                                        <option value="ADMINISTRATION">
+                                                                        <option>
                                                                             Administration
                                                                         </option>
-                                                                        <option value="HOME">
+                                                                        <option>
                                                                             Accueil
                                                                         </option>
                                                                     </div>

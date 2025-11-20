@@ -1,9 +1,10 @@
 import {
-    faEye,
-    faUsers,        // Liste des utilisateurs
-    faPlusCircle,   // Ajouter un poste
-    faBuilding,     // Ajouter un département
-    faMoneyBillWave // Ajouter un salaire
+    faUsers,
+    faPlusCircle,
+    faBuilding,
+    faMoneyBillWave,
+    faMapMarkedAlt,
+    faMapPin
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
@@ -19,21 +20,32 @@ export const formElements = [
                 {
                     title: "Ajouter un poste",
                     href: "/dashboard/ADMIN/addPost",
-                    icon: faPlusCircle
+                    icon: faPlusCircle     // Poste = ajout → icône plus circle
                 },
                 {
                     title: "Ajouter un département",
                     href: "/dashboard/ADMIN/addDepartment",
-                    icon: faBuilding
+                    icon: faBuilding       // Département = bâtiment
                 },
                 {
                     title: "Ajouter un salaire",
-                    href: "/dashboard/ADMIN/addSalary",
-                    icon: faMoneyBillWave
+                    href: "/dashboard/COMPTA/addSalary",
+                    icon: faMoneyBillWave  // Salaire = billet
+                },
+                {
+                    title: "Ajouter un arrondissement",
+                    href: "/dashboard/OTHERS/addDistrict",
+                    icon: faMapMarkedAlt   // Arrondissement = zone / map
+                },
+                {
+                    title: "Ajouter un quartier",
+                    href: "/dashboard/OTHERS/addQuarter",
+                    icon: faMapPin         // Quartier = pin/point sur la carte
                 }
             ],
 
-            titleForm: "Formulaire d'enregistrement d'un collaborateur",
+            addUserTitleForm: "Formulaire d'enregistrement d'un collaborateur",
+            updateUserTitleForm: "Formulaire de modification d'un utilisateur",
 
             inputs: [
                 // ---- Inputs classiques ----
@@ -90,7 +102,7 @@ export const formElements = [
                     requireField: true,
                     type: "date",
                     selectedInput: false,
-                    alias: "birthdate"
+                    alias: "birthDate"
                 },
                 {
                     label: "Genre",
@@ -127,12 +139,20 @@ export const formElements = [
                     selectedInput: false,
                     alias: "phone"
                 },
+                {
+                    label: "Etat civil",
+                    placeholder: "Choisissez un état",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: true,
+                    alias: "maritalStatus"
+                },
 
                 // ---- Select Inputs ----
                 {
                     label: "Entreprise",
                     placeholder: "Sélectionnez une entreprise...",
-                    requireField: false,
+                    requireField: true,
                     type: "number",
                     selectedInput: true,
                     dynamicOptions: {
@@ -149,7 +169,7 @@ export const formElements = [
                     dynamicOptions: {
                         status: true
                     },
-                    alias: "departmentPostId"
+                    alias: "DepartmentPostId"
                 },
                 {
                     label: "Type de contrat",
@@ -187,18 +207,24 @@ export const formElements = [
                 {
                     label: "Pays",
                     placeholder: "Sélectionnez un pays...",
-                    requireField: false,
+                    requireField: true,
                     type: "number",
                     selectedInput: true,
-                    alias: "CountryId"
+                    alias: "CountryId",
+                    dynamicOptions: {
+                        status: true
+                    },
                 },
                 {
                     label: "Ville",
                     placeholder: "Sélectionnez une ville...",
-                    requireField: false,
+                    requireField: true,
                     type: "number",
                     selectedInput: true,
-                    alias: "CityId"
+                    alias: "CityId",
+                    dynamicOptions: {
+                        status: true
+                    },
                 },
                 {
                     label: "Arrondissement",

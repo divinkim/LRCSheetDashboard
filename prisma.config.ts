@@ -7,6 +7,6 @@ export default defineConfig({
   },
   engine: "classic",
   datasource: {
-    url: "DATABASE_URL",
+    url: "mysql://root:AhssrI4626I@vps101055.serveur-vps.net:3306/lrc_sheet_database",
   },
 });

@@ -12,7 +12,9 @@ import { useSidebarContext } from "./sidebar-context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown, faChevronUp, faUser, faUserGroup, faBell, faPaperPlane, faList, faFileAlt, faShieldAlt,
-  faUserClock, faUsers, faUserPlus, faClipboardList
+  faUserClock, faUsers, faUserPlus, faClipboardList,
+  faClipboardCheck,
+  faCalendarCheck
 } from "@fortawesome/free-solid-svg-icons";
 
 export function Sidebar() {
@@ -78,24 +80,26 @@ export function Sidebar() {
         {
           title: "Présences au poste",
           href: "dashboard/RH/presencesList",
-          icon: faClipboardList        // Feuille de présence
-        },
-        {
-          title: "Liste des collaborateurs",
-          icon: faUsers,
-          href: "dashboard/RH/usersList"
+          icon: faClipboardCheck        // Feuille de présence (présences)
         },
         {
           title: "Ajouter un collaborateur",
           href: "dashboard/RH/addUser",
-          icon: faUserPlus             // Ajouter un utilisateur
+          icon: faUserPlus              // Ajouter un utilisateur
         },
         {
-          title: "Liste de congé",
-          icon: faList                 // Liste
+          title: "Liste des collaborateurs",
+          href: "dashboard/RH/usersList",
+          icon: faUsers                 // Liste des utilisateurs
+        },
+        {
+          title: "Liste des collaborateurs au planning",
+          href: "dashboard/RH/collaboratorsAssociateList",
+          icon: faCalendarCheck         // Planning des utilisateurs
         },
       ]
     }
+
   ];
 
   console.log("le comportement de", toggleAsideSections)

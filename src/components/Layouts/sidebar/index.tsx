@@ -13,8 +13,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown, faChevronUp, faUser, faUserGroup, faBell, faPaperPlane, faList, faFileAlt, faShieldAlt,
   faUserClock, faUsers, faUserPlus, faClipboardList,
-  faClipboardCheck,
-  faCalendarCheck
+  faClipboardCheck,faCalendarCheck, faUserShield, faFileLines, faCheckCircle, faFileContract, faSuitcaseRolling,
+  faCalendarDay, faUmbrellaBeach
 } from "@fortawesome/free-solid-svg-icons";
 import { title } from "process";
 import { icon } from "@fortawesome/fontawesome-svg-core";
@@ -101,7 +101,41 @@ export function Sidebar() {
           icon: faCalendarCheck         // Planning des utilisateurs
         },
       ]
+    },
+
+     {
+      index: 3,
+      title: "👩‍💼 Administration",
+      ItemLists: [
+        {
+          title: "Liste des permissions",
+          href: "dashboard/ADMIN/permission",
+          icon: faUserShield
+        },
+        {
+          title: "Rapport",
+          href: "dashboard/ADMIN/rapport",
+          icon: faFileLines
+        },
+        {
+          title: "Tâche",
+          href: "dashboard/ADMIN/task",
+          icon: faCheckCircle
+        },
+        {
+          title: "Liste des contratS",
+          href: "dashboard/ADMIN/contrat",
+          icon: faFileContract
+        },
+        {
+          title: "Liste des congés",
+          href: "dashboard/ADMIN/conge",
+          icon: faSuitcaseRolling
+        },
+
+      ]
     }
+   
 
   ];
 

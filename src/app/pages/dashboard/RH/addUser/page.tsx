@@ -85,19 +85,19 @@ export default function UsersList() {
             setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
             setAdminRole(role)
 
-            if (authToken === null) {
-                return window.location.href = "/"
-            } else if (!requireRoles.includes(role ?? "")) {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Violation d'accès !",
-                    text: "Vous n'êtes pas autorisé à accéder à cette page. Veuillez vous rapprocher de votre administreur pour plus d'infos !",
-                });
-                setTimeout(() => {
-                    window.location.href = "/Dashboard"
+            // if (authToken === null) {
+            //     return window.location.href = "/"
+            // } else if (!requireRoles.includes(role ?? "")) {
+            //     Swal.fire({
+            //         icon: "warning",
+            //         title: "Violation d'accès !",
+            //         text: "Vous n'êtes pas autorisé à accéder à cette page. Veuillez vous rapprocher de votre administreur pour plus d'infos !",
+            //     });
+            //     setTimeout(() => {
+            //         window.location.href = "/Dashboard"
 
-                }, 2000);
-            }
+            //     }, 2000);
+            // }
 
             const getEnterprises = await controllers.API.getAll(urlAPI, "getEnterprises", null);
 
@@ -116,9 +116,12 @@ export default function UsersList() {
     useEffect(() => {
         (async () => {
             const getDepartmentPosts = await controllers.API.getAll(urlAPI, "getDepartmentPosts", null);
-            const filteredDepartmentPosts = getDepartmentPosts.filter((department: { EnterpriseId: number }) => department.EnterpriseId === inputs.EnterpriseId);
-            setGetDepartmentPosts(filteredDepartmentPosts)
-            console.log(filteredDepartmentPosts);
+            if (getAdminRole !== "Super-Admin") {
+                const filteredDepartmentPosts = getDepartmentPosts.filter((department: { EnterpriseId: number }) => department.EnterpriseId === inputs.EnterpriseId);
+                setGetDepartmentPosts(filteredDepartmentPosts)
+            } else {
+                setGetDepartmentPosts(getDepartmentPosts)
+            }
         })()
     }, [inputs.EnterpriseId]);
 
@@ -168,7 +171,6 @@ export default function UsersList() {
             setTimeout(async () => {
                 const getCountries = await controllers.API.getAll(urlAPI, "getCountries", null);
                 setCountry(getCountries);
-
             }, 2000)
         })();
     }, []);
@@ -221,35 +223,35 @@ export default function UsersList() {
         },
         {
             alias: "PostId",
-            value: getPosts
+            value: getPosts.filter(item => item.id && item.title).map(item => ({ id: item.id, value: item.title }))
         },
         {
             alias: "SalaryId",
-            value: getSalary
+            value: getSalary.filter(item => item.id && item.netSalary).map(item => ({ id: item.id, value: item.netSalary }))
         },
         {
             alias: "ContractTypeId",
-            value: getContractTypes
+            value: getContractTypes.filter(item => item.id && item.title).map(item => ({ id: item.id, value: item.title }))
         },
         {
             alias: "ContractId",
-            value: getContracts
+            value: getContracts.filter(item => item.id && item.delay).map(item => ({ id: item.id, value: item.delay }))
         },
         {
             alias: "CountryId",
-            value: getCountry
+            value: getCountry.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
         },
         {
             alias: "CityId",
-            value: getCity
+            value: getCity.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
         },
         {
             alias: "DistrictId",
-            value: getDistrict
+            value: getDistrict.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
         },
         {
             alias: "QuarterId",
-            value: getQuarter
+            value: getQuarter.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
         }
     ];
 
@@ -342,6 +344,7 @@ export default function UsersList() {
                                                                 if (e.type === "file") {
                                                                     const files = v.target.files?.[0];
                                                                     const response = await controllers.API.SendOne(urlAPI, "sendFiles", null, { files });
+                                                                    console.log("L efichier image", response)
                                                                     if (response.status) {
                                                                         setInputs({
                                                                             ...inputs,

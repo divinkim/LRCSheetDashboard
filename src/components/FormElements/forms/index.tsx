@@ -11,7 +11,7 @@ export const formElements = [
     {
         addOrUpdateUser: {
             navigationLinks: [
-                
+
                 {
                     title: "Liste des utilisateurs",
                     href: "/dashboard/RH/usersList",
@@ -223,6 +223,14 @@ export const formElements = [
                     },
                     alias: "QuarterId"
                 },
+            ],
+
+            inputContrat: [
+                {
+                    label: "startDate",
+                    placeholder: "Saisie la date de début",
+                    type: "number", 
+                }
             ]
         }
     }

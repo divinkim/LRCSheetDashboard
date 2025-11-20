@@ -14,7 +14,7 @@ import {
   faChevronDown, faChevronUp, faUser, faUserGroup, faBell, faPaperPlane, faList, faFileAlt, faShieldAlt,
   faUserClock, faUsers, faUserPlus, faClipboardList,
   faClipboardCheck,faCalendarCheck, faUserShield, faFileLines, faCheckCircle, faFileContract, faSuitcaseRolling,
-  faCalendarDay, faUmbrellaBeach
+  faCalendarDay, faUmbrellaBeach, faFileSignature, faIdBadge, faBuilding
 } from "@fortawesome/free-solid-svg-icons";
 import { title } from "process";
 import { icon } from "@fortawesome/fontawesome-svg-core";
@@ -108,7 +108,7 @@ export function Sidebar() {
       title: "👩‍💼 Administration",
       ItemLists: [
         {
-          title: "Liste des permissions",
+          title: "Permissions",
           href: "dashboard/ADMIN/permission",
           icon: faUserShield
         },
@@ -123,15 +123,46 @@ export function Sidebar() {
           icon: faCheckCircle
         },
         {
-          title: "Liste des contratS",
+          title: "Contrat",
           href: "dashboard/ADMIN/contrat",
+          icon: faFileSignature
+        },
+        {
+          title: "Liste de contrat",
+          href: "dashboard/ADMIN/listContrat",
           icon: faFileContract
         },
         {
-          title: "Liste des congés",
-          href: "dashboard/ADMIN/conge",
+          title: "Type de contrat",
+          href: "dashboard/ADMIN/typeContrat",
+          icon: faFileContract
+        },
+        {
+          title: "Liste de Type de contrat",
+          href: "dashboard/ADMIN/listTypeContrat",
+          icon: faFileContract
+        },
+        {
+          title: "Poste",
+          href: "dashboard/ADMIN/poste",
+          icon: faIdBadge
+        },
+        {
+          title: "Liste de poste",
+          href: "dashboard/ADMIN/listPost",
           icon: faSuitcaseRolling
         },
+        {
+          title: "Département",
+          href: "dashboard/ADMIN/departement",
+          icon: faBuilding
+        },
+        {
+          title: "Liste de département",
+          href: "dashboard/ADMIN/listDepartement",
+          icon: faSuitcaseRolling
+        },
+        
 
       ]
     }

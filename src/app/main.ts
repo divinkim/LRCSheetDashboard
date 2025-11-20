@@ -210,8 +210,6 @@ export class Api {
                 }
 
                 body = formData;
-                console.log("Fichier trouvé")
-                return
             } else {
                 console.log("Pas de fichier envoyé")
                 for (const [_, value] of Object.entries(data)) {

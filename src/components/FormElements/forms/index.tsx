@@ -15,32 +15,32 @@ export const formElements = [
 
                 {
                     title: "Liste des utilisateurs",
-                    href: "/dashboard/RH/usersList",
+                    href: "../RH/usersList",
                     icon: faUsers
                 },
                 {
                     title: "Ajouter un poste",
-                    href: "/dashboard/ADMIN/addPost",
+                    href: "../ADMIN/addPost",
                     icon: faPlusCircle     // Poste = ajout → icône plus circle
                 },
                 {
                     title: "Ajouter un département",
-                    href: "/dashboard/ADMIN/addDepartment",
+                    href: "../ADMIN/addDepartment",
                     icon: faBuilding       // Département = bâtiment
                 },
                 {
                     title: "Ajouter un salaire",
-                    href: "/dashboard/COMPTA/addSalary",
+                    href: "../COMPTA/addSalary",
                     icon: faMoneyBillWave  // Salaire = billet
                 },
                 {
                     title: "Ajouter un arrondissement",
-                    href: "/dashboard/OTHERS/addDistrict",
+                    href: "../OTHERS/addDistrict",
                     icon: faMapMarkedAlt   // Arrondissement = zone / map
                 },
                 {
                     title: "Ajouter un quartier",
-                    href: "/dashboard/OTHERS/addQuarter",
+                    href: "../OTHERS/addQuarter",
                     icon: faMapPin         // Quartier = pin/point sur la carte
                 }
             ],

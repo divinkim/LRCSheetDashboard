@@ -81,23 +81,23 @@ export function Sidebar() {
       ItemLists: [
         {
           title: "Présences au poste",
-          href: "dashboard/RH/presencesList",
+          href: "../RH/presencesList",
           icon: faClipboardCheck        // Feuille de présence (présences)
         },
         {
           title: "Ajouter un collaborateur",
-          href: "dashboard/RH/addUser",
+          href: "../RH/addUser",
           icon: faUserPlus              // Ajouter un utilisateur
         },
         
         {
           title: "Liste des collaborateurs",
-          href: "dashboard/RH/usersList",
+          href: "../RH/usersList",
           icon: faUsers                 // Liste des utilisateurs
         },
         {
           title: "Liste des collaborateurs au planning",
-          href: "dashboard/RH/collaboratorsAssociateList",
+          href: "../RH/collaboratorsAssociateList",
           icon: faCalendarCheck         // Planning des utilisateurs
         },
       ]

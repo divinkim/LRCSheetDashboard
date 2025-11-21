@@ -87,6 +87,7 @@ export default function UsersList() {
             <Header />
             <div className="flex">
                 <Sidebar />
+
                 <main className='m-4 bg-gray-100 text-gray-700 dark:text-gray-300 dark:bg-transparent'>
                     {
                         tablesModal.map((e) => (
@@ -241,5 +242,5 @@ export default function UsersList() {
                 </main>
             </div>
         </div>
-    );
+    )
 }

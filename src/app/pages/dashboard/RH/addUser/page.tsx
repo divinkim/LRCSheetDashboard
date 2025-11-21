@@ -10,6 +10,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { urlAPI } from "@/app/main";
 import { controllers } from "@/app/main";
+import { cn } from "@/lib/utils";
 
 type InputsValue = {
     firstname: string | null,
@@ -304,9 +305,13 @@ export default function AddUser() {
                 <div className="mx-4 mt-6 mb-4 w-full">
                     {
                         formElements.map((element) => (
-                            <div className="flex flex-wrap text-gray-700 w-full space-y-4 md:space-y-0 items-center justify-between">
-                                <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Ajouter un nouveau collaborateur</h1>
-                                <div className="flex flex-wrap space-x-4 space-y-4 items-center">
+                            <div className="text-gray-700 w-full space-y-4 md:space-y-0 items-center">
+                                <div className="flex justify-between">
+                                    <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Ajouter un nouveau collaborateur</h1>
+                                    <p className="text-blue-700 dark:text-blue-600">Dashboard/RH/Ajouter un collaborateur</p>
+                                </div>
+                                <hr />
+                                <div className="flex flex-wrap py-4 space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element, index) => (
                                             <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"}>
@@ -330,113 +335,112 @@ export default function AddUser() {
                             ))
                         }
                         <hr />
-                        <div className='grid grid-cols-1 mt-4 md:grid-cols-2  w-full'>
+                        <div className='grid grid-cols-1 mt-4 gap-x-4 md:grid-cols-2  w-full'>
                             {
                                 formElements.map((element) => (
-                                    element.addOrUpdateUser.inputs.map((e) => (
-                                        <div className="grid grid-cols-1 xl:grid-cols-2 w-full">
-                                            <div className='w-full  xl:w-[440px] 2xl:w-[570px] xl:pl-4 2xl:pl-3 mb-4'>
-                                                <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
-                                                {!e.selectedInput ?
-                                                    <input onChange={async (v) => {
-                                                        for (const [key, _] of Object.entries(inputs)) {
-                                                            if (key === e.alias) {
-                                                                if (e.type === "file") {
-                                                                    const files = v.target.files?.[0];
-                                                                    const response = await controllers.API.SendOne(urlAPI, "sendFiles", null, { files });
-                                                                    console.log("L efichier image", response)
-                                                                    if (response.status) {
-                                                                        setInputs({
-                                                                            ...inputs,
-                                                                            [e.alias]: response.filename
-                                                                        })
-                                                                    }
+                                    element.addOrUpdateUser.inputs.map((e, index) => (
+                                        <div className={cn('w-full mb-4',)}>
+                                            <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
+                                            {!e.selectedInput ?
+                                                <input onChange={async (v) => {
+                                                    for (const [key, _] of Object.entries(inputs)) {
+                                                        if (key === e.alias) {
+                                                            if (e.type === "file") {
+                                                                const files = v.target.files?.[0];
+                                                                const response = await controllers.API.SendOne(urlAPI, "sendFiles", null, { files });
+                                                                console.log("L efichier image", response)
+                                                                if (response.status) {
+                                                                    setInputs({
+                                                                        ...inputs,
+                                                                        [e.alias]: response.filename
+                                                                    })
                                                                 }
-                                                                setInputs({
-                                                                    ...inputs,
-                                                                    [e.alias]: v.target.value
-                                                                })
                                                             }
+                                                            setInputs({
+                                                                ...inputs,
+                                                                [e.alias]: v.target.value
+                                                            })
                                                         }
+                                                    }
 
-                                                    }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
-                                                    :
-                                                    <select onChange={(v) => {
-                                                        for (const [key, _] of Object.entries(inputs)) {
-                                                            if (key === e.alias) {
-                                                                setInputs({
-                                                                    ...inputs,
-                                                                    [e.alias]: e.type === "number" ? parseInt(v.target.value) : v.target.value
-                                                                })
-                                                            }
+                                                }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
+                                                :
+                                                <select onChange={(v) => {
+                                                    for (const [key, _] of Object.entries(inputs)) {
+                                                        if (key === e.alias) {
+                                                            setInputs({
+                                                                ...inputs,
+                                                                [e.alias]: e.type === "number" ? parseInt(v.target.value) : v.target.value
+                                                            })
                                                         }
+                                                    }
 
-                                                    }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
-                                                        <option value="" selected disabled>
-                                                            {e.placeholder}
-                                                        </option>
-                                                        {
-                                                            e.dynamicOptions?.status ? arrayDatas
-                                                                .find(item => item.alias === e.alias)
-                                                                ?.value
-                                                                ?.map(option => (
-                                                                    <option value={option.id}>
-                                                                        {option.value}
+                                                }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
+                                                    <option value="" selected disabled>
+                                                        {e.placeholder}
+                                                    </option>
+                                                    {
+                                                        e.dynamicOptions?.status ? arrayDatas
+                                                            .find(item => item.alias === e.alias)
+                                                            ?.value
+                                                            ?.map(option => (
+                                                                <option value={option.id}>
+                                                                    {option.value}
+                                                                </option>
+                                                            )) :
+                                                            <div>
+                                                                {/* Genre */}
+                                                                <div className={e.alias === "gender" ? "block" : "hidden"}>
+                                                                    <option value="Homme">
+                                                                        Homme
                                                                     </option>
-                                                                )) :
-                                                                <div>
-                                                                    {/* Genre */}
-                                                                    <div className={e.alias === "gender" ? "block" : "hidden"}>
-                                                                        <option value="Homme">
-                                                                            Homme
-                                                                        </option>
-                                                                        <option value="Femme">
-                                                                            Femme
-                                                                        </option>
-                                                                        <option value="Aucun">
-                                                                            Aucun
-                                                                        </option>
-                                                                    </div>
-                                                                    {/* Rôle */}
-                                                                    <div className={e.alias === "role" ? "block" : "hidden"}>
-                                                                        <option value="Super-Admin" className={requireRoles.includes(getAdminRole ?? "") ? "hidden" : "block"}>
-                                                                            Super administrateur
-                                                                        </option>
-                                                                        <option value="Supervisor-Admin" className={getAdminRole === "Supervisor-Admin" ? "hidden" : "block"}>
-                                                                            Administrateur de supervision
-                                                                        </option>
-                                                                        <option value="Controller-Admin" className={getAdminRole === "Controller-Admin" ? "hidden" : "block"}>
-                                                                            Administrateur de contrôle
-                                                                        </option>
-                                                                        <option value="User-Cient">
-                                                                            Utiisateur client
-                                                                        </option>
-                                                                    </div>
-                                                                    {/* Admin Service */}
-                                                                    <div className={e.alias === "adminService" && inputs.role === "Controller-Admin" ? "block" : "hidden"}>
-                                                                        <option value="RH">
-                                                                            Ressources humaines
-                                                                        </option>
-                                                                        <option value="COMPTA">
-                                                                            Comptabilité
-                                                                        </option>
-                                                                        <option value="ADMINISTRATION">
-                                                                            Administration
-                                                                        </option>
-                                                                        <option value="HOME">
-                                                                            Accueil
-                                                                        </option>
-                                                                    </div>
+                                                                    <option value="Femme">
+                                                                        Femme
+                                                                    </option>
+                                                                    <option value="Aucun">
+                                                                        Aucun
+                                                                    </option>
                                                                 </div>
-                                                        }
-                                                    </select>
+                                                                {/* Rôle */}
+                                                                <div className={e.alias === "role" ? "block" : "hidden"}>
+                                                                    <option value="Super-Admin" className={requireRoles.includes(getAdminRole ?? "") ? "hidden" : "block"}>
+                                                                        Super administrateur
+                                                                    </option>
+                                                                    <option value="Supervisor-Admin" className={getAdminRole === "Supervisor-Admin" ? "hidden" : "block"}>
+                                                                        Administrateur de supervision
+                                                                    </option>
+                                                                    <option value="Controller-Admin" className={getAdminRole === "Controller-Admin" ? "hidden" : "block"}>
+                                                                        Administrateur de contrôle
+                                                                    </option>
+                                                                    <option value="User-Cient">
+                                                                        Utiisateur client
+                                                                    </option>
+                                                                </div>
+                                                                {/* Admin Service */}
+                                                                <div className={e.alias === "adminService" && inputs.role === "Controller-Admin" ? "block" : "hidden"}>
+                                                                    <option value="RH">
+                                                                        Ressources humaines
+                                                                    </option>
+                                                                    <option value="COMPTA">
+                                                                        Comptabilité
+                                                                    </option>
+                                                                    <option value="ADMINISTRATION">
+                                                                        Administration
+                                                                    </option>
+                                                                    <option value="HOME">
+                                                                        Accueil
+                                                                    </option>
+                                                                </div>
+                                                            </div>
+                                                    }
+                                                </select>
 
-                                                }
-                                                <div className={inputs.photo && e.alias === "photo" ? "block w-[200px] h-[200px]" : "hidden"}>
-                                                    <img src={`${urlAPI}/images/${inputs.photo}`} alt="" className="w-full h-full object-cover" />
-                                                </div>
+                                            }
+                                            <div className={inputs.photo && e.alias === "photo" ? "block w-[200px] h-[200px]" : "hidden"}>
+                                                <img src={`${urlAPI}/images/${inputs.photo}`} alt="" className="w-full h-full object-cover" />
                                             </div>
                                         </div>
+
 
                                     ))
                                 ))

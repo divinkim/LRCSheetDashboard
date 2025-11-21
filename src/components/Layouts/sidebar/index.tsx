@@ -81,23 +81,23 @@ export function Sidebar() {
       ItemLists: [
         {
           title: "Présences au poste",
-          href: "dashboard/RH/presencesList",
+          href: "../RH/presencesList",
           icon: faClipboardCheck        // Feuille de présence (présences)
         },
         {
           title: "Ajouter un collaborateur",
-          href: "dashboard/RH/addUser",
+          href: "../RH/addUser",
           icon: faUserPlus              // Ajouter un utilisateur
         },
         
         {
           title: "Liste des collaborateurs",
-          href: "dashboard/RH/usersList",
+          href: "../RH/usersList",
           icon: faUsers                 // Liste des utilisateurs
         },
         {
           title: "Liste des collaborateurs au planning",
-          href: "dashboard/RH/collaboratorsAssociateList",
+          href: "../RH/collaboratorsAssociateList",
           icon: faCalendarCheck         // Planning des utilisateurs
         },
       ]
@@ -184,17 +184,17 @@ export function Sidebar() {
 
       <aside
         className={cn(
-          "max-w-[290px] overflow-hidden bg-gray-800 transition-[width] duration-200 ease-linear dark:border-gray-900 dark:bg-gray-dark",
-          isMobile ? "fixed bottom-0 top-0 z-50" : "sticky top-0 h-screen",
+          "max-w-[270px] overflow-hidden bg-gray-800 transition-[width] duration-200 ease-linear dark:border-gray-900 dark:bg-gray-dark",
+          isMobile ? "fixed bottom-0 top-0 z-50" : "top-0 h-screen sticky",
           isOpen ? "w-full" : "w-0",
         )}
         aria-label="Main navigation"
         aria-hidden={!isOpen}
         inert={!isOpen}
       >
-        <div className="flex h-full flex-col py-10 pl-[25px] pr-[7px]">
+        <div className="flex h-full flex-col py-10 pl-[14px] pr-[7px]">
           {/* Navigation */}
-          <div className="custom-scrollbar flex-1 overflow-y-auto pr-3">
+          <div className="custom-scrollbar  flex-1 overflow-y-auto pr-3">
 
             <div className="w-[100px] h-[100px] mx-auto mb-5">
               <img src="/images/logo/logo.png" alt="" className='w-full h-full object-cover' />

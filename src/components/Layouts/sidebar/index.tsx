@@ -123,8 +123,8 @@ export function Sidebar() {
           icon: faCheckCircle
         },
         {
-          title: "Contrat",
-          href: "dashboard/ADMIN/contrat",
+          title: "Ajouter un contrat",
+          href: "../ADMIN/addContract",
           icon: faFileSignature
         },
         {

@@ -1,4 +1,4 @@
-import { faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import { faCalendarPlus, faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 export const tablesModal = [
     {
@@ -24,8 +24,27 @@ export const tablesModal = [
                     { title: "Actions", alias: "" },
                 ]
             }
-
-
+        },
+        presencesList: {
+            pageTitle: "Liste de présence enregistrée",
+            path: "Dashboard/RH/Liste de présence",
+            links: [
+                {
+                    title: "Ajouter une présence",
+                    href: "",
+                    icon: faCalendarPlus
+                },
+            ],
+            table: {
+                titles: [
+                    { title: "Noms & prénoms", alias: "photo" },
+                    { title: "Arrivées & pauses", alias: "firstname" },
+                    { title: "Reprises & départs", alias: "phone" },
+                    { title: "Jours et date", alias: "email" },
+                    { title: "Status", alias: "gender" },
+                    { title: "Actions", alias: "EnterpriseId" },
+                ]
+            }
         }
     }
 ]

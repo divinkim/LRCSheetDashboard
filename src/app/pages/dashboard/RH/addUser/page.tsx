@@ -306,12 +306,12 @@ export default function AddUser() {
                     {
                         formElements.map((element) => (
                             <div className="text-gray-700 w-full space-y-4 md:space-y-0 items-center">
-                                <div className="flex justify-between">
+                                <div className="flex justify-between flex-wrap">
                                     <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Ajouter un nouveau collaborateur</h1>
                                     <p className="text-blue-700 dark:text-blue-600">Dashboard/RH/Ajouter un collaborateur</p>
                                 </div>
                                 <hr />
-                                <div className="flex flex-wrap py-4 space-x-4 space-y-4 items-center">
+                                <div className="flex flex-wrap py-4 lg:space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element, index) => (
                                             <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"}>

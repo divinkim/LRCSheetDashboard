@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { controllers, urlAPI } from "@/app/main";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { tablesModal } from "@/components/Tables/tablesModal";
+import Link from "next/link";
 
 type PresencesDatas = {
     arrivalTime: string | null,
@@ -74,21 +76,41 @@ export default function PresencesList() {
             <div className="flex">
                 <Sidebar />
                 <main className='m-4 bg-gray-100 dark:bg-transparent'>
-                    <h1 className="text-[20px] my-4 font-bold dark:text-gray-300">Liste des présences enregistrées</h1>
+                    {
+                        tablesModal.map((e) => (
+                            <div className="flex justify-between items-center">
+                                <h1 className="text-[20px] my-4 font-bold dark:text-gray-300">{e.presencesList.pageTitle}  </h1>
+                                <p className='text-blue-700 dark:text-blue-600 hidden xl:block'>{e.presencesList.path}</p>
+                            </div>
+                        ))
+                    }
                     <hr />
-                    <div className="relative w-[250px]">
-                        <input
-                            type="text"
-                            placeholder="Rechercher..."
-                            className="border shadow-xl outline-none dark:border-gray-200 dark:bg-transparent px-3 py-2.5 rounded-full my-6 w-full"
-                            value={search}
-                            onChange={(e) => {
-                                setSearch(e.target.value)
-                                onSearch(e.target.value)
-                                setPage(1); // reset page quand on tape
-                            }}
-                        />
-                        <FontAwesomeIcon icon={faSearch} className="absolute text-gray-400 right-3 top-[38px]" />
+                    <div className="flex flex-col space-y-4 xl:space-y-0  lg:flex-row items-center justify-between">
+                        <div className="relative w-[250px]">
+                            <input
+                                type="text"
+                                placeholder="Rechercher un profil..."
+                                className="border shadow-xl outline-none dark:border-gray-200 dark:bg-transparent px-3 py-2.5 rounded-xl my-6 w-full"
+                                value={search}
+                                onChange={(e) => {
+                                    setSearch(e.target.value)
+                                    onSearch(e.target.value)
+                                    setPage(1); // reset page quand on tape
+                                }}
+                            />
+                            <FontAwesomeIcon icon={faSearch} className="absolute text-gray-400 right-3 top-[38px]" />
+                        </div>
+                        {
+                            tablesModal.map((e) => (
+                                e.presencesList.links.map((item) => (
+                                    <Link href={item.href} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded">
+                                        <FontAwesomeIcon icon={item.icon} className="text-white" />
+                                        <span className='text-white font-semibold'> {item.title}</span>
+                                    </Link>
+                                ))
+
+                            ))
+                        }
                     </div>
 
 

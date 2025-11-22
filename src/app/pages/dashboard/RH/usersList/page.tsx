@@ -10,6 +10,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { tablesModal } from "@/components/Tables/tablesModal";
 import Swal from "sweetalert2";
+import TablesPage from "@/app/tables/page";
 
 type UsersDatas = {
     id: number,
@@ -80,12 +81,10 @@ export default function UsersList() {
 
     const arrayUsersRefactory = savedUsersList
 
-    console.log("ce putain de tableau", arrayUsersRefactory)
-
     return (
         <div>
             <Header />
-            <div className="flex">
+            <div className="flex justify-center w-full mx-auto">
                 <Sidebar />
 
                 <main className='m-4 bg-gray-100 text-gray-700 dark:text-gray-300 dark:bg-transparent'>
@@ -98,7 +97,7 @@ export default function UsersList() {
                         ))
                     }
                     <hr />
-                    <div className="flex flex-col space-y-4 space-x-4 xl:space-y-0  xl:flex-row items-center justify-between">
+                    <div className="flex flex-col space-y-4 xl:space-y-0  lg:flex-row items-center justify-between">
                         <div className="relative w-[250px]">
                             <input
                                 type="text"
@@ -127,7 +126,7 @@ export default function UsersList() {
                     </div>
 
                     {/* 🧾 Tableau */}
-                    <table className="border w-full">
+                    <table className="border w-full mx-auto">
                         <thead>
                             <tr className="bg-gray-800 dark:bg-transparent ">
                                 {

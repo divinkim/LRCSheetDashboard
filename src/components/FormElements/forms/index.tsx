@@ -17,32 +17,32 @@ export const formElements = [
 
                 {
                     title: "Liste des utilisateurs",
-                    href: "../RH/usersList",
+                    href: "/pages/dashboard/RH/usersList",
                     icon: faUsers
                 },
                 {
                     title: "Ajouter un poste",
-                    href: "../ADMIN/addPost",
+                    href: "/pages/dashboard/ADMIN/addPost",
                     icon: faPlusCircle     // Poste = ajout → icône plus circle
                 },
                 {
                     title: "Ajouter un département",
-                    href: "../ADMIN/addDepartment",
+                    href: "/pages/dashboard/ADMIN/addDepartment",
                     icon: faBuilding       // Département = bâtiment
                 },
                 {
                     title: "Ajouter un salaire",
-                    href: "../COMPTA/addSalary",
+                    href: "/pages/dashboard/COMPTA/addSalary",
                     icon: faMoneyBillWave  // Salaire = billet
                 },
                 {
                     title: "Ajouter un arrondissement",
-                    href: "../OTHERS/addDistrict",
+                    href: "/pages/dashboard/OTHERS/addDistrict",
                     icon: faMapMarkedAlt   // Arrondissement = zone / map
                 },
                 {
                     title: "Ajouter un quartier",
-                    href: "../OTHERS/addQuarter",
+                    href: "/pages/dashboard/OTHERS/addQuarter",
                     icon: faMapPin         // Quartier = pin/point sur la carte
                 }
             ],
@@ -50,15 +50,14 @@ export const formElements = [
             navigateLinks : [
                 {
                     title: "Liste des contrats",
+<<<<<<< HEAD
                     href:"../ADMIN/listContrat",
+=======
+                    href:"/pages/dashboard/ADMIN/listContrat",
+>>>>>>> 99130f2a33616e14a32aa401957d2d0462214a77
                     icon: faFileContract
                 },
-                
-
-
             ],
-
-            
 
             addUserTitleForm: "Formulaire d'enregistrement d'un collaborateur",
             updateUserTitleForm: "Formulaire de modification d'un utilisateur",

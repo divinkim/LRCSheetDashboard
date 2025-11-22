@@ -7,6 +7,7 @@ import { Sidebar } from "@/components/Layouts/sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react"
+import { ClipLoader } from "react-spinners";
 
 type ContratValues = {
     startDate: number | null,
@@ -29,6 +30,7 @@ export default function AddContract(){
     const [getDelay, setGetDelay] = useState<any []>([])
     const [getContractType, setGetContractType] = useState<any []>([])
     const [getEnterprise, setGetEnterprise] = useState<any []>([])
+    const [isLoading, setIsLoading] = useState(false);
     const [inputsValues, setInputsValues] = useState<ContratValues>({
         startDate: null,
         endDate: null,
@@ -78,6 +80,8 @@ export default function AddContract(){
     ]
 
     const handleSubmit = async (e: FormEvent) => {
+        setIsLoading(true);
+
         const requireField = {
             startDate: inputsValues.startDate,
             endDate: inputsValues.endDate,
@@ -90,6 +94,13 @@ export default function AddContract(){
         }
 
         console.log("les données:", requireField)
+
+        const methodName= "createContract"
+
+        const response = await controllers.API.SendOne(urlAPI, methodName, null, requireField)
+        
+
+        setIsLoading(false);
     }
 
     
@@ -104,9 +115,9 @@ export default function AddContract(){
 
                 <div className="mx-4 mt-6 mb-4 w-full" >
                     {
-                        formElements.map((e) => (
+                        formElements.map((e, index) => (
                        
-                    <div className="flex flex-wrap text-gray-700 w-full space-y-4 md:space-y-0 items-center justify-between" >
+                    <div key={index} className="flex flex-wrap text-gray-700 w-full space-y-4 md:space-y-0 items-center justify-between" >
                         <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">
                             Ajouter un contrat
                         </h1>
@@ -115,7 +126,7 @@ export default function AddContract(){
                             {e.addOrUpdateUser.navigateLinks.map((item, index) => (
 
                             
-                            <Link href={item.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : 
+                            <Link key={index} href={item.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : 
                                 index === 5 ? "bg-blue-800 2xl:right-5 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"} >
                             <FontAwesomeIcon icon={item.icon} className="text-white" />
                             <span className='text-white'>{item.title}</span>
@@ -131,8 +142,8 @@ export default function AddContract(){
 
                     <div className='dark:border mt-8 w-full h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none p-4'>
                         {
-                            formElements.map((e) => (
-                                <div className="flex flex-wrap space-y-4 justify-between mb-2 items-center dark:text-gray-300 text-gray-700">
+                            formElements.map((e, index) => (
+                                <div key={index} className="flex flex-wrap space-y-4 justify-between mb-2 items-center dark:text-gray-300 text-gray-700">
                                     <h2 className="font-bold">{e.addOrUpdateUser.tilteContract}</h2>
                                     <p className="font-semibold"> <span className="text-red-600">*</span> Champs obligatoires</p>
                                 </div>
@@ -143,9 +154,9 @@ export default function AddContract(){
 
                         <div className='grid grid-cols-1 mt-4 md:grid-cols-2  w-full'>
                             {
-                                formElements.map((e) => (
-                                    e.addOrUpdateUser.inputContrat.map((item) => (
-                                        <div className="grid grid-cols-1 xl:grid-cols-2 w-full">
+                                formElements.map((e, i) => (
+                                    e.addOrUpdateUser.inputContrat.map((item, index) => (
+                                        <div key={index} className="grid grid-cols-1 xl:grid-cols-2 w-full">
                                             <div className='w-full  xl:w-[440px] 2xl:w-[570px] xl:pl-4 2xl:pl-3 mb-4'>
                                                 <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700">
                                                     <span className={item.requireField ? "text-red-600" : "hidden"}>*</span> 
@@ -181,6 +192,10 @@ export default function AddContract(){
                                                         <option>
                                                             {item.placeholder}
                                                         </option>
+
+                                                        {
+
+                                                        }
                                                         
 
                                                      </select>
@@ -193,6 +208,21 @@ export default function AddContract(){
                                     ))
                                 ))
                             }
+
+                        </div>
+
+                        {/** bouton exécuté */}
+                        <div className="flex justify-end w-full">
+                            <button type="button" onClick={(e) => {
+                                handleSubmit(e)
+                            }}  
+                             className="bg-blue-600 my-2 hover:bg-blue-700 relative xl:right-5 rounded-md font-semibold ease 
+                              duration-500 text-white py-2.5 px-8">
+
+                                <p className={isLoading ? "hidden" : "block"}> Exécuter</p>
+                                <p className={isLoading ? "block" : "hidden"}><ClipLoader color="#fff" size={16}/></p>
+
+                            </button>
 
                         </div>
                     </div>  

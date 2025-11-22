@@ -109,57 +109,57 @@ export function Sidebar() {
       ItemLists: [
         {
           title: "Permissions",
-          href: "dashboard/ADMIN/permission",
+          href: "/pages/dashboard/ADMIN/permission",
           icon: faUserShield
         },
         {
           title: "Rapport",
-          href: "dashboard/ADMIN/rapport",
+          href: "/pages/dashboard/ADMIN/rapport",
           icon: faFileLines
         },
         {
           title: "Tâche",
-          href: "dashboard/ADMIN/task",
+          href: "/pages/dashboard/ADMIN/task",
           icon: faCheckCircle
         },
         {
           title: "Ajouter un contrat",
-          href: "../ADMIN/addContract",
+          href: "/pages/dashboard/ADMIN/addContract",
           icon: faFileSignature
         },
         {
           title: "Liste de contrat",
-          href: "dashboard/ADMIN/listContrat",
+          href: "/pages/dashboard/ADMIN/listContrat",
           icon: faFileContract
         },
         {
           title: "Type de contrat",
-          href: "dashboard/ADMIN/typeContrat",
+          href: "/pages/dashboard/ADMIN/typeContrat",
           icon: faFileContract
         },
         {
           title: "Liste de Type de contrat",
-          href: "dashboard/ADMIN/listTypeContrat",
+          href: "/pages/dashboard/ADMIN/listTypeContrat",
           icon: faFileContract
         },
         {
           title: "Poste",
-          href: "dashboard/ADMIN/poste",
+          href: "/pages/dashboard/ADMIN/poste",
           icon: faIdBadge
         },
         {
           title: "Liste de poste",
-          href: "dashboard/ADMIN/listPost",
+          href: "/pages/dashboard/ADMIN/listPost",
           icon: faSuitcaseRolling
         },
         {
           title: "Département",
-          href: "dashboard/ADMIN/departement",
+          href: "/pages/dashboard/ADMIN/departement",
           icon: faBuilding
         },
         {
           title: "Liste de département",
-          href: "dashboard/ADMIN/listDepartement",
+          href: "/pages/dashboard/ADMIN/listDepartement",
           icon: faSuitcaseRolling
         },
         

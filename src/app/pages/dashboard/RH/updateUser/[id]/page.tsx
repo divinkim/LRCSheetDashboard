@@ -123,7 +123,7 @@ export default function UpdateUser() {
             setInputs({
                 firstname: getUser.firstname ?? null,
                 lastname: getUser.lastname ?? null,
-                birthDate: new Date(getUser.birthDate).toLocaleDateString() ?? null,
+                birthDate: new Date(getUser.birthDate)?.toISOString()?.split("T")[0] ?? null,
                 gender: getUser.gender ?? null,
                 email: getUser.email ?? null,
                 password: getUser.password ?? null,
@@ -330,6 +330,21 @@ export default function UpdateUser() {
         setIsLoading(false);
     };
 
+    const staticsOptions = [
+        {
+            alias: "gender",
+            value: "Homme"
+        },
+        {
+            alias: "gender",
+            value: "Femme"
+        },
+        {
+            alias: "gender",
+            value: "Aucun"
+        }
+    ]
+
     return (
         <main className="bg-gray-100 text-gray-700 dark:text-gray-300 dark:bg-transparent">
             <Header />
@@ -368,7 +383,7 @@ export default function UpdateUser() {
                             ))
                         }
                         <hr />
-                        <div className='grid grid-cols-1 gap-x-4 mt-4 md:grid-cols-2  w-full'>
+                        <div className='grid grid-cols-1 gap-4 mt-4 md:grid-cols-2  w-full'>
                             {
                                 formElements.map((element) => (
                                     element.addOrUpdateUser.inputs.map((e, index) => (
@@ -399,75 +414,64 @@ export default function UpdateUser() {
 
                                                     }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
                                                     :
-                                                    <select value={e.type !== "file" ? inputs[e.alias] ?? "" : ""} onChange={(v) => {
-                                                        for (const [key, _] of Object.entries(inputs)) {
-                                                            if (key === e.alias) {
-                                                                setInputs({
-                                                                    ...inputs,
-                                                                    [e.alias]: e.type === "number" ? parseInt(v.target.value) : v.target.value
-                                                                })
+                                                    e.dynamicOptions?.status ?
+                                                        <select value={inputs[e.alias] ?? ""} onChange={(v) => {
+                                                            console.log("La valeur en question", inputs[e.alias])
+                                                            for (const [key, _] of Object.entries(inputs)) {
+                                                                if (key === e.alias) {
+                                                                    setInputs({
+                                                                        ...inputs,
+                                                                        [e.alias]: e.type === "number" ? parseInt(v.target.value) : v.target.value
+                                                                    })
+                                                                }
                                                             }
-                                                        }
 
-                                                    }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
-                                                        <option value="" selected disabled>
-                                                            {e.placeholder}
-                                                        </option>
-                                                        {
-                                                            e.dynamicOptions?.status ? arrayDatas
-                                                                .find(item => item.alias === e.alias)
-                                                                ?.value
-                                                                ?.map(option => (
-                                                                    <option value={option.id}>
-                                                                        {option.value}
-                                                                    </option>
-                                                                )) :
-                                                                <div>
-                                                                    {/* Genre */}
-                                                                    <div className={e.alias === "gender" ? "block" : "hidden"}>
-                                                                        <option>
-                                                                            Homme
+                                                        }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
+                                                            <option value="" selected disabled>
+                                                                {e.placeholder}
+                                                            </option>
+                                                            {
+                                                                e.dynamicOptions?.status ? arrayDatas
+                                                                    .find(item => item.alias === e.alias)
+                                                                    ?.value
+                                                                    ?.map(option => (
+                                                                        <option value={option.id}>
+                                                                            {option.value}
                                                                         </option>
-                                                                        <option value="Femme">
-                                                                            Femme
-                                                                        </option>
-                                                                        <option>
-                                                                            Aucun
-                                                                        </option>
+                                                                    )) :
+                                                                    <div>
+                                                                        {
+                                                                            staticsOptions.map((v) => (
+                                                                                <option value="">
+
+                                                                                </option>
+                                                                            ))
+                                                                        }
                                                                     </div>
-                                                                    {/* Rôle */}
-                                                                    <div className={e.alias === "role" ? "block" : "hidden"}>
-                                                                        <option className={requireRoles.includes(getAdminRole ?? "") ? "hidden" : "block"}>
-                                                                            Super administrateur
-                                                                        </option>
-                                                                        <option className={getAdminRole === "Supervisor-Admin" ? "hidden" : "block"}>
-                                                                            Administrateur de supervision
-                                                                        </option>
-                                                                        <option className={getAdminRole === "Controller-Admin" ? "hidden" : "block"}>
-                                                                            Administrateur de contrôle
-                                                                        </option>
-                                                                        <option>
-                                                                            Utiisateur client
-                                                                        </option>
-                                                                    </div>
-                                                                    {/* Admin Service */}
-                                                                    <div className={e.alias === "adminService" && inputs.role === "Controller-Admin" ? "block" : "hidden"}>
-                                                                        <option>
-                                                                            Ressources humaines
-                                                                        </option>
-                                                                        <option>
-                                                                            Comptabilité
-                                                                        </option>
-                                                                        <option>
-                                                                            Administration
-                                                                        </option>
-                                                                        <option>
-                                                                            Accueil
-                                                                        </option>
-                                                                    </div>
-                                                                </div>
-                                                        }
-                                                    </select>
+                                                            }
+                                                        </select>
+                                                        :
+                                                        <select value={inputs[e.alias] ?? ""} onChange={(v) => {
+                                                            console.log("La valeur en question", inputs[e.alias])
+                                                            for (const [key, _] of Object.entries(inputs)) {
+                                                                if (key === e.alias) {
+                                                                    setInputs({
+                                                                        ...inputs,
+                                                                        [e.alias]: e.type === "number" ? parseInt(v.target.value) : v.target.value
+                                                                    })
+                                                                }
+                                                            }
+
+                                                        }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
+                                                            <option value="" selected disabled>
+                                                                {e.placeholder}
+                                                            </option>
+                                                            {
+                                                                staticsOptions.map((v) => (
+                                                                    <option value="" className={e.alias !== v.alias ? "hidden" : "block"}>{v.value}</option>
+                                                                ))
+                                                            }
+                                                        </select>
 
                                                 }
                                                 <div className={inputs.photo && e.alias === "photo" ? "block w-[200px] h-[200px]" : "hidden"}>

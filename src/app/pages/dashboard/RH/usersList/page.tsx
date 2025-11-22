@@ -81,12 +81,10 @@ export default function UsersList() {
 
     const arrayUsersRefactory = savedUsersList
 
-    console.log("ce putain de tableau", arrayUsersRefactory)
-
     return (
         <div>
             <Header />
-            <div className="flex">
+            <div className="flex justify-center w-full mx-auto">
                 <Sidebar />
 
                 <main className='m-4 bg-gray-100 text-gray-700 dark:text-gray-300 dark:bg-transparent'>
@@ -128,7 +126,7 @@ export default function UsersList() {
                     </div>
 
                     {/* 🧾 Tableau */}
-                    <table className="border w-full">
+                    <table className="border w-full mx-auto">
                         <thead>
                             <tr className="bg-gray-800 dark:bg-transparent ">
                                 {

@@ -1,12 +1,14 @@
+import { icon } from "@fortawesome/fontawesome-svg-core";
 import {
     faUsers,
     faPlusCircle,
     faBuilding,
     faMoneyBillWave,
     faMapMarkedAlt,
-    faMapPin
+    faMapPin, faFileContract
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { title } from "process";
 
 export const formElements = [
     {
@@ -15,38 +17,48 @@ export const formElements = [
 
                 {
                     title: "Liste des utilisateurs",
-                    href: "../RH/usersList",
+                    href: "/pages/dashboard/RH/usersList",
                     icon: faUsers
                 },
                 {
                     title: "Ajouter un poste",
-                    href: "../ADMIN/addPost",
+                    href: "/pages/dashboard/ADMIN/addPost",
                     icon: faPlusCircle     // Poste = ajout → icône plus circle
                 },
                 {
                     title: "Ajouter un département",
-                    href: "../ADMIN/addDepartment",
+                    href: "/pages/dashboard/ADMIN/addDepartment",
                     icon: faBuilding       // Département = bâtiment
                 },
                 {
                     title: "Ajouter un salaire",
-                    href: "../COMPTA/addSalary",
+                    href: "/pages/dashboard/COMPTA/addSalary",
                     icon: faMoneyBillWave  // Salaire = billet
                 },
                 {
                     title: "Ajouter un arrondissement",
-                    href: "../OTHERS/addDistrict",
+                    href: "/pages/dashboard/OTHERS/addDistrict",
                     icon: faMapMarkedAlt   // Arrondissement = zone / map
                 },
                 {
                     title: "Ajouter un quartier",
-                    href: "../OTHERS/addQuarter",
+                    href: "/pages/dashboard/OTHERS/addQuarter",
                     icon: faMapPin         // Quartier = pin/point sur la carte
                 }
             ],
 
+            navigateLinks : [
+                {
+                    title: "Liste des contrats",
+                    href:"/pages/dashboard/ADMIN/listContrat",
+                    icon: faFileContract
+                },
+            ],
+
             addUserTitleForm: "Formulaire d'enregistrement d'un collaborateur",
             updateUserTitleForm: "Formulaire de modification d'un utilisateur",
+
+            tilteContract: "Formulaire de création de contrat",
 
             inputs: [
                 // ---- Inputs classiques ----
@@ -253,10 +265,73 @@ export const formElements = [
 
             inputContrat: [
                 {
-                    label: "startDate",
-                    placeholder: "Saisie la date de début",
+                    label: "Nom contrat",
+                    placeholder: "Saisissez le nom du contrat ",
+                    requireField: false,
+                    type: "text", 
+                    selectedInput: false,
+                    alias: "ContractType"
+                    
+                },
+                {
+                    label: "Type de contrat",
+                    placeholder: "Sélectionnez un type de contrat...",
+                    requireField: true,
+                    type: "text", 
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "ContractTypeId"
+                    
+                },
+                {
+                    label: "Date de début",
+                    placeholder: "Sélectionnez la date de début",
+                    requireField: true,
+                    type: "date", 
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "startDate"
+                    
+                },
+                {
+                    label: "Date de fin",
+                    placeholder: "Sélectionnez la date de fin",
+                    requireField: true,
+                    type: "date", 
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "endDate"
+                    
+                },
+                {
+                    label: "Durée",
+                    placeholder: "Saisissez la durée",
+                    requireField: true,
+                    type: "date", 
+                    selectedInput: false,
+                    alias: "delay"
+                    
+                },
+                
+                {
+                    label: "Entreprise",
+                    placeholder: "Sélectionnez une entreprise",
+                    requireField: true,
                     type: "number", 
-                }
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "EnterpriseId"
+                    
+                },
+
             ]
         }
     }

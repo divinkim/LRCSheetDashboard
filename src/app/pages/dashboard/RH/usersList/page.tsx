@@ -10,6 +10,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { tablesModal } from "@/components/Tables/tablesModal";
 import Swal from "sweetalert2";
+import TablesPage from "@/app/tables/page";
 
 type UsersDatas = {
     id: number,
@@ -98,7 +99,7 @@ export default function UsersList() {
                         ))
                     }
                     <hr />
-                    <div className="flex flex-col space-y-4 space-x-4 xl:space-y-0  xl:flex-row items-center justify-between">
+                    <div className="flex flex-col space-y-4 xl:space-y-0  lg:flex-row items-center justify-between">
                         <div className="relative w-[250px]">
                             <input
                                 type="text"

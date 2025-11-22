@@ -331,16 +331,20 @@ export default function UpdateUser() {
     };
 
     return (
-        <main className="bg-gray-100 dark:bg-transparent">
+        <main className="bg-gray-100 text-gray-700 dark:text-gray-300 dark:bg-transparent">
             <Header />
             <div className="flex">
                 <Sidebar />
                 <div className="mx-4 mt-6 mb-4 w-full">
                     {
                         formElements.map((element) => (
-                            <div className="flex flex-wrap text-gray-700 w-full space-y-4 md:space-y-0 items-center justify-between">
-                                <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Modifier un collaborateur existant</h1>
-                                <div className="flex flex-wrap space-x-4 space-y-4 items-center">
+                            <div className="flex-col flex-wrap text-gray-700 w-full space-y-4 md:space-y-0 items-center justify-between">
+                                <div className="flex w-full justify-between flex-wrap">
+                                    <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Modifier un collaborateur existant</h1>
+                                    <p className="text-blue-700 dark:text-blue-600">Dashboard/RH/Modifier un collaborateur</p>
+                                </div>
+                                <hr />
+                                <div className="flex flex-wrap p-4 space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element, index) => (
                                             <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-5 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"}>
@@ -352,6 +356,7 @@ export default function UpdateUser() {
                             </div>
                         ))
                     }
+
                     <div className='dark:border mt-8 w-full h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none p-4'>
                         {
                             formElements.map((element) => (
@@ -363,12 +368,12 @@ export default function UpdateUser() {
                             ))
                         }
                         <hr />
-                        <div className='grid grid-cols-1 mt-4 md:grid-cols-2  w-full'>
+                        <div className='grid grid-cols-1 gap-x-4 mt-4 md:grid-cols-2  w-full'>
                             {
                                 formElements.map((element) => (
                                     element.addOrUpdateUser.inputs.map((e, index) => (
-                                        <div key={index} className="grid grid-cols-1 xl:grid-cols-2 w-full">
-                                            <div className='w-full  xl:w-[440px] 2xl:w-[570px] xl:pl-4 2xl:pl-3 mb-4'>
+                                        <div key={index} className="w-full">
+                                            <div className='w-full'>
                                                 <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
                                                 {!e.selectedInput ?
                                                     <input value={e.type !== "file" && e.type !== "password" ? (inputs[e.alias] ?? "") : ""} onChange={async (v) => {

@@ -140,7 +140,7 @@ export default function AddContract(){
                         ))
                     }
 
-                    <div className='dark:border mt-8 w-full h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none p-4'>
+                    <div className='dark:border mt-8 w-full h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border mx-auto md:w-1/2 xl:w-3/4 dark:shadow-none p-4'>
                         {
                             formElements.map((e, index) => (
                                 <div key={index} className="flex flex-wrap space-y-4 justify-between mb-2 items-center dark:text-gray-300 text-gray-700">
@@ -152,12 +152,12 @@ export default function AddContract(){
                         }
                         <hr />
 
-                        <div className='grid grid-cols-1 mt-4 md:grid-cols-2  w-full'>
+                        <div className='grid grid-cols-1 gap-4 mt-4 md:grid-cols-2'>
                             {
                                 formElements.map((e, i) => (
                                     e.addOrUpdateUser.inputContrat.map((item, index) => (
-                                        <div key={index} className="grid grid-cols-1 xl:grid-cols-2 w-full">
-                                            <div className='w-full  xl:w-[440px] 2xl:w-[570px] xl:pl-4 2xl:pl-3 mb-4'>
+                                        <div key={index} className="">
+                                            <div className='w-full  xl:pl-4 2xl:pl-3 mb-4'>
                                                 <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700">
                                                     <span className={item.requireField ? "text-red-600" : "hidden"}>*</span> 
                                                 {item.label}</label>

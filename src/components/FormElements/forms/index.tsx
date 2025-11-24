@@ -50,11 +50,7 @@ export const formElements = [
             navigateLinks : [
                 {
                     title: "Liste des contrats",
-<<<<<<< HEAD
-                    href:"../ADMIN/listContrat",
-=======
                     href:"/pages/dashboard/ADMIN/listContrat",
->>>>>>> 99130f2a33616e14a32aa401957d2d0462214a77
                     icon: faFileContract
                 },
             ],

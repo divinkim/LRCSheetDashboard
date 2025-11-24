@@ -50,11 +50,7 @@ export const formElements = [
             navigateLinks : [
                 {
                     title: "Liste des contrats",
-<<<<<<< HEAD
-                    href:"../ADMIN/listContrat",
-=======
                     href:"/pages/dashboard/ADMIN/listContrat",
->>>>>>> 99130f2a33616e14a32aa401957d2d0462214a77
                     icon: faFileContract
                 },
             ],
@@ -294,10 +290,7 @@ export const formElements = [
                     placeholder: "Sélectionnez la date de début",
                     requireField: true,
                     type: "date", 
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true
-                    },
+                    selectedInput: false,
                     alias: "startDate"
                     
                 },
@@ -306,10 +299,7 @@ export const formElements = [
                     placeholder: "Sélectionnez la date de fin",
                     requireField: true,
                     type: "date", 
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true
-                    },
+                    selectedInput: false,
                     alias: "endDate"
                     
                 },
@@ -317,7 +307,7 @@ export const formElements = [
                     label: "Durée",
                     placeholder: "Saisissez la durée",
                     requireField: true,
-                    type: "date", 
+                    type: "text", 
                     selectedInput: false,
                     alias: "delay"
                     

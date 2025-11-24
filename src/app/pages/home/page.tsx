@@ -45,23 +45,23 @@ export default async function HomePage({ searchParams }: PropsType) {
                             className="col-span-12 xl:col-span-5"
                         />
 
-                        <UsedDevices
+                        {/* <UsedDevices
                             className="col-span-12 xl:col-span-5"
                             key={extractTimeFrame("used_devices")}
                             timeFrame={extractTimeFrame("used_devices")?.split(":")[1]}
-                        />
+                        /> */}
 
-                        <RegionLabels />
+                        {/* <RegionLabels /> */}
 
-                        <div className="col-span-12 grid xl:col-span-8">
+                        {/* <div className="col-span-12 grid xl:col-span-8">
                             <Suspense fallback={<TopChannelsSkeleton />}>
                                 <TopChannels />
                             </Suspense>
-                        </div>
-
+                        </div> */}
+                        {/* 
                         <Suspense fallback={null}>
                             <ChatsCard />
-                        </Suspense>
+                        </Suspense> */}
                     </div>
                 </div>
             </div>

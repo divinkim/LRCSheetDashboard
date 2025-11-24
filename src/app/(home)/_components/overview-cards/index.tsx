@@ -36,7 +36,7 @@ export async function OverviewCardsGroup() {
       />
 
       <OverviewCard
-        label="Total Users"
+        label="Collaborateurs"
         data={{
           ...users,
           value: compactFormat(users.value),

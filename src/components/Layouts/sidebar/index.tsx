@@ -13,8 +13,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown, faChevronUp, faUser, faUserGroup, faBell, faPaperPlane, faList, faFileAlt, faShieldAlt,
   faUserClock, faUsers, faUserPlus, faClipboardList,
-  faClipboardCheck,faCalendarCheck, faUserShield, faFileLines, faCheckCircle, faFileContract, faSuitcaseRolling,
-  faCalendarDay, faUmbrellaBeach, faFileSignature, faIdBadge, faBuilding
+  faClipboardCheck, faCalendarCheck, faUserShield, faFileLines, faCheckCircle, faFileContract, faSuitcaseRolling,
+  faCalendarDay, faUmbrellaBeach, faFileSignature, faIdBadge, faBuilding,
+  faMoneyBill1Wave,
+  faFileInvoiceDollar
 } from "@fortawesome/free-solid-svg-icons";
 import { title } from "process";
 import { icon } from "@fortawesome/fontawesome-svg-core";
@@ -89,7 +91,7 @@ export function Sidebar() {
           href: "/pages/dashboard/RH/addUser",
           icon: faUserPlus              // Ajouter un utilisateur
         },
-        
+
         {
           title: "Liste des collaborateurs",
           href: "/pages/dashboard/RH/usersList",
@@ -103,7 +105,7 @@ export function Sidebar() {
       ]
     },
 
-     {
+    {
       index: 3,
       title: "👩‍💼 Administration",
       ItemLists: [
@@ -162,12 +164,27 @@ export function Sidebar() {
           href: "/pages/dashboard/ADMIN/listDepartement",
           icon: faSuitcaseRolling
         },
-        
+
 
       ]
-    }
-   
+    },
 
+    {
+      index: 4,
+      title: "💵 Comptabilité",
+      ItemLists: [
+        {
+          title: "Ajouter un salaire",
+          href: "/pages/dashboard/COMPTA/addSalary",
+          icon: faMoneyBill1Wave
+        },
+        {
+          title: "Liste de salaire",
+          href: "/pages/dashboard/COMPTA/salaryList",
+          icon: faFileInvoiceDollar
+        },
+      ]
+    },
   ];
 
   console.log("le comportement de", toggleAsideSections)

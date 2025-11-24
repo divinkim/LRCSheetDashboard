@@ -14,13 +14,13 @@ export const tablesModal = [
             ],
             table: {
                 titles: [
-                    { title: "Profils", alias: "photo" },
-                    { title: "Noms & prénoms", alias: "firstname" },
-                    { title: "Téléphones", alias: "phone" },
-                    { title: "Emails", alias: "email" },
-                    { title: "Genres", alias: "gender" },
-                    { title: "Entreprises", alias: "EnterpriseId" },
-                    { title: "Status", alias: "status" },
+                    { title: "Profils", alias: "" },
+                    { title: "Noms & prénoms", alias: "" },
+                    { title: "Téléphones", alias: "" },
+                    { title: "Emails", alias: "" },
+                    { title: "Genres", alias: "" },
+                    { title: "Entreprises", alias: "" },
+                    { title: "Status", alias: "" },
                     { title: "Actions", alias: "" },
                 ]
             }
@@ -37,12 +37,15 @@ export const tablesModal = [
             ],
             table: {
                 titles: [
-                    { title: "Noms & prénoms", alias: "photo" },
-                    { title: "Arrivées & pauses", alias: "firstname" },
-                    { title: "Reprises & départs", alias: "phone" },
-                    { title: "Jours et date", alias: "email" },
-                    { title: "Status", alias: "gender" },
-                    { title: "Actions", alias: "EnterpriseId" },
+                    { title: "Profils", alias: "" },
+                    { title: "Noms & prénoms", alias: "" },
+                    { title: "Arrivées & pauses", alias: "" },
+                    { title: "Reprises & départs", alias: "" },
+                    //  { title: "Horaires", alias: "" },
+                    { title: "Jours et date", alias: "" },
+                    { title: "Entreprises", alias: "" },
+                    { title: "Statuts", alias: "" },
+                    { title: "Actions", alias: "" }
                 ]
             }
         }

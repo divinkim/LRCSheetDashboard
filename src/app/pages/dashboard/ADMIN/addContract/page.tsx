@@ -140,7 +140,11 @@ export default function AddContract(){
                         ))
                     }
 
+<<<<<<< HEAD
                     <div className='dark:border mt-12 w-full md:w-3/4 mx-auto h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none p-4'>
+=======
+                    <div className='dark:border mt-8 w-full h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border mx-auto md:w-1/2 xl:w-3/4 dark:shadow-none p-4'>
+>>>>>>> 163c65e40c085b8e3e03231181afa3017ef677d6
                         {
                             formElements.map((e, index) => (
                                 <div key={index} className="flex flex-wrap space-y-4 justify-between mb-2 items-center dark:text-gray-300 text-gray-700">
@@ -152,12 +156,21 @@ export default function AddContract(){
                         }
                         <hr />
 
+<<<<<<< HEAD
                         <div className='grid grid-cols-1 mt-4 md:grid-cols-2 gap-4 w-full '>
                             {
                                 formElements.map((e, i) => (
                                     e.addOrUpdateUser.inputContrat.map((item, index) => (
                                         <div key={index} className="flex flex-col w-full ">
                                             <div className=''>
+=======
+                        <div className='grid grid-cols-1 gap-4 mt-4 md:grid-cols-2'>
+                            {
+                                formElements.map((e, i) => (
+                                    e.addOrUpdateUser.inputContrat.map((item, index) => (
+                                        <div key={index} className="">
+                                            <div className='w-full  xl:pl-4 2xl:pl-3 mb-4'>
+>>>>>>> 163c65e40c085b8e3e03231181afa3017ef677d6
                                                 <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700">
                                                     <span className={item.requireField ? "text-red-600" : "hidden"}>*</span> 
                                                 {item.label}</label>

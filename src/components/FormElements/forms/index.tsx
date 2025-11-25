@@ -297,11 +297,8 @@ export const formElements = [
                     label: "Date de début",
                     placeholder: "Sélectionnez la date de début",
                     requireField: true,
-                    type: "date",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true
-                    },
+                    type: "date", 
+                    selectedInput: false,
                     alias: "startDate"
 
                 },
@@ -309,11 +306,8 @@ export const formElements = [
                     label: "Date de fin",
                     placeholder: "Sélectionnez la date de fin",
                     requireField: true,
-                    type: "date",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true
-                    },
+                    type: "date", 
+                    selectedInput: false,
                     alias: "endDate"
 
                 },
@@ -321,7 +315,7 @@ export const formElements = [
                     label: "Durée",
                     placeholder: "Saisissez la durée",
                     requireField: true,
-                    type: "date",
+                    type: "text", 
                     selectedInput: false,
                     alias: "delay"
 

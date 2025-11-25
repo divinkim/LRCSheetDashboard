@@ -220,15 +220,15 @@ export function Sidebar() {
             <div className="mt-4">
               {
                 ItemAside.map((aside, index) => (
-                  <div className="mb-3">
+                  <div className="mb-4">
                     <div onClick={() => {
                       setToggleAsideSections(
                         toggleAsideSections.includes(index) ?
                           toggleAsideSections.filter(item => item !== index)
                           : [...toggleAsideSections, index]
                       )
-                    }} className={toggleAsideSections.includes(index) ? "flex cursor-pointer p-2 bg-gray-200 dark:bg-gray-900  ease duration-700 flex-row items-center justify-between text-gray-600  dark:text-gray-300" : "flex cursor-pointer p-2 hover:bg-gray-200 hover:dark:bg-gray-900 ease duration-500 text-gray-300 hover:text-gray-600 dark:hover:text-gray-300 flex-row items-center justify-between"}>
-                      <h3 className={toggleAsideSections.includes(index) ? "font-bold" : "font-bold"}>{aside.title ?? ""}</h3>
+                    }} className={toggleAsideSections.includes(index) ? "flex cursor-pointer p-2 bg-gray-900 text-gray-300 ease duration-700 flex-row items-center justify-between   dark:text-gray-300" : "flex cursor-pointer p-2 bg-gray-200 hover:bg-gray-900 ease duration-500 text-gray-700 hover:text-gray-300 flex-row items-center justify-between"}>
+                      <h3 className="font-bold">{aside.title ?? ""}</h3>
                       <FontAwesomeIcon icon={toggleAsideSections.includes(index) ? faChevronUp : faChevronDown} className="" />
                     </div>
                     <div className={toggleAsideSections.includes(index) ? "flex flex-col ease duration-700 space-y-2 pl-8 pt-3" : "ease duration-500 hidden"}>

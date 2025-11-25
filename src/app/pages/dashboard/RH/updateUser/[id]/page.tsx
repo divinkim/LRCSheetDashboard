@@ -33,6 +33,7 @@ type InputsValue = {
     DepartmentPostId: number | null,
     maritalStatus: string | null,
     adminService: string | null,
+    status: any,
     [key: string]: string | number | null | undefined,
 }
 
@@ -72,6 +73,7 @@ export default function UpdateUser() {
         DepartmentPostId: null,
         maritalStatus: null,
         adminService: null,
+        status: ""
     });
 
     const requireRoles = ['Super-Admin', 'Supervisor-Admin', 'Moderator-Admin'];
@@ -142,6 +144,7 @@ export default function UpdateUser() {
                 DepartmentPostId: getUser.DepartmentPostId ?? null,
                 maritalStatus: getUser.marialStatus ?? null,
                 adminService: getUser.adminService ?? null,
+                status: getUser.status ?? null
             })
         })()
     }, [getAdminRole])
@@ -313,7 +316,7 @@ export default function UpdateUser() {
             DistrictId: inputs.DistrictId ?? null,
             QuarterId: inputs.QuarterId ?? null,
             adminService: inputs.adminService ?? "no data",
-
+            status: inputs.status === "Actif" ? true : false
         }
 
         console.log(requireFields);
@@ -342,6 +345,15 @@ export default function UpdateUser() {
         {
             alias: "gender",
             value: "Aucun"
+        },
+
+        {
+            alias: "status",
+            value: "Actif"
+        },
+        {
+            alias: "status",
+            value: "Inactif"
         }
     ]
 

@@ -47,10 +47,10 @@ export const formElements = [
                 }
             ],
 
-            navigateLinks : [
+            navigateLinks: [
                 {
                     title: "Liste des contrats",
-                    href:"/pages/dashboard/ADMIN/listContrat",
+                    href: "/pages/dashboard/ADMIN/listContrat",
                     icon: faFileContract
                 },
             ],
@@ -62,6 +62,14 @@ export const formElements = [
 
             inputs: [
                 // ---- Inputs classiques ----
+                {
+                    label: "Statut du collaborateur",
+                    placeholder: "Sélectionnez un statut...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: true,
+                    alias: "status"
+                },
                 {
                     label: "Image",
                     placeholder: "Sélectionnez une image...",
@@ -268,68 +276,68 @@ export const formElements = [
                     label: "Nom contrat",
                     placeholder: "Saisissez le nom du contrat ",
                     requireField: false,
-                    type: "text", 
+                    type: "text",
                     selectedInput: false,
                     alias: "ContractType"
-                    
+
                 },
                 {
                     label: "Type de contrat",
                     placeholder: "Sélectionnez un type de contrat...",
                     requireField: true,
-                    type: "text", 
+                    type: "text",
                     selectedInput: true,
                     dynamicOptions: {
                         status: true
                     },
                     alias: "ContractTypeId"
-                    
+
                 },
                 {
                     label: "Date de début",
                     placeholder: "Sélectionnez la date de début",
                     requireField: true,
-                    type: "date", 
+                    type: "date",
                     selectedInput: true,
                     dynamicOptions: {
                         status: true
                     },
                     alias: "startDate"
-                    
+
                 },
                 {
                     label: "Date de fin",
                     placeholder: "Sélectionnez la date de fin",
                     requireField: true,
-                    type: "date", 
+                    type: "date",
                     selectedInput: true,
                     dynamicOptions: {
                         status: true
                     },
                     alias: "endDate"
-                    
+
                 },
                 {
                     label: "Durée",
                     placeholder: "Saisissez la durée",
                     requireField: true,
-                    type: "date", 
+                    type: "date",
                     selectedInput: false,
                     alias: "delay"
-                    
+
                 },
-                
+
                 {
                     label: "Entreprise",
                     placeholder: "Sélectionnez une entreprise",
                     requireField: true,
-                    type: "number", 
+                    type: "number",
                     selectedInput: true,
                     dynamicOptions: {
                         status: true
                     },
                     alias: "EnterpriseId"
-                    
+
                 },
 
             ]

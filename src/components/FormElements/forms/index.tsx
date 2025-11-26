@@ -47,10 +47,10 @@ export const formElements = [
                 }
             ],
 
-            navigateLinks : [
+            navigateLinks: [
                 {
                     title: "Liste des contrats",
-                    href:"/pages/dashboard/ADMIN/listContrat",
+                    href: "/pages/dashboard/ADMIN/listContrat",
                     icon: faFileContract
                 },
             ],
@@ -62,6 +62,14 @@ export const formElements = [
 
             inputs: [
                 // ---- Inputs classiques ----
+                {
+                    label: "Statut du collaborateur",
+                    placeholder: "Sélectionnez un statut...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: true,
+                    alias: "status"
+                },
                 {
                     label: "Image",
                     placeholder: "Sélectionnez une image...",
@@ -267,69 +275,261 @@ export const formElements = [
                 {
                     label: "Nom contrat",
                     placeholder: "Saisissez le nom du contrat ",
-                    requireField: true,
-                    type: "text", 
+                    requireField: false,
+                    type: "text",
                     selectedInput: false,
                     alias: "ContractType"
-                    
+
                 },
                 {
                     label: "Type de contrat",
                     placeholder: "Sélectionnez un type de contrat...",
                     requireField: true,
-                    type: "text", 
+                    type: "text",
                     selectedInput: true,
                     dynamicOptions: {
                         status: true
                     },
                     alias: "ContractTypeId"
-                    
+
                 },
                 {
                     label: "Date de début",
                     placeholder: "Sélectionnez la date de début",
                     requireField: true,
-                    type: "date", 
+                    type: "date",
                     selectedInput: false,
                     alias: "startDate"
-                    
+
                 },
                 {
                     label: "Date de fin",
                     placeholder: "Sélectionnez la date de fin",
                     requireField: true,
-                    type: "date", 
-                    dynamicOptions: false,
+                    type: "date",
+                    selectedInput: false,
                     alias: "endDate"
-                    
+
                 },
                 {
                     label: "Durée",
                     placeholder: "Sélectionnez la durée",
                     requireField: true,
-                    type: "select", 
-                    selectedInput: true,
+                    type: "select",
+                   selectedInput: true,
                     dynamicOptions: {
                         status: true
                     },
                     alias: "delay"
-                    
+
                 },
-                
+
                 {
                     label: "Entreprise",
                     placeholder: "Sélectionnez une entreprise",
                     requireField: true,
-                    type: "number", 
+                    type: "number",
                     selectedInput: true,
                     dynamicOptions: {
                         status: true
                     },
                     alias: "EnterpriseId"
-                    
+
                 },
 
             ]
+        }, addOrUpdateEnterprise: {
+            navigationLinks: [
+
+                {
+                    title: "Liste des entreprises",
+                    href: "/pages/dashboard/RH/enterprisesList",
+                    icon: faUsers
+                },
+                {
+                    title: "Ajouter un ville",
+                    href: "/pages/dashboard/ADMIN/addCity",
+                    icon: faPlusCircle     // Poste = ajout → icône plus circle
+                },
+                {
+                    title: "Ajouter un pays",
+                    href: "/pages/dashboard/ADMIN/addCountry",
+                    icon: faBuilding       // Département = bâtiment
+                },
+            ],
+
+            navigateLinks: [
+                {
+                    title: "Liste des contrats",
+                    href: "/pages/dashboard/ADMIN/listContrat",
+                    icon: faFileContract
+                },
+            ],
+
+            addEnterpriseTitleForm: "Formulaire d'enregistrement d'une entreprise",
+            updateEnterpriseTitleForm: "Formulaire de modification d'une entreprise",
+
+            inputs: [
+                // ---- Inputs classiques ----
+                {
+                    label: "Nom de l'entreprise",
+                    placeholder: "Saisissez le nom...",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "name"
+                },
+                {
+                    label: "Description de l'entreprise",
+                    placeholder: "Saisissez une description",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "description"
+                },
+                {
+                    label: "Domaine d'activité",
+                    placeholder: "Saisissez un domaine...",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "activityDomain"
+                },
+                {
+                    label: "Téléphone",
+                    placeholder: "Saisissez un numéro de téléphone",
+                    requireField: true,
+                    type: "tel",
+                    selectedInput: false,
+                    alias: "phone"
+                },
+                {
+                    label: "email",
+                    placeholder: "Saisissez un email...",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "email"
+                },
+                {
+                    label: "Adresse",
+                    placeholder: "Saisissez une adresse...",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "address"
+                },
+                {
+                    label: "Site web",
+                    placeholder: "Saisissez un lien...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "website"
+                },
+                {
+                    label: "Latitude",
+                    placeholder: "Entrez la latitude...",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "latitude"
+                },
+                {
+                    label: "Longitude",
+                    placeholder: "Entrez la longitude...",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "longitude"
+                },
+                {
+                    label: "Forme légale",
+                    placeholder: "Sélectionnez une forme légale",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: true,
+                    alias: "legalForm",
+                    dynamicOptions: {
+                        status: false
+                    }
+                },
+                {
+                    label: "RCCM",
+                    placeholder: "Entrez le RCCM...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "rccm",
+                    dynamicOptions: {
+                        status: false
+                    }
+                },
+                {
+                    label: "NIU",
+                    placeholder: "Entrez le NIU...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "nui",
+                    dynamicOptions: {
+                        status: false
+                    }
+                },
+                {
+                    label: "Type d'abonnement",
+                    placeholder: "Sélectionner le type d'abonnement",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: true,
+                    alias: "subscriptionType",
+                    dynamicOptions: {
+                        status: false
+                    }
+                },
+                {
+                    label: "Status d'abonnement",
+                    placeholder: "Sélectionner le status...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: true,
+                    alias: "subscriptionStatus",
+                    dynamicOptions: {
+                        status: false
+                    }
+                },
+                {
+                    label: "Pays",
+                    placeholder: "Sélectionnez un pays...",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    alias: "CountryId",
+                    dynamicOptions: {
+                        status: true
+                    },
+                },
+
+                {
+                    label: "Ville",
+                    placeholder: "Sélectionnez une ville...",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    alias: "CityId",
+                    dynamicOptions: {
+                        status: true
+                    },
+                },
+                {
+                    label: "Logo de l'entreprise",
+                    placeholder: "Sélectionnez un logo.",
+                    requireField: true,
+                    type: "file",
+                    selectedInput: false,
+                    alias: "logo"
+                },
+            ],
         }
     }
 ];

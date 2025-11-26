@@ -161,18 +161,18 @@ const CalendarPage = () => {
         <div className="rounded-2xl border w-full m-4 border-gray-200 dark:border-gray-300 dark:bg-gray-900 bg-white py-6 px-4">
           {/* Header Infos Employé */}
           <div className="flex mb-6  p-10 bg-gray-800 rounded shadow-sm justify-between">
-            <div className="space-y-1 font-semibold text-gray-300">
+            <div className="flex flex-col space-y-2 font-semibold text-gray-300">
               <p><span className="font-bold">Nom:</span> {data.firstname}</p>
               <p><span className="font-bold">Prénom:</span> {data.lastname}</p>
               <p><span className="font-bold">Poste:</span> {data.poste}</p>
-              <p><span className="font-bold">Salaire journalier:</span> {data.dailySalary}</p>
-              <p><span className="font-bold">Salaire net:</span> {data.netSalary}</p>
+              <p><span className="font-bold">Salaire journalier:</span> {data.dailySalary?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " XAF"}</p>
+              <p><span className="font-bold">Salaire net:</span> {data.netSalary?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " XAF"}</p>
 
               <div className="flex items-center space-x-3">
                 <span className="font-bold">Entreprise:</span>
                 <img
                   src={`${urlAPI}/images/${data.Enterprise.logo}`}
-                  className="h-10 w-10 rounded-full object-contain"
+                  className="h-10 w-10 rounded-full object-cover"
                 />
                 <p>{data.Enterprise.name}</p>
               </div>

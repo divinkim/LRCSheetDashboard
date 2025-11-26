@@ -11,6 +11,8 @@ import { UserInfo } from "./user-info";
 
 export function Header() {
   const { toggleSidebar, isMobile } = useSidebarContext();
+  const adminRole = localStorage.getItem("adminRole");
+  const requireAdminRoles = ['Super-Admin', 'Controller-Admin', 'Supervisor-Admin'];
 
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between border-b border-stroke bg-white px-4 py-5 shadow-1 dark:border-stroke-dark dark:bg-gray-dark md:px-5 2xl:px-10">
@@ -38,7 +40,7 @@ export function Header() {
         {/* <h1 className="mb-0.5 text-heading-5 font-bold text-dark dark:text-white">
           Dashboard
         </h1> */}
-        <p className="font-bold">Bon service super-Admin</p>
+        <p className="font-bold text-gray-700 dark:text-gray-300"><span className="text-[40px] border border-gray-400 rounded-full py-3 pl-2.5">👮 </span> <span className="relative -top-2.5 left-4"> Bon service {adminRole === requireAdminRoles[0] ? "Super-Admin" : adminRole === requireAdminRoles[1] ? "Administrateur de contrôle" : "Administrateur de gestion"}</span></p>
       </div>
 
       <div className="flex flex-1 items-center justify-end gap-2 min-[375px]:gap-4">

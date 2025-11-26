@@ -1,5 +1,6 @@
 export const urlAPI = "https://vps101055.serveur-vps.net:8500";
 
+import { json } from "stream/consumers";
 import Swal from "sweetalert2";
 
 export const validateFields = (input: any) => {
@@ -206,7 +207,13 @@ export class Api {
                             message: "Veuillez saisir tous les champs obligatoires"
                         };
                     }
-                    formData.append(key, String(value));
+                    if (value instanceof File || value instanceof Blob) {
+                        formData.append(key, value);
+                    } else if (typeof value === "object") {
+                        formData.append(key, JSON.stringify(value));
+                    } else {
+                        formData.append(key, String(value));
+                    }
                 }
 
                 body = formData;
@@ -273,7 +280,7 @@ export class Api {
     //     }
     // }
 
-    async deleteOne(urlAPI: string | null, methodName: string | null, UserId: number) {
+    async deleteOne(urlAPI: string | null, methodName: string | null, UserId: number | null, data: {}) {
         try {
             let endPoint = `${urlAPI}/api/${methodName}/${UserId}`;
 
@@ -284,6 +291,7 @@ export class Api {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                body: JSON.stringify(data)
             });
 
             const response = await request.json();

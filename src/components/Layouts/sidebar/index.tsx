@@ -16,7 +16,9 @@ import {
   faClipboardCheck, faCalendarCheck, faUserShield, faFileLines, faCheckCircle, faFileContract, faSuitcaseRolling,
   faCalendarDay, faUmbrellaBeach, faFileSignature, faIdBadge, faBuilding,
   faMoneyBill1Wave,
-  faFileInvoiceDollar
+  faFileInvoiceDollar,
+  faBuildingCircleCheck,
+  faBuildingColumns
 } from "@fortawesome/free-solid-svg-icons";
 import { title } from "process";
 import { icon } from "@fortawesome/fontawesome-svg-core";
@@ -185,6 +187,22 @@ export function Sidebar() {
         },
       ]
     },
+    {
+      index: 4,
+      title: "🧿 Autres",
+      ItemLists: [
+        {
+          title: "Enregistrer une entreprise",
+          href: "/pages/dashboard/OTHERS/addEnterprise",
+          icon: faBuildingCircleCheck
+        },
+        {
+          title: "Liste des entreprises",
+          href: "/pages/dashboard/COMPTA/enterprisesList",
+          icon: faBuildingColumns
+        },
+      ]
+    },
   ];
 
   console.log("le comportement de", toggleAsideSections)
@@ -217,18 +235,18 @@ export function Sidebar() {
               <img src="/images/logo/logo.png" alt="" className='w-full h-full object-cover' />
             </div>
             <h1 className="font-bold text-[17px]">Menu général</h1>
-            <div className="mt-4">
+            <div className="mt-5">
               {
                 ItemAside.map((aside, index) => (
-                  <div className="mb-3">
+                  <div className="mb-4">
                     <div onClick={() => {
                       setToggleAsideSections(
                         toggleAsideSections.includes(index) ?
                           toggleAsideSections.filter(item => item !== index)
                           : [...toggleAsideSections, index]
                       )
-                    }} className={toggleAsideSections.includes(index) ? "flex cursor-pointer p-2 bg-gray-200 dark:bg-gray-900  ease duration-700 flex-row items-center justify-between text-gray-600  dark:text-gray-300" : "flex cursor-pointer p-2 hover:bg-gray-200 hover:dark:bg-gray-900 ease duration-500 text-gray-300 hover:text-gray-600 dark:hover:text-gray-300 flex-row items-center justify-between"}>
-                      <h3 className={toggleAsideSections.includes(index) ? "font-bold" : "font-bold"}>{aside.title ?? ""}</h3>
+                    }} className={toggleAsideSections.includes(index) ? "flex cursor-pointer p-2 bg-gray-900 text-gray-300 ease duration-700 flex-row items-center justify-between   dark:text-gray-300" : "flex cursor-pointer p-2 bg-gray-200 hover:bg-gray-900 ease duration-500 text-gray-700 hover:text-gray-300 flex-row items-center justify-between"}>
+                      <h3 className="font-bold">{aside.title ?? ""}</h3>
                       <FontAwesomeIcon icon={toggleAsideSections.includes(index) ? faChevronUp : faChevronDown} className="" />
                     </div>
                     <div className={toggleAsideSections.includes(index) ? "flex flex-col ease duration-700 space-y-2 pl-8 pt-3" : "ease duration-500 hidden"}>

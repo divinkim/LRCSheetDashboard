@@ -217,7 +217,7 @@ export function Sidebar() {
               <img src="/images/logo/logo.png" alt="" className='w-full h-full object-cover' />
             </div>
             <h1 className="font-bold text-[17px]">Menu général</h1>
-            <div className="mt-4">
+            <div className="mt-5">
               {
                 ItemAside.map((aside, index) => (
                   <div className="mb-4">

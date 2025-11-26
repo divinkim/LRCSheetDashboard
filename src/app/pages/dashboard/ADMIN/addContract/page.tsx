@@ -23,13 +23,8 @@ type ContratValues = {
 
 export default function AddContract(){
 
-    const [getContrat, setGetContrat] = useState<any []>([])
-    const [getEnterpriseId, setGetEnterpriseId] = useState<any []>([])
-    const [getStartDate, setGetStartDate] = useState<any []>([])
-    const [getEndDate, setGetEndDate] = useState<any []>([])
-    const [getDelay, setGetDelay] = useState<any []>([])
-    const [getContractType, setGetContractType] = useState<any []>([])
     const [getEnterprise, setGetEnterprise] = useState<any []>([])
+    const [getContractType, setGetContractType] = useState<any []>([])
     const [isLoading, setIsLoading] = useState(false);
     const [inputsValues, setInputsValues] = useState<ContratValues>({
         startDate: null,
@@ -46,36 +41,67 @@ export default function AddContract(){
         (async () => {
             
           const methodName = "getContracts"
-          const getContrat = await controllers.API.getAll(urlAPI, methodName, null)
-          const filteredContrat = getContrat.filter((item: {ContractTypeId: number, EnterpriseId: number}) => item.ContractTypeId === inputsValues.ContractTypeId && item.EnterpriseId === inputsValues.EnterpriseId)
-          setGetContrat(filteredContrat)
-          console.log("La liste des contrats:",filteredContrat)
+          const getContractType = await controllers.API.getAll(urlAPI, methodName, null)
+          const filtered = getContractType.filter((item: {ContractTypeId: number, EnterpriseId: number}) => item.ContractTypeId === inputsValues.ContractTypeId && item.EnterpriseId === inputsValues.EnterpriseId)
+          setGetContractType(filtered)
+          console.log("La liste des contrats:",filtered)
           
         })()
     }, [inputsValues.ContractTypeId, inputsValues.EnterpriseId])
 
-    let arrayDatas: [
-        {
-            alias: "startDate",
-        },
-        {
-            alias: "endDate",
-        },
-        {
-            alias: "delay",
-        },
+    //Récupérer les entreprises
+    useEffect(() => {
+        (async () => {
+            const methodName= "getEnterprises"
+            const getEnterprise = await controllers.API.getAll(urlAPI, methodName, null)
+            setGetEnterprise(getEnterprise)
+            console.log("l'id de l'entreprise:", getEnterprise)
+
+        })()
+    }, [])
+
+    //Récupérer le type de contrat
+    useEffect(() => {
+        (async () => {
+
+            const methodName= "getContractTypes"
+            const ContratType = await controllers.API.getAll(urlAPI, methodName, null)
+            setGetContractType(ContratType)
+            console.log(ContratType)
+
+        })()
+    },[])
+
+
+    let arrayDatas = [
+
         {
             alias: "ContractTypeId",
+            value: getContractType.filter(item => item.id && item.title).map(item => ({id: item.id, value: item.title}))
         },
+
         {
             alias: "EnterpriseId",
+            value: getEnterprise.filter(item => item.id && item.name).map(item => ({id: item.id, value: item.name})),
         },
-         {
-            alias: "ContractType",
+
+        {
+            alias: "EnterpriseId",
+            value: [
+                {
+                    id: "3 mois", value: "3 mois"
+                },
+                 {
+                    id: "6 mois", value: "6 mois"
+                },
+                 {
+                    id: "1 année", value: "1 année"
+                },
+            ]
         },
-         {
-            alias: "Enterprise",
-        }, 
+
+        
+          
 
     ]
 
@@ -98,6 +124,13 @@ export default function AddContract(){
         const methodName= "createContract"
 
         const response = await controllers.API.SendOne(urlAPI, methodName, null, requireField)
+
+        controllers.alertMessage(
+            response.status, 
+            response.title,
+            response.message,
+            response.status ? "/dashboard/ADMIN/addContract" : null
+        )
         
 
         setIsLoading(false);
@@ -192,12 +225,81 @@ export default function AddContract(){
                                                         <option>
                                                             {item.placeholder}
                                                         </option>
-
-                                                        {
-
-                                                        }
                                                         
 
+                                                        {
+                                                            
+                                                            item.dynamicOptions?.status ? 
+                                                              arrayDatas?.find(items => items.alias === item.alias)?.value.map(option => (
+                                                                <option value={option.id}>
+                                                                    {option.value}
+                                                                </option>
+                                                            )) :
+                                                            <div>
+                                                                {/**Option du type de contrat */}
+                                                                <div className={item.alias === "ContractTypeId" ? "block" : "hidden"}>
+                                                                    <option value="CDD">
+                                                                        CDD
+                                                                    </option>
+
+                                                                    <option value="CDI">
+                                                                        CDI
+                                                                    </option>
+
+                                                                    <option value="Contrat de prestation">
+                                                                        Contrat de prestaion
+                                                                    </option>
+
+                                                                    <option value="Stage académique">
+                                                                        Stage académique
+                                                                    </option>
+
+                                                                    <option value="Stage professionnel">
+                                                                        Stage professionnel
+                                                                    </option>
+                                                                </div>
+
+                                                                {/** Option entreprise */}
+
+                                                                <div className={item.alias === "EnterpriseId" ? "block" : "hidden"}>
+                                                                    <option value="LCR-GROUP P/N">
+                                                                        LCR-GROUP P/N
+                                                                    </option>
+
+                                                                    <option value="Direct-Transfert P/N">
+                                                                        Direct-Transfert P/N
+                                                                    </option>
+
+                                                                    <option value="DIRECT TRANSFERT BRAZZA">
+                                                                        DIRECT TRANSFERT BRAZZA
+                                                                    </option>
+
+                                                                    <option value="LRC Group BRAZZA">
+                                                                        LRC Group BRAZZA
+                                                                    </option>
+
+                                                                </div>
+
+                                                                {/**Option de la durée */}
+                                                                <div className={item.alias === "delay" ? "block" : "hidden"}>
+                                                                    <option value="3 mois">
+                                                                        3 mois
+                                                                    </option>
+
+                                                                     <option value="6mois">
+                                                                        6 mois
+                                                                    </option>
+
+                                                                     <option value="1 année">
+                                                                        1 année
+                                                                    </option>
+                                                                    
+                                                                </div>
+
+                                                            </div>
+                                                            
+                                                        }
+                                                        
                                                      </select>
 
                                                 } 

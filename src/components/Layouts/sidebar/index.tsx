@@ -16,7 +16,9 @@ import {
   faClipboardCheck, faCalendarCheck, faUserShield, faFileLines, faCheckCircle, faFileContract, faSuitcaseRolling,
   faCalendarDay, faUmbrellaBeach, faFileSignature, faIdBadge, faBuilding,
   faMoneyBill1Wave,
-  faFileInvoiceDollar
+  faFileInvoiceDollar,
+  faBuildingCircleCheck,
+  faBuildingColumns
 } from "@fortawesome/free-solid-svg-icons";
 import { title } from "process";
 import { icon } from "@fortawesome/fontawesome-svg-core";
@@ -182,6 +184,22 @@ export function Sidebar() {
           title: "Liste de salaire",
           href: "/pages/dashboard/COMPTA/salaryList",
           icon: faFileInvoiceDollar
+        },
+      ]
+    },
+    {
+      index: 4,
+      title: "🧿 Autres",
+      ItemLists: [
+        {
+          title: "Enregistrer une entreprise",
+          href: "/pages/dashboard/OTHERS/addEnterprise",
+          icon: faBuildingCircleCheck
+        },
+        {
+          title: "Liste des entreprises",
+          href: "/pages/dashboard/COMPTA/enterprisesList",
+          icon: faBuildingColumns
         },
       ]
     },

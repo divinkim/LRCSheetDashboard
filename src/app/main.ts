@@ -207,7 +207,13 @@ export class Api {
                             message: "Veuillez saisir tous les champs obligatoires"
                         };
                     }
-                    formData.append(key, String(value));
+                    if (value instanceof File || value instanceof Blob) {
+                        formData.append(key, value);
+                    } else if (typeof value === "object") {
+                        formData.append(key, JSON.stringify(value));
+                    } else {
+                        formData.append(key, String(value));
+                    }
                 }
 
                 body = formData;
@@ -285,7 +291,7 @@ export class Api {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body:JSON.stringify(data)
+                body: JSON.stringify(data)
             });
 
             const response = await request.json();

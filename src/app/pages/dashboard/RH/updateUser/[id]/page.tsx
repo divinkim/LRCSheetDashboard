@@ -253,43 +253,43 @@ export default function UpdateUser() {
     let arrayDatas = [
         {
             alias: "EnterpriseId",
-            value: getEnterprises.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
+            value: getEnterprises.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
         },
         {
             alias: "departmentPostId",
-            value: getDepartmentPosts.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
+            value: getDepartmentPosts.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
         },
         {
             alias: "PostId",
-            value: getPosts.filter(item => item.id && item.title).map(item => ({ id: item.id, value: item.title }))
+            value: getPosts.filter(item => item.id && item.title).map(item => ({ id: item.id, title: item.title }))
         },
         {
             alias: "SalaryId",
-            value: getSalary.filter(item => item.id && item.netSalary).map(item => ({ id: item.id, value: item.netSalary }))
+            value: getSalary.filter(item => item.id && item.netSalary).map(item => ({ id: item.id, title: item.netSalary }))
         },
         {
             alias: "ContractTypeId",
-            value: getContractTypes.filter(item => item.id && item.title).map(item => ({ id: item.id, value: item.title }))
+            value: getContractTypes.filter(item => item.id && item.title).map(item => ({ id: item.id, title: item.title }))
         },
         {
             alias: "ContractId",
-            value: getContracts.filter(item => item.id && item.delay).map(item => ({ id: item.id, value: item.delay }))
+            value: getContracts.filter(item => item.id && item.delay).map(item => ({ id: item.id, title: item.delay }))
         },
         {
             alias: "CountryId",
-            value: getCountry.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
+            value: getCountry.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
         },
         {
             alias: "CityId",
-            value: getCity.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
+            value: getCity.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
         },
         {
             alias: "DistrictId",
-            value: getDistrict.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
+            value: getDistrict.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
         },
         {
             alias: "QuarterId",
-            value: getQuarter.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
+            value: getQuarter.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
         }
     ];
 
@@ -336,29 +336,20 @@ export default function UpdateUser() {
     const staticsOptions = [
         {
             alias: "gender",
-            value: "Homme"
-        },
-        {
-            alias: "gender",
-            value: "Femme"
-        },
-        {
-            alias: "gender",
-            value: "Aucun"
-        },
-
-        {
-            alias: "status",
-            value: "Actif"
+            value: [{ title: "Homme", value: "Homme" }, { title: "Femme", value: "Femme" }, { title: "Aucun", value: "Aucun" }]
         },
         {
             alias: "status",
-            value: "Inactif"
-        }
+            value: [{ title: "Actif", value: "Actif" }, { title: "Inactif", value: "Inactif" }]
+        },
+        {
+            alias: "role",
+            value: [{ title: "Super-Admin", value: "Super-Admin" }, { title: "Controller-Admin", value: "Administrateur de contôle" }, { title: "Supervisor-Admin", value: "Administrateur de supervision" }, { title: "Client-User", value: "Utilisateur client" }]
+        },
     ]
 
     return (
-        <main className="bg-gray-100 text-gray-700 dark:text-gray-300 dark:bg-transparent">
+        <main className="bg-gray-100 text-gray-700 font-semibold dark:text-gray-300 dark:bg-transparent">
             <Header />
             <div className="flex">
                 <Sidebar />
@@ -370,8 +361,8 @@ export default function UpdateUser() {
                                     <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Modifier un collaborateur existant</h1>
                                     <p className="text-blue-700 dark:text-blue-600">Dashboard/RH/Modifier un collaborateur</p>
                                 </div>
-                                <hr />
-                                <div className="flex flex-wrap p-4 space-x-4 space-y-4 items-center">
+                                <hr className="bg-gray-400 h-[1px] border-0" />
+                                <div className="flex flex-wrap p-4 font-normal space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element, index) => (
                                             <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-5 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"}>
@@ -394,13 +385,18 @@ export default function UpdateUser() {
                                 </div>
                             ))
                         }
-                        <hr />
-                        <div className='grid grid-cols-1 gap-4 mt-4 md:grid-cols-2  w-full'>
+                        <hr className="bg-gray-400 h-[1px] border-0" />
+                        <div className={inputs.photo ? "block w-[150px] mt-4 h-[150px]" : "hidden"}>
+                            <img src={`${urlAPI}/images/${inputs.photo}`} alt="" className="w-full rounded-full h-full object-cover" />
+                        </div>
+                        <div className='grid grid-cols-1 gap-4 mt-4 md:grid-cols-2 xl:grid-cols-3 w-full'>
+
                             {
                                 formElements.map((element) => (
                                     element.addOrUpdateUser.inputs.map((e, index) => (
                                         <div key={index} className="w-full">
                                             <div className='w-full'>
+
                                                 <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
                                                 {!e.selectedInput ?
                                                     <input value={e.type !== "file" && e.type !== "password" ? (inputs[e.alias] ?? "") : ""} onChange={async (v) => {
@@ -424,71 +420,47 @@ export default function UpdateUser() {
                                                             }
                                                         }
 
-                                                    }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
+                                                    }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md font-semibold dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300  dark:text-gray-300 text-gray-700" />
                                                     :
-                                                    e.dynamicOptions?.status ?
-                                                        <select value={inputs[e.alias] ?? ""} onChange={(v) => {
-                                                            console.log("La valeur en question", inputs[e.alias])
-                                                            for (const [key, _] of Object.entries(inputs)) {
-                                                                if (key === e.alias) {
-                                                                    setInputs({
-                                                                        ...inputs,
-                                                                        [e.alias]: e.type === "number" ? parseInt(v.target.value) : v.target.value
-                                                                    })
-                                                                }
+                                                    <select value={inputs[e.alias] ?? ""} onChange={(v) => {
+                                                        for (const [key, _] of Object.entries(inputs)) {
+                                                            if (key === e.alias) {
+                                                                setInputs({
+                                                                    ...inputs,
+                                                                    [e.alias]: e.type === "number" ? parseInt(v.target.value) : v.target.value
+                                                                })
                                                             }
+                                                        }
 
-                                                        }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
-                                                            <option value="" selected disabled>
-                                                                {e.placeholder}
-                                                            </option>
-                                                            {
-                                                                e.dynamicOptions?.status ? arrayDatas
-                                                                    .find(item => item.alias === e.alias)
-                                                                    ?.value
-                                                                    ?.map(option => (
-                                                                        <option value={option.id}>
-                                                                            {option.value}
-                                                                        </option>
-                                                                    )) :
-                                                                    <div>
-                                                                        {
-                                                                            staticsOptions.map((v) => (
-                                                                                <option value="">
-
-                                                                                </option>
-                                                                            ))
-                                                                        }
-                                                                    </div>
-                                                            }
-                                                        </select>
-                                                        :
-                                                        <select value={inputs[e.alias] ?? ""} onChange={(v) => {
-                                                            console.log("La valeur en question", inputs[e.alias])
-                                                            for (const [key, _] of Object.entries(inputs)) {
-                                                                if (key === e.alias) {
-                                                                    setInputs({
-                                                                        ...inputs,
-                                                                        [e.alias]: e.type === "number" ? parseInt(v.target.value) : v.target.value
-                                                                    })
-                                                                }
-                                                            }
-
-                                                        }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
-                                                            <option value="" selected disabled>
-                                                                {e.placeholder}
-                                                            </option>
-                                                            {
-                                                                staticsOptions.map((v) => (
-                                                                    <option value="" className={e.alias !== v.alias ? "hidden" : "block"}>{v.value}</option>
+                                                    }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-semibold dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
+                                                        <option value="" selected disabled>
+                                                            {e.placeholder}
+                                                        </option>
+                                                        {
+                                                            e.dynamicOptions?.status ? arrayDatas
+                                                                .find(item => item.alias === e.alias)
+                                                                ?.value
+                                                                ?.map(option => (
+                                                                    <option value={option.id}>
+                                                                        {option.title}
+                                                                    </option>
+                                                                )) :
+                                                                // staticsOptions.map((v) => (
+                                                                //     v.value.map((item) => (
+                                                                //         <option value={item.value} className={e.alias !== v.alias ? "hidden" : "block"}>
+                                                                //             {item.value}
+                                                                //         </option>
+                                                                //     ))
+                                                                // ))
+                                                                staticsOptions.find(item => item.alias === e.alias)?.value.map((item) => (
+                                                                    <option value={item.title}>
+                                                                        {item.value}
+                                                                    </option>
                                                                 ))
-                                                            }
-                                                        </select>
-
+                                                        }
+                                                    </select>
                                                 }
-                                                <div className={inputs.photo && e.alias === "photo" ? "block w-[200px] h-[200px]" : "hidden"}>
-                                                    <img src={`${urlAPI}/images/${inputs.photo}`} alt="" className="w-full h-full object-cover" />
-                                                </div>
+
                                             </div>
                                         </div>
 
@@ -500,7 +472,7 @@ export default function UpdateUser() {
                         <div className="flex w-full justify-end ">
                             <button type="button" onClick={(e) => {
                                 handleSubmit(e)
-                            }} className="bg-blue-600 my-2 hover:bg-blue-700 relative xl:right-5 rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
+                            }} className="bg-blue-600 my-2 hover:bg-blue-700 relative mt-5 rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
                                 <p className={isLoading ? "hidden" : "block"}> Exécuter</p>
                                 <p className={isLoading ? "block" : "hidden"}><ClipLoader color="#fff" size={16} /></p>
                             </button>

@@ -48,6 +48,31 @@ export const tablesModal = [
                     { title: "Actions", alias: "" }
                 ]
             }
+        },
+        enterprisesList: {
+            pageTitle: "Liste des entreprises enregistrées",
+            path: "Dashboard/RH/Liste des entreprises",
+            links: [
+                {
+                    title: "Ajouter une entreprise",
+                    href: "/pages/dashboard/OTHERS/addEnterprise",
+                    icon: faCalendarPlus
+                },
+            ],
+            table: {
+                titles: [
+                    { title: "Logos", alias: "" },
+                    { title: "Descriptions", alias: "" },
+                    { title: "Domaine d'activité", alias: "" },
+                    { title: "Téléphones", alias: "" },
+                    //  { title: "Horaires", alias: "" },
+                    { title: "emails", alias: "" },
+                    // { title: "Adresses", alias: "" },
+                    { title: "Abonnements", alias: "" },
+                    { title: "Statuts", alias: "" },
+                    { title: "Actions", alias: "" }
+                ]
+            }
         }
     }
 ]

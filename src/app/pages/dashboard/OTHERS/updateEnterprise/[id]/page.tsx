@@ -18,8 +18,8 @@ type EnterpriseProps = {
     logo: string | null,
     activityDomain: string | null,
     phone: string | null,
-    toleranceTime: string | null,
-    pourcentageOfHourlyDeduction: string | null,
+    // toleranceTime: string | null,
+    // pourcentageOfHourlyDeduction: string | null,
     email: string | null,
     address: string | null,
     website: string | null,
@@ -42,20 +42,20 @@ export default function UpdateEnterprise() {
         logo: null,
         activityDomain: null,
         phone: null,
-        toleranceTime: "null",
-        pourcentageOfHourlyDeduction: "null",
+        // toleranceTime: null,
+        // pourcentageOfHourlyDeduction: null,
         email: null,
         address: null,
-        website: "null",
+        website: null,
         latitude: null,
         longitude: null,
         CityId: 0,
         CountryId: 0,
-        legalForm: "null",
-        rccm: "null",
-        nui: "null",
-        subscriptionType: "null",
-        subscriptionStatus: "null"
+        legalForm: null,
+        rccm: null,
+        nui: null,
+        subscriptionType: null,
+        subscriptionStatus: null
     });
     const [isLoading, setIsLoading] = useState(false);
     const [countries, setCountries] = useState<any[]>([]);
@@ -67,27 +67,27 @@ export default function UpdateEnterprise() {
             const getEnterprise = await controllers.API.getOne(urlAPI, "getEnterprise", parseInt(getEnterpriseId ?? ""));
 
             setInputs({
-                name: getEnterprise?.name ?? null,
-                description: getEnterprise?.description ?? null,
-                logo: getEnterprise?.logo ?? null,
-                activityDomain: getEnterprise?.activityDomain ?? null,
-                phone: getEnterprise?.phone ?? null,
-                toleranceTime: getEnterprise?.toleranceTime ?? null,
-                pourcentageOfHourlyDeduction: getEnterprise?.pourcentageOfHourlyDeduction ?? null,
-                email: getEnterprise?.email ?? null,
-                address: getEnterprise?.address ?? null,
-                website: getEnterprise?.website ?? null,
-                latitude: getEnterprise?.latitude ?? null,
-                longitude: getEnterprise?.longitude ?? null,
+                name: getEnterprise?.name ?? inputs.name,
+                description: getEnterprise?.description ?? inputs.description,
+                logo: getEnterprise?.logo ?? inputs.logo,
+                activityDomain: getEnterprise?.activityDomain ?? inputs.activityDomain,
+                phone: getEnterprise?.phone?.length === 13 ? getEnterprise?.phone : inputs.phone,
+                // toleranceTime: getEnterprise?.toleranceTime ?? null,
+                // pourcentageOfHourlyDeduction: getEnterprise?.pourcentageOfHourlyDeduction ?? null,
+                email: getEnterprise?.email ?? inputs.email,
+                address: getEnterprise?.address ?? inputs.address,
+                website: getEnterprise?.website ?? inputs.website,
+                latitude: getEnterprise?.latitude ?? inputs.latitude,
+                longitude: getEnterprise?.longitude ?? inputs.longitude,
 
-                CityId: getEnterprise?.CityId ?? 0,
-                CountryId: getEnterprise?.CountryId ?? 0,
+                CityId: getEnterprise?.CityId ?? inputs.CityId,
+                CountryId: getEnterprise?.CountryId ?? inputs.CountryId,
 
-                legalForm: getEnterprise?.legalForm ?? null,
-                rccm: getEnterprise?.rccm ?? null,
-                nui: getEnterprise?.nui ?? null,
-                subscriptionType: getEnterprise?.subscriptionType ?? null,
-                subscriptionStatus: getEnterprise?.subscriptionStatus ?? null,
+                legalForm: getEnterprise?.legalForm ?? inputs.legalForm,
+                rccm: getEnterprise?.rccm ?? inputs.rccm,
+                nui: getEnterprise?.nui ?? inputs.nui,
+                subscriptionType: getEnterprise?.subscriptionType ?? inputs.subscriptionType,
+                subscriptionStatus: getEnterprise?.subscriptionStatus ?? inputs.subscriptionStatus,
             });
 
         })()
@@ -114,13 +114,13 @@ export default function UpdateEnterprise() {
     const handleSubmit = async (e: FormEvent) => {
         setIsLoading(true);
         const getEnterpriseId = window.location.href.split('/').pop();
-        const response = await controllers.API.UpdateOne(urlAPI, "updateEnterprise", null, inputs);
+        const response = await controllers.API.UpdateOne(urlAPI, "updateEnterprise", getEnterpriseId, inputs);
 
         controllers.alertMessage(
             response.status,
             response.title,
             response.message,
-            response.status ? `/pages/dashboard/OTHERS/UpdateEnterprise/${getEnterpriseId}` : null
+            response.status ? `/pages/dashboard/OTHERS/updateEnterprise/${getEnterpriseId}` : null
         );
 
         setIsLoading(false);
@@ -211,14 +211,14 @@ export default function UpdateEnterprise() {
                                                                 }
                                                                 setInputs({
                                                                     ...inputs,
-                                                                    [e.alias]: v.target.value
+                                                                    [e.alias]: e.type === "tel" ? `242${v.target.value}` : v.target.value
                                                                 })
                                                             }
                                                         }
 
                                                     }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
                                                     <div className={e.alias === "logo" && inputs.logo ? "h-[200px]" : "hidden"}>
-                                                        <img src={`${urlAPI}/images/${inputs.logo}`} className='h-[200px] w-full object-cover' alt="" />
+                                                        <img src={`${urlAPI}/images/${inputs.logo}`} className='h-[200px] w-full object-contain' alt="" />
                                                     </div>
                                                 </div>
                                                 :

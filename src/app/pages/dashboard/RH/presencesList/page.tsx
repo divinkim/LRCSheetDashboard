@@ -434,7 +434,7 @@ export default function PresencesList() {
                             </div>
                         ))
                     }
-                    <hr />
+                    <hr className='bg-gray-400 border-0 h-[1px]' />
                     <div className="flex flex-col space-y-4 xl:space-y-0  lg:flex-row items-center justify-between">
                         <div className="relative w-[250px]">
                             <input

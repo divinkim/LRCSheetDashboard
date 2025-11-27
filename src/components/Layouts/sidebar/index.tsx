@@ -81,7 +81,7 @@ export function Sidebar() {
     // Onglet Ressources humaines
     {
       index: 2,
-      title: "🧑‍💼 Ressources humaines",
+      title: "💼 Ressources humaines",
       ItemLists: [
         {
           title: "Présences au poste",
@@ -189,6 +189,22 @@ export function Sidebar() {
     },
     {
       index: 4,
+      title: "📊 Statistiques",
+      ItemLists: [
+        {
+          title: "",
+          href: "",
+          icon: faBuildingCircleCheck
+        },
+        {
+          title: "",
+          href: "",
+          icon: faBuildingColumns
+        },
+      ]
+    },
+    {
+      index: 5,
       title: "🧿 Autres",
       ItemLists: [
         {
@@ -198,11 +214,12 @@ export function Sidebar() {
         },
         {
           title: "Liste des entreprises",
-          href: "/pages/dashboard/COMPTA/enterprisesList",
+          href: "/pages/dashboard/OTHERS/enterprisesList",
           icon: faBuildingColumns
         },
       ]
     },
+
   ];
 
   console.log("le comportement de", toggleAsideSections)
@@ -219,7 +236,7 @@ export function Sidebar() {
 
       <aside
         className={cn(
-          "max-w-[270px] overflow-hidden bg-gray-800 transition-[width] duration-200 ease-linear dark:border-gray-900 dark:bg-gray-dark",
+          "max-w-[270px] overflow-hidden  transition-[width] duration-200 ease-linear dark:border-gray-900 bg-gray-dark",
           isMobile ? "fixed bottom-0 top-0 z-50" : "top-0 h-screen sticky",
           isOpen ? "w-full" : "w-0",
         )}
@@ -234,7 +251,10 @@ export function Sidebar() {
             <div className="w-[100px] h-[100px] mx-auto mb-5">
               <img src="/images/logo/logo.png" alt="" className='w-full h-full object-cover' />
             </div>
-            <h1 className="font-bold text-[17px]">Menu général</h1>
+            <Link href="/pages/home" className="font-bold hover:text-gray-400 text-gray-300 ease duration-500">
+              🏠 ACCUEIL
+            </Link>
+            <h1 className="font-bold text-[17px] mt-5 text-gray-300">Menu général</h1>
             <div className="mt-5">
               {
                 ItemAside.map((aside, index) => (
@@ -245,7 +265,7 @@ export function Sidebar() {
                           toggleAsideSections.filter(item => item !== index)
                           : [...toggleAsideSections, index]
                       )
-                    }} className={toggleAsideSections.includes(index) ? "flex cursor-pointer p-2 bg-gray-900 text-gray-300 ease duration-700 flex-row items-center justify-between   dark:text-gray-300" : "flex cursor-pointer p-2 bg-gray-200 hover:bg-gray-900 ease duration-500 text-gray-700 hover:text-gray-300 flex-row items-center justify-between"}>
+                    }} className={toggleAsideSections.includes(index) ? "flex cursor-pointer p-2 bg-gray-900 text-gray-300 ease duration-700 flex-row items-center justify-between   dark:text-gray-300" : "flex cursor-pointer p-2 bg-gray-800 hover:bg-gray-900 ease duration-500 text-gray-300 flex-row items-center justify-between"}>
                       <h3 className="font-bold">{aside.title ?? ""}</h3>
                       <FontAwesomeIcon icon={toggleAsideSections.includes(index) ? faChevronUp : faChevronDown} className="" />
                     </div>

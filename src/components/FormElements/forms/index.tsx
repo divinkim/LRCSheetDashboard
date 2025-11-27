@@ -340,7 +340,7 @@ export const formElements = [
 
                 {
                     title: "Liste des entreprises",
-                    href: "/pages/dashboard/RH/enterprisesList",
+                    href: "/pages/dashboard/OTHERS/enterprisesList",
                     icon: faUsers
                 },
                 {

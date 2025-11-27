@@ -310,7 +310,7 @@ export default function AddUser() {
                                     <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Ajouter un nouveau collaborateur</h1>
                                     <p className="text-blue-700 dark:text-blue-600">Dashboard/RH/Ajouter un collaborateur</p>
                                 </div>
-                                <hr />
+                                <hr className='bg-gray-400 border-0 h-[1px]' />
                                 <div className="flex flex-wrap py-4 lg:space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element, index) => (
@@ -324,7 +324,7 @@ export default function AddUser() {
                         ))
                     }
 
-                    <div className='dark:border mt-8 w-full h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none p-4'>
+                    <div className='dark:border mt-8 w-full font-semibold h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none p-4'>
                         {
                             formElements.map((element) => (
 
@@ -334,8 +334,11 @@ export default function AddUser() {
                                 </div>
                             ))
                         }
-                        <hr />
-                        <div className='grid grid-cols-1 mt-4 gap-x-4 md:grid-cols-2  w-full'>
+                        <hr className='bg-gray-400 border-0 h-[1px]' />
+                        <div className={inputs.photo ? "block w-[150px] h-[150px] mt-5" : "hidden"}>
+                            <img src={`${urlAPI}/images/${inputs.photo}`} alt="" className="w-full rounded-full h-full object-cover" />
+                        </div>
+                        <div className='grid grid-cols-1 mt-4 gap-x-4 md:grid-cols-2 xl:grid-cols-3 font-semibold w-full'>
                             {
                                 formElements.map((element) => (
                                     element.addOrUpdateUser.inputs.map((e, index) => (
@@ -363,7 +366,7 @@ export default function AddUser() {
                                                         }
                                                     }
 
-                                                }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
+                                                }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 f dark:text-gray-300 text-gray-700" />
                                                 :
                                                 <select onChange={(v) => {
                                                     for (const [key, _] of Object.entries(inputs)) {
@@ -375,7 +378,7 @@ export default function AddUser() {
                                                         }
                                                     }
 
-                                                }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
+                                                }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
                                                     <option value="" selected disabled>
                                                         {e.placeholder}
                                                     </option>
@@ -436,9 +439,7 @@ export default function AddUser() {
                                                 </select>
 
                                             }
-                                            <div className={inputs.photo && e.alias === "photo" ? "block w-[200px] h-[200px]" : "hidden"}>
-                                                <img src={`${urlAPI}/images/${inputs.photo}`} alt="" className="w-full h-full object-cover" />
-                                            </div>
+
                                         </div>
 
 
@@ -450,7 +451,7 @@ export default function AddUser() {
                         <div className="flex w-full justify-end ">
                             <button type="button" onClick={(e) => {
                                 handleSubmit(e)
-                            }} className="bg-blue-600 my-2 hover:bg-blue-700 relative xl:right-5 rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
+                            }} className="bg-blue-600 my-2 hover:bg-blue-700 relative rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
                                 <p className={isLoading ? "hidden" : "block"}> Exécuter</p>
                                 <p className={isLoading ? "block" : "hidden"}><ClipLoader color="#fff" size={16} /></p>
                             </button>

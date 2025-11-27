@@ -83,11 +83,11 @@ export default function SingIn() {
         <>
             <div className="bg-[url('/images/background/background.webp')] bg-no-repeat bg-cover bg-center w-screen h-screen items-center flex">
                 <div className="w-[95%] sm:w-1/2 lg:w-[40px]  xl:w-[30%] flex flex-col items-center justify-center h-[65%] mt-3 lg:mt-0 sm:h-1/2 lg:h-[80%] backdrop-blur-2xl bg-black/30 2xl:h-[63%] shadow-sm rounded-[30px] px-4 py-4 2xl:pt-10 mx-auto">
-                    <h2 className="text-white  font-extrabold -top-3 sm:-top-0 text-[20px] sm:text-[22px] relative xl:-top-3  2xl:-top-4 lg:-top-1">Se connecter à LRCSheet Admin </h2>
-                    <div className='h-24 w-24  relative'>
+                    <h2 className="text-white  font-extrabold -top-3 sm:-top-0 text-[20px] sm:text-[22px] relative xl:-top-2  2xl:-top-4 lg:-top-1">Se connecter à LRCSheet Admin </h2>
+                    <div className='h-24 w-24 xl:top-1 relative'>
                         <img src="/images/logo/logo.png" className="w-full object-cover" alt="" />
                     </div>
-                    <form className="w-full space-y-5 flex flex-col 2xl:pb-5" action="">
+                    <form className="w-full space-y-6 flex flex-col 2xl:pb-5" action="">
                         <div className='w-full relative'>
                             <FontAwesomeIcon icon={faEnvelope} className='text-gray-600 dark:text-white text-[18px] absolute font-semibold top-4 left-2' />
                             <input value={signInData.email ?? ""} onChange={(e) => {

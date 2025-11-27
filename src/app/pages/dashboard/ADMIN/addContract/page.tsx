@@ -13,27 +13,27 @@ type ContratValues = {
     startDate: number | null,
     endDate: number | null,
     delay: number | null,
-    ContractType: string | null,
-    Enterprise: string | null,
     ContractTypeId: number | null,
     EnterpriseId: number | null
-
+    ContractType: string | null,
+    Enterprise: string | null,
 
 }
 
 export default function AddContract(){
 
     const [getEnterprise, setGetEnterprise] = useState<any []>([])
+    const [getContract, setGetContract] = useState<any []>([])
     const [getContractType, setGetContractType] = useState<any []>([])
     const [isLoading, setIsLoading] = useState(false);
     const [inputsValues, setInputsValues] = useState<ContratValues>({
         startDate: null,
         endDate: null,
         delay: null,
+        ContractTypeId: null,
+        EnterpriseId: null,
         ContractType: null,
         Enterprise: null,
-        ContractTypeId: null,
-        EnterpriseId: null
     })
 
     //Récupérer la liste des contrats
@@ -41,13 +41,15 @@ export default function AddContract(){
         (async () => {
             
           const methodName = "getContracts"
-          const getContractType = await controllers.API.getAll(urlAPI, methodName, null)
-          const filtered = getContractType.filter((item: {ContractTypeId: number, EnterpriseId: number}) => item.ContractTypeId === inputsValues.ContractTypeId && item.EnterpriseId === inputsValues.EnterpriseId)
-          setGetContractType(filtered)
-          console.log("La liste des contrats:",filtered)
+          const getContract = await controllers.API.getAll(urlAPI, methodName, null)
+          const filteredContrat = getContract.filter(
+            (item: {ContractTypeId: number, EnterpriseId: number}) => 
+            item.ContractTypeId === inputsValues.ContractTypeId && item.EnterpriseId === inputsValues.EnterpriseId)
+          setGetContract(filteredContrat)
+          console.log("La liste des contrats:",filteredContrat)
           
         })()
-    }, [inputsValues.ContractTypeId, inputsValues.EnterpriseId])
+    }, [inputsValues.ContractTypeId])
 
     //Récupérer les entreprises
     useEffect(() => {
@@ -63,37 +65,44 @@ export default function AddContract(){
     //Récupérer le type de contrat
     useEffect(() => {
         (async () => {
-
-            const methodName= "getContractTypes"
-            const ContratType = await controllers.API.getAll(urlAPI, methodName, null)
-            setGetContractType(ContratType)
-            console.log(ContratType)
-
+            
+          const methodName = "getContractTypes"
+          const getContractType = await controllers.API.getAll(urlAPI, methodName, null)
+          const filteredContratType = getContractType.filter(
+            (item: {ContractTypeId: number, EnterpriseId: number}) => 
+            item.EnterpriseId === inputsValues.EnterpriseId)
+          setGetContractType(filteredContratType)
+          console.log("La liste des contrats:",filteredContratType)
+          
         })()
-    },[])
+    }, [inputsValues.EnterpriseId])
 
 
     let arrayDatas = [
 
         {
             alias: "ContractTypeId",
-            value: getContractType.filter(item => item.id && item.title).map(item => ({id: item.id, value: item.title}))
+            value: getContractType.filter(item => item.id && item.title).map(item => (
+            {id: item.id, value: item.title}))
         },
 
         {
             alias: "EnterpriseId",
-            value: getEnterprise.filter(item => item.id && item.name).map(item => ({id: item.id, value: item.name})),
+            value: getEnterprise.filter(item => item.id && item.name).map(item => (
+            {id: item.id, value: item.name})),
         },
 
         {
-            alias: "EnterpriseId",
+            alias: "delay",
             value: [
                 {
                     id: "3 mois", value: "3 mois"
                 },
+
                  {
                     id: "6 mois", value: "6 mois"
                 },
+
                  {
                     id: "1 année", value: "1 année"
                 },
@@ -279,7 +288,7 @@ export default function AddContract(){
                                                                 </div>
 
                                                                 {/**Option de la durée */}
-                                                                <div className={item.alias === "delay" ? "block" : "hidden"}>
+                                                                <div className={item.alias === "ContractType" ? "block" : "hidden"}>
                                                                     <option value="3 mois">
                                                                         3 mois
                                                                     </option>

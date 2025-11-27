@@ -276,7 +276,7 @@ export const formElements = [
                     label: "Nom contrat",
                     placeholder: "Saisissez le nom du contrat ",
                     requireField: false,
-                    type: "text",
+                    type: "text", 
                     selectedInput: false,
                     alias: "ContractType"
 
@@ -306,17 +306,20 @@ export const formElements = [
                     label: "Date de fin",
                     placeholder: "Sélectionnez la date de fin",
                     requireField: true,
-                    type: "date",
+                    type: "date", 
                     selectedInput: false,
                     alias: "endDate"
 
                 },
                 {
                     label: "Durée",
-                    placeholder: "Saisissez la durée",
+                    placeholder: "Sélectionnez la durée",
                     requireField: true,
-                    type: "text",
-                    selectedInput: false,
+                    type: "text", 
+                   selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
                     alias: "delay"
 
                 },

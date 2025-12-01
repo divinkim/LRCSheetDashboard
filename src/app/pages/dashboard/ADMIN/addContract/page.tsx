@@ -59,7 +59,7 @@ export default function AddContract(){
 
         const authToken = localStorage.getItem("authToken")
         const role = localStorage.getItem("role")
-        let getEnterpriseIdOfAdmin = localStorage.getItem("getEnterpriseIdOfAdmin")
+        let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId")
 
         setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
         setGetAdminRole(role)
@@ -127,6 +127,26 @@ export default function AddContract(){
             ]
         },
 
+    ]
+
+    const staticData = [
+        {
+            alias: "delay",
+            value: [
+                {
+                    id: "3 mois", value: "3 mois"
+                },
+
+                {
+                    id: "6 mois", value: "6 mois"
+                },
+
+                {
+                    id: "1 année", value: "1 année"
+                },
+                
+            ]
+        }
     ]
 
 
@@ -259,22 +279,12 @@ export default function AddContract(){
                                                                 </option>
                                                             )) :
                                                                 (
-                                                                item.alias === "delay" && (
-                                                                <>
-                                                                    <option value="3 mois">
-                                                                        3 mois
-                                                                    </option>
-
-                                                                     <option value="6mois">
-                                                                        6 mois
-                                                                    </option>
-
-                                                                     <option value="1 année">
-                                                                        1 année
-                                                                    </option>
-                                                                    
-                                                                </>
-                                                                )
+                                                                 
+                                                                    staticData.find(i => i.alias === item.alias)?.value.map((e) => (
+                                                                        <option value={e.id}>
+                                                                            {e.value}
+                                                                        </option>
+                                                                    ))
 
                                                                 )
 

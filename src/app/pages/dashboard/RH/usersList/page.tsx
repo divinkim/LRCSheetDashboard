@@ -102,7 +102,7 @@ export default function UsersList() {
                             <input
                                 type="text"
                                 placeholder="Rechercher un profil..."
-                                className="border shadow-xl outline-none dark:border-gray-200 dark:bg-transparent px-3 py-2.5 rounded-xl my-6 w-full"
+                                className="border  outline-none border-gray-300 dark:bg-transparent px-3 py-2.5 rounded-xl my-6 w-full"
                                 value={search}
                                 onChange={(e) => {
                                     setSearch(e.target.value)

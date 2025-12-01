@@ -1,4 +1,4 @@
-import { faCalendarPlus, faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import { faCalendarPlus, faPen, faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 export const tablesModal = [
     {
@@ -32,7 +32,14 @@ export const tablesModal = [
                 {
                     title: "Ajouter une présence",
                     href: "",
-                    icon: faCalendarPlus
+                    icon: faCalendarPlus,
+                    modal: "addPresenceModal"
+                },
+                {
+                    title: "Modifier une présence",
+                    href: "",
+                    icon: faPen,
+                    modal: "updatePresenceModal"
                 },
             ],
             table: {

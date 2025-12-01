@@ -134,7 +134,7 @@ export default function UsersList() {
                             </tr>
                         </thead>
 
-                        <tbody className="w-full">
+                        <tbody className="w-full font-semibold">
 
                             {
 

@@ -20,11 +20,11 @@ type ContratValues = {
 
 }
 
-export default function AddContract(){
+export default function AddContract() {
 
-    const [getEnterprise, setGetEnterprise] = useState<any []>([])
-    const [getContract, setGetContract] = useState<any []>([])
-    const [getContractType, setGetContractType] = useState<any []>([])
+    const [getEnterprise, setGetEnterprise] = useState<any[]>([])
+    const [getContract, setGetContract] = useState<any[]>([])
+    const [getContractType, setGetContractType] = useState<any[]>([])
     const [isLoading, setIsLoading] = useState(false);
     const [inputsValues, setInputsValues] = useState<ContratValues>({
         startDate: null,
@@ -39,22 +39,22 @@ export default function AddContract(){
     //Récupérer la liste des contrats
     useEffect(() => {
         (async () => {
-            
-          const methodName = "getContracts"
-          const getContract = await controllers.API.getAll(urlAPI, methodName, null)
-          const filteredContrat = getContract.filter(
-            (item: {ContractTypeId: number, EnterpriseId: number}) => 
-            item.ContractTypeId === inputsValues.ContractTypeId && item.EnterpriseId === inputsValues.EnterpriseId)
-          setGetContract(filteredContrat)
-          console.log("La liste des contrats:",filteredContrat)
-          
+
+            const methodName = "getContracts"
+            const getContract = await controllers.API.getAll(urlAPI, methodName, null)
+            const filteredContrat = getContract.filter(
+                (item: { ContractTypeId: number, EnterpriseId: number }) =>
+                    item.ContractTypeId === inputsValues.ContractTypeId && item.EnterpriseId === inputsValues.EnterpriseId)
+            setGetContract(filteredContrat)
+            console.log("La liste des contrats:", filteredContrat)
+
         })()
     }, [inputsValues.ContractTypeId])
 
     //Récupérer les entreprises
     useEffect(() => {
         (async () => {
-            const methodName= "getEnterprises"
+            const methodName = "getEnterprises"
             const getEnterprise = await controllers.API.getAll(urlAPI, methodName, null)
             setGetEnterprise(getEnterprise)
             console.log("l'id de l'entreprise:", getEnterprise)
@@ -65,15 +65,15 @@ export default function AddContract(){
     //Récupérer le type de contrat
     useEffect(() => {
         (async () => {
-            
-          const methodName = "getContractTypes"
-          const getContractType = await controllers.API.getAll(urlAPI, methodName, null)
-          const filteredContratType = getContractType.filter(
-            (item: {ContractTypeId: number, EnterpriseId: number}) => 
-            item.EnterpriseId === inputsValues.EnterpriseId)
-          setGetContractType(filteredContratType)
-          console.log("La liste des contrats:",filteredContratType)
-          
+
+            const methodName = "getContractTypes"
+            const getContractType = await controllers.API.getAll(urlAPI, methodName, null)
+            const filteredContratType = getContractType.filter(
+                (item: { ContractTypeId: number, EnterpriseId: number }) =>
+                    item.EnterpriseId === inputsValues.EnterpriseId)
+            setGetContractType(filteredContratType)
+            console.log("La liste des contrats:", filteredContratType)
+
         })()
     }, [inputsValues.EnterpriseId])
 
@@ -83,13 +83,13 @@ export default function AddContract(){
         {
             alias: "ContractTypeId",
             value: getContractType.filter(item => item.id && item.title).map(item => (
-            {id: item.id, value: item.title}))
+                { id: item.id, value: item.title }))
         },
 
         {
             alias: "EnterpriseId",
             value: getEnterprise.filter(item => item.id && item.name).map(item => (
-            {id: item.id, value: item.name})),
+                { id: item.id, value: item.name })),
         },
 
         {
@@ -99,18 +99,18 @@ export default function AddContract(){
                     id: "3 mois", value: "3 mois"
                 },
 
-                 {
+                {
                     id: "6 mois", value: "6 mois"
                 },
 
-                 {
+                {
                     id: "1 année", value: "1 année"
                 },
             ]
         },
 
-        
-          
+
+
 
     ]
 
@@ -122,61 +122,61 @@ export default function AddContract(){
             endDate: inputsValues.endDate,
             delay: inputsValues.delay,
             ContractType: inputsValues.ContractType,
-            Enterprise: inputsValues.Enterprise ,
+            Enterprise: inputsValues.Enterprise,
             ContractTypeId: inputsValues.ContractTypeId ?? null,
             EnterpriseId: inputsValues.EnterpriseId ?? null
-            
+
         }
 
         console.log("les données:", requireField)
 
-        const methodName= "createContract"
+        const methodName = "createContract"
 
         const response = await controllers.API.SendOne(urlAPI, methodName, null, requireField)
 
         controllers.alertMessage(
-            response.status, 
+            response.status,
             response.title,
             response.message,
             response.status ? "/dashboard/ADMIN/addContract" : null
         )
-        
+
 
         setIsLoading(false);
     }
 
-    
 
-    
+
+
     return (
 
         <main className="bg-gray-100 dark:bg-transparent" >
-            <Header/>
+            <Header />
             <div className="flex">
-                <Sidebar/>
+                <Sidebar />
 
                 <div className="mx-4 mt-6 mb-4 w-full" >
                     {
                         formElements.map((e, index) => (
-                       
-                    <div key={index} className="flex flex-wrap text-gray-700 w-full space-y-4 md:space-y-0 items-center justify-between" >
-                        <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">
-                            Ajouter un contrat
-                        </h1>
 
-                        <div className="flex flex-wrap space-x-4 space-y-4 items-center ">
-                            {e.addOrUpdateUser.navigateLinks.map((item, index) => (
-                            <Link key={index} href={item.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : 
-                                index === 5 ? "bg-blue-800 2xl:right-5 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"} >
-                            <FontAwesomeIcon icon={item.icon} className="text-white" />
-                            <span className='text-white'>{item.title}</span>
-                            </Link>
-                            ))}
+                            <div key={index} className="flex flex-wrap text-gray-700 w-full space-y-4 md:space-y-0 items-center justify-between" >
+                                <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">
+                                    Ajouter un contrat
+                                </h1>
 
-                        </div>
+                                <div className="flex flex-wrap space-x-4 space-y-4 items-center ">
+                                    {e.addOrUpdateUser.navigateLinks.map((item, index) => (
+                                        <Link key={index} href={item.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" :
+                                            index === 5 ? "bg-blue-800 2xl:right-5 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"} >
+                                            <FontAwesomeIcon icon={item.icon} className="text-white" />
+                                            <span className='text-white'>{item.title}</span>
+                                        </Link>
+                                    ))}
 
-                    </div>
-                       
+                                </div>
+
+                            </div>
+
                         ))
                     }
 
@@ -199,117 +199,116 @@ export default function AddContract(){
                                         <div key={index} className="flex flex-col w-full ">
                                             <div className=''>
                                                 <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700">
-                                                    <span className={item.requireField ? "text-red-600" : "hidden"}>*</span> 
-                                                {item.label}</label>
+                                                    <span className={item.requireField ? "text-red-600" : "hidden"}>*</span>
+                                                    {item.label}</label>
                                                 {
-                                                    !item.selectedInput ? 
-                                                    <input onChange={async (u) => {
-                                                        for(const [key, _] of Object.entries(inputsValues)){
-                                                            if(key === item.alias){
-                                                                setInputsValues({
-                                                                    ...inputsValues,
-                                                                    [item.alias]: u.target.value
-                                                                })
+                                                    !item.selectedInput ?
+                                                        <input onChange={async (u) => {
+                                                            for (const [key, _] of Object.entries(inputsValues)) {
+                                                                if (key === item.alias) {
+                                                                    setInputsValues({
+                                                                        ...inputsValues,
+                                                                        [item.alias]: u.target.value
+                                                                    })
+                                                                }
                                                             }
-                                                        }
 
-                                                    }} type={item.type} maxLength={item.type === "tel" ? 9 : undefined} placeholder={item.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border
+                                                        }} type={item.type} maxLength={item.type === "tel" ? 9 : undefined} placeholder={item.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border
                                                      border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
-
-                                                     : 
-                                                     <select onChange={async (u) => {
-                                                        for(const [key, _] of Object.entries(inputsValues)){
-                                                            if(key === item.alias){
-                                                                setInputsValues({
-                                                                    ...inputsValues,
-                                                                    [item.alias]: item.type === "number" ? parseInt(u.target.value) : u.target.value    
-                                                                })
+                                                        :
+                                                        <select onChange={async (u) => {
+                                                            for (const [key, _] of Object.entries(inputsValues)) {
+                                                                if (key === item.alias) {
+                                                                    setInputsValues({
+                                                                        ...inputsValues,
+                                                                        [item.alias]: item.type === "number" ? parseInt(u.target.value) : u.target.value
+                                                                    })
+                                                                }
                                                             }
-                                                        }
-                                                     }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent 
+                                                        }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent 
                                                        border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700" >
 
-                                                        <option>
-                                                            {item.placeholder}
-                                                        </option>
-                                                        
+                                                            <option>
+                                                                {item.placeholder}
+                                                            </option>
 
-                                                        {
-                                                            
-                                                            item.dynamicOptions?.status ? 
-                                                              arrayDatas?.find(items => items.alias === item.alias)?.value.map(option => (
-                                                                <option value={option.id}>
-                                                                    {option.value}
-                                                                </option>
-                                                            )) :
-                                                            <div>
-                                                                {/**Option du type de contrat */}
-                                                                <div className={item.alias === "ContractTypeId" ? "block" : "hidden"}>
-                                                                    <option value="CDD">
-                                                                        CDD
-                                                                    </option>
 
-                                                                    <option value="CDI">
-                                                                        CDI
-                                                                    </option>
+                                                            {
 
-                                                                    <option value="Contrat de prestation">
-                                                                        Contrat de prestaion
-                                                                    </option>
+                                                                item.dynamicOptions?.status ?
+                                                                    arrayDatas?.find(items => items.alias === item.alias)?.value.map(option => (
+                                                                        <option value={option.id}>
+                                                                            {option.value}
+                                                                        </option>
+                                                                    )) :
+                                                                    <div>
+                                                                        {/**Option du type de contrat */}
+                                                                        <div className={item.alias === "ContractTypeId" ? "block" : "hidden"}>
+                                                                            <option value="CDD">
+                                                                                CDD
+                                                                            </option>
 
-                                                                    <option value="Stage académique">
-                                                                        Stage académique
-                                                                    </option>
+                                                                            <option value="CDI">
+                                                                                CDI
+                                                                            </option>
 
-                                                                    <option value="Stage professionnel">
-                                                                        Stage professionnel
-                                                                    </option>
-                                                                </div>
+                                                                            <option value="Contrat de prestation">
+                                                                                Contrat de prestaion
+                                                                            </option>
 
-                                                                {/** Option entreprise */}
+                                                                            <option value="Stage académique">
+                                                                                Stage académique
+                                                                            </option>
 
-                                                                <div className={item.alias === "EnterpriseId" ? "block" : "hidden"}>
-                                                                    <option value="LCR-GROUP P/N">
-                                                                        LCR-GROUP P/N
-                                                                    </option>
+                                                                            <option value="Stage professionnel">
+                                                                                Stage professionnel
+                                                                            </option>
+                                                                        </div>
 
-                                                                    <option value="Direct-Transfert P/N">
-                                                                        Direct-Transfert P/N
-                                                                    </option>
+                                                                        {/** Option entreprise */}
 
-                                                                    <option value="DIRECT TRANSFERT BRAZZA">
-                                                                        DIRECT TRANSFERT BRAZZA
-                                                                    </option>
+                                                                        <div className={item.alias === "EnterpriseId" ? "block" : "hidden"}>
+                                                                            <option value="LCR-GROUP P/N">
+                                                                                LCR-GROUP P/N
+                                                                            </option>
 
-                                                                    <option value="LRC Group BRAZZA">
-                                                                        LRC Group BRAZZA
-                                                                    </option>
+                                                                            <option value="Direct-Transfert P/N">
+                                                                                Direct-Transfert P/N
+                                                                            </option>
 
-                                                                </div>
+                                                                            <option value="DIRECT TRANSFERT BRAZZA">
+                                                                                DIRECT TRANSFERT BRAZZA
+                                                                            </option>
 
-                                                                {/**Option de la durée */}
-                                                                <div className={item.alias === "ContractType" ? "block" : "hidden"}>
-                                                                    <option value="3 mois">
-                                                                        3 mois
-                                                                    </option>
+                                                                            <option value="LRC Group BRAZZA">
+                                                                                LRC Group BRAZZA
+                                                                            </option>
 
-                                                                     <option value="6mois">
-                                                                        6 mois
-                                                                    </option>
+                                                                        </div>
 
-                                                                     <option value="1 année">
-                                                                        1 année
-                                                                    </option>
-                                                                    
-                                                                </div>
+                                                                        {/**Option de la durée */}
+                                                                        <div className={item.alias === "ContractType" ? "block" : "hidden"}>
+                                                                            <option value="3 mois">
+                                                                                3 mois
+                                                                            </option>
 
-                                                            </div>
-                                                            
-                                                        }
-                                                        
-                                                     </select>
+                                                                            <option value="6mois">
+                                                                                6 mois
+                                                                            </option>
 
-                                                } 
+                                                                            <option value="1 année">
+                                                                                1 année
+                                                                            </option>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                            }
+
+                                                        </select>
+
+                                                }
 
                                             </div>
 
@@ -324,22 +323,22 @@ export default function AddContract(){
                         <div className="flex justify-end w-full mt-2">
                             <button type="button" onClick={(e) => {
                                 handleSubmit(e)
-                            }}  
-                             className="bg-blue-600 my-2 hover:bg-blue-700 relative xl:right-5 rounded-md font-semibold ease 
+                            }}
+                                className="bg-blue-600 my-2 hover:bg-blue-700 relative xl:right-5 rounded-md font-semibold ease 
                               duration-500 text-white py-2.5 px-8">
 
                                 <p className={isLoading ? "hidden" : "block"}> Exécuter</p>
-                                <p className={isLoading ? "block" : "hidden"}><ClipLoader color="#fff" size={16}/></p>
+                                <p className={isLoading ? "block" : "hidden"}><ClipLoader color="#fff" size={16} /></p>
 
                             </button>
 
                         </div>
-                    </div>  
-                    
+                    </div>
+
                 </div>
-                
+
             </div>
         </main>
-        
+
     )
 }

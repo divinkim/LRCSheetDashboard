@@ -46,7 +46,7 @@ export default function HomePage({ searchParams }: PropsType) {
                        
                     </Suspense> */}
                     {/* <OverviewCardsGroup /> */}
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
                         {
                             HomeCard.map((element, index) => (
                                 <Link href={!requireAdminRoles.includes(adminRole ?? "") ? "" : element.path} className={"rounded-xl p-4 h-[200px] dark:bg-gray-800 shadow-xl dark:shadow-none cursor-pointer ease duration-500 hover:scale-95 bg-white"}>

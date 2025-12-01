@@ -25,6 +25,8 @@ export default function AddContract(){
     const [getEnterprise, setGetEnterprise] = useState<any []>([])
     const [getContract, setGetContract] = useState<any []>([])
     const [getContractType, setGetContractType] = useState<any []>([])
+    const [getEnterpriseIdOfAdmin, setGetEnterpriseIdOfAdmin] = useState<string | null>(null)
+    const [getAdminRole, setGetAdminRole] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false);
     const [inputsValues, setInputsValues] = useState<ContratValues>({
         startDate: null,
@@ -54,8 +56,24 @@ export default function AddContract(){
     //Récupérer les entreprises
     useEffect(() => {
         (async () => {
+
+        const authToken = localStorage.getItem("authToken")
+        const role = localStorage.getItem("role")
+        let getEnterpriseIdOfAdmin = localStorage.getItem("getEnterpriseIdOfAdmin")
+
+        setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
+        setGetAdminRole(role)
+
             const methodName= "getEnterprises"
             const getEnterprise = await controllers.API.getAll(urlAPI, methodName, null)
+
+            if(parseInt(getEnterpriseIdOfAdmin ?? "") !== 1){
+                const filteredEnterpriseIdOdAdmin = getEnterprise.filter((item: {id: number}) => item.id === parseInt(getEnterpriseIdOfAdmin ?? "") )
+
+                setGetEnterprise(filteredEnterpriseIdOdAdmin)
+                return;
+                
+            }
             setGetEnterprise(getEnterprise)
             console.log("l'id de l'entreprise:", getEnterprise)
 
@@ -109,10 +127,9 @@ export default function AddContract(){
             ]
         },
 
-        
-          
-
     ]
+
+
 
     const handleSubmit = async (e: FormEvent) => {
         setIsLoading(true);
@@ -226,13 +243,12 @@ export default function AddContract(){
                                                                 })
                                                             }
                                                         }
-                                                     }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent 
+                                                     }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent 
                                                        border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700" >
 
-                                                        <option>
+                                                        <option selected disabled >
                                                             {item.placeholder}
                                                         </option>
-                                                        
 
                                                         {
                                                             
@@ -242,53 +258,9 @@ export default function AddContract(){
                                                                     {option.value}
                                                                 </option>
                                                             )) :
-                                                            <div>
-                                                                {/**Option du type de contrat */}
-                                                                <div className={item.alias === "ContractTypeId" ? "block" : "hidden"}>
-                                                                    <option value="CDD">
-                                                                        CDD
-                                                                    </option>
-
-                                                                    <option value="CDI">
-                                                                        CDI
-                                                                    </option>
-
-                                                                    <option value="Contrat de prestation">
-                                                                        Contrat de prestaion
-                                                                    </option>
-
-                                                                    <option value="Stage académique">
-                                                                        Stage académique
-                                                                    </option>
-
-                                                                    <option value="Stage professionnel">
-                                                                        Stage professionnel
-                                                                    </option>
-                                                                </div>
-
-                                                                {/** Option entreprise */}
-
-                                                                <div className={item.alias === "EnterpriseId" ? "block" : "hidden"}>
-                                                                    <option value="LCR-GROUP P/N">
-                                                                        LCR-GROUP P/N
-                                                                    </option>
-
-                                                                    <option value="Direct-Transfert P/N">
-                                                                        Direct-Transfert P/N
-                                                                    </option>
-
-                                                                    <option value="DIRECT TRANSFERT BRAZZA">
-                                                                        DIRECT TRANSFERT BRAZZA
-                                                                    </option>
-
-                                                                    <option value="LRC Group BRAZZA">
-                                                                        LRC Group BRAZZA
-                                                                    </option>
-
-                                                                </div>
-
-                                                                {/**Option de la durée */}
-                                                                <div className={item.alias === "ContractType" ? "block" : "hidden"}>
+                                                                (
+                                                                item.alias === "delay" && (
+                                                                <>
                                                                     <option value="3 mois">
                                                                         3 mois
                                                                     </option>
@@ -301,9 +273,11 @@ export default function AddContract(){
                                                                         1 année
                                                                     </option>
                                                                     
-                                                                </div>
+                                                                </>
+                                                                )
 
-                                                            </div>
+                                                                )
+
                                                             
                                                         }
                                                         

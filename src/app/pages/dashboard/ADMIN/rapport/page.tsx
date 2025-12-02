@@ -3,14 +3,17 @@ import { Sidebar } from "@/components/Layouts/sidebar";
 import { Header } from "@/components/Layouts/header";
 import HookComponentModal from "@/components/ComponentModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faChevronDown, faChevronUp, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { isValidElement, useState } from "react";
 import { urlAPI } from "@/app/main";
 
 export default function Repports() {
     const ComponentModal = HookComponentModal();
     const [itemIndex, setItemIndex] = useState<number | null>(null);
-    const [isVisible, setIsVisible] = useState(false)
+    const [itemIndexWriting, setItemIndexWriting] = useState<number | null>(null)
+    const [isVisible, setIsVisible] = useState(false);
+    const [adminResponse, setAdminResponse] = useState("");
+
     return (
         <main className="bg-gray-100 dark:bg-transparent">
             <Header />
@@ -23,8 +26,9 @@ export default function Repports() {
                     </div>
                     <hr className='bg-gray-400 border-0 h-[1px]' />
                     <div className="flex lg:justify-between mt-5 items-center flex-col space-y-4 lg:flex-row lg:space-y-0">
-                        <div>
-                            <input type="text" className="bg-transparent border border-gray-400 p-3 rounded-md outline-none w-[300px]" placeholder="Recherche par noms.." />
+                        <div className='relative w-[300px]'>
+                            <input type="text" className="bg-transparent border border-gray-400 p-3 rounded-md outline-none w-full" placeholder="Recherche par collaborateurs..." />
+                            <FontAwesomeIcon icon={faSearch} className="absolute top-4 right-4 text-gray-400" />
                         </div>
                         <div className="flex item-center text-white space-x-4">
                             <button className="bg-green-500 hover:scale-105 ease duration-500 px-6 py-2">Suivant</button>
@@ -65,14 +69,17 @@ export default function Repports() {
                                             })}</h1>
                                             <hr className='bg-gray-400 border-0 h-[1px]' />
                                             <div className="flex flex-col space-y-5 pt-4">
-                                                <p className="font-normal dark:text-gray-300  whitespace-pre-wrap">{itemIndex === index && isVisible ? repport.content : repport.content?.length > 255 ? repport.content.slice(0, 254) + "..." : repport.content}
+                                                <p className="font-normal leading-loose  dark:text-gray-300  whitespace-pre-wrap">{itemIndex === index && isVisible ? repport.content : repport.content?.length > 255 ? repport.content.slice(0, 254) + "..." : repport.content}
                                                 </p>
 
                                                 <div className={itemIndex === index && isVisible ? "relative -top-2" : "hidden"}>
                                                     <p className={repport.adminResponse ? "rounded-md border border-gray-400 p-4" : "hidden"}>
                                                         Commentaire de l'administrateur: {repport?.adminResponse}
                                                     </p>
-                                                    <textarea name="" id="" placeholder="Commentaire de l'administrateur!" className="w-full bg-transparent  border border-gray-400 my-4 rounded-md dark:text-gray-300 placeholder-gray-600 dark:placeholder-gray-300  h-[100px] p-4 outline-none">
+                                                    <textarea value={itemIndexWriting === index ? adminResponse : ""} onChange={(e) => {
+                                                        setAdminResponse(e.target.value);
+                                                        setItemIndexWriting(index)
+                                                    }} name="" id="" placeholder="Laissez un commentaire!" className="w-full bg-transparent  border border-gray-400 my-4 rounded-md dark:text-gray-300 placeholder-gray-600 dark:placeholder-gray-300  h-[100px] p-4 outline-none">
                                                     </textarea>
                                                     <button type="button" className="text-white bg-blue-600 rounded-md hover:bg-blue-700 w-[100px] py-2">
                                                         Envoyer

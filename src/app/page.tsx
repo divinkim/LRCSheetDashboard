@@ -10,12 +10,31 @@ import Swal from 'sweetalert2';
 import Link from 'next/link';
 import { controllers, urlAPI } from './main';
 import { ClipLoader } from 'react-spinners';
+import { messaging } from "@/firebase/firebaseConfig";
+import { getToken, onMessage } from "firebase/messaging";
+import { useEffect } from "react";
+
+type SignInput = {
+    email: string | null,
+    password: string | null
+}
 
 export default function SingIn() {
-    type SignInput = {
-        email: string | null,
-        password: string | null
-    }
+    useEffect(() => {
+        (async () => {
+
+            await Notification.requestPermission().then(async (permission) => {
+                if (permission === "granted") {
+                    if (!messaging) return
+                    const adminFcmToken = await getToken(messaging, {
+                        vapidKey: "BM91689dVSwzQt0EWC0MmE0UBLvdkXzahkR0-UFppnWI3rOP8OTakisMCaxco0lXPZzx6jmxbtsbzWECTN6K6lg",
+                    });
+                    adminFcmToken ? localStorage.setItem("adminFcmToken", adminFcmToken) : "";
+                    console.log("Le token administrateur", adminFcmToken)
+                }
+            })
+        })();
+    }, [])
 
     const [signInData, setSignInData] = useState<SignInput>({
         email: null,

@@ -13,8 +13,8 @@ import { RegionLabels } from "../../(home)/_components/region-labels";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import HomeComponent from ".";
-
-
+import { onMessage } from "firebase/messaging";
+import { messaging } from "@/firebase/firebaseConfig";
 type PropsType = {
     searchParams: Promise<{
         selected_time_frame?: string;
@@ -25,6 +25,9 @@ import { Header } from "@/components/Layouts/header";
 import { Sidebar } from "@/components/Layouts/sidebar";
 import { faArrowAltCircleUp, faUserGraduate, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { controllers, urlAPI } from "@/app/main";
+import Swal from "sweetalert2";
 
 export default function HomePage({ searchParams }: PropsType) {
     // const { selected_time_frame } = await searchParams;
@@ -34,7 +37,6 @@ export default function HomePage({ searchParams }: PropsType) {
     const adminRole = localStorage.getItem("adminRole");
 
     const HomeCard = HomeComponent();
-    console.log(HomeCard)
 
     return (
         <div>

@@ -1,5 +1,4 @@
 "use client";
-
 import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -22,6 +21,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { title } from "process";
 import { icon } from "@fortawesome/fontawesome-svg-core";
+import { messaging } from "@/firebase/firebaseConfig";
+import { getToken, onMessage } from "firebase/messaging";
+import { controllers, urlAPI } from "@/app/main";
+
+type AdminNotification = {
+  path: string;
+  adminSectionIndex: string;
+};
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -37,6 +44,72 @@ export function Sidebar() {
     //   prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title],
     // );
   };
+
+  const adminFcmToken = localStorage.getItem("adminFcmToken");
+  const [adminNotificationPathStored, setAdminNotificationPathStored] =
+  useState<AdminNotification[]>([]);
+  console.log("fcmToken admin", adminFcmToken);
+
+  useEffect(() => {
+    (() => {
+      const getAdminNotificationPathStored = localStorage.getItem("adminNotificationPathStored");
+      if (getAdminNotificationPathStored !== null) {
+        const parseAdminNotificationStored = JSON.parse(getAdminNotificationPathStored);
+        return setAdminNotificationPathStored(parseAdminNotificationStored);
+      }
+    })()
+  }, [])
+
+  useEffect(() => {
+    (async () => {
+      const id = localStorage.getItem("id");
+      const adminRole = localStorage.getItem("adminRole");
+      const EnterpriseId = localStorage.getItem("EnterpriseId");
+      const adminService = localStorage.getItem("adminService");
+
+      const datas = {
+        fcmToken: adminFcmToken,
+        id,
+        adminRole,
+        adminEnterpriseId: EnterpriseId,
+        adminService
+      }
+      // Mise à jour du token de l'administrateur
+      const updateFcmTokenAdmin = await controllers.API.SendOne(urlAPI, "sendFcmToken", null, datas);
+      console.log(updateFcmTokenAdmin.message);
+      return
+    })()
+  }, []);
+
+  useEffect(() => {
+    (() => {
+      if (!messaging) return
+      onMessage(messaging, (payload) => {
+        console.log("Notification reçue (foreground):", payload);
+        const newObject = [
+          ...adminNotificationPathStored,
+          {
+            path: payload.data?.path ?? "",
+            adminSectionIndex: "2"
+          }
+        ]
+        setAdminNotificationPathStored(newObject);
+        localStorage.setItem("adminNotificationPathStored", JSON.stringify(newObject))
+
+        // const { title, body } = payload?.notification
+        // Swal.fire({
+        //     icon: "info",
+        //     title: "Notification entrante!",
+        //     cancelButtonText: "Annuler",
+        //     confirmButtonText: "Voir plus",
+        //     showCancelButton: true,
+        // }).then((confirm) => {
+        //     if (confirm.isConfirmed) window.location.href = payload?.data?.path ?? ""
+        // })
+      });
+    })()
+  }, [])
+  console.log("Les paths", adminNotificationPathStored)
 
   useEffect(() => {
     // Keep collapsible open, when it's subpage is active
@@ -108,8 +181,9 @@ export function Sidebar() {
     },
 
     {
-      index: 3,
+      index: 2,
       title: "👩‍💼 Administration",
+      adminService: "ADMINISTRATION",
       ItemLists: [
         {
           title: "Permissions",
@@ -117,8 +191,8 @@ export function Sidebar() {
           icon: faUserShield
         },
         {
-          title: "Rapport",
-          href: "/pages/dashboard/ADMIN/rapport",
+          title: "Rapports",
+          href: "/pages/dashboard/ADMIN/repportsList",
           icon: faFileLines
         },
         {
@@ -172,7 +246,7 @@ export function Sidebar() {
     },
 
     {
-      index: 4,
+      index: 3,
       title: "💵 Comptabilité",
       ItemLists: [
         {
@@ -266,7 +340,10 @@ export function Sidebar() {
                           : [...toggleAsideSections, index]
                       )
                     }} className={toggleAsideSections.includes(index) ? "flex cursor-pointer p-2 bg-gray-900 text-gray-300 ease duration-700 flex-row items-center justify-between   dark:text-gray-300" : "flex cursor-pointer p-2 bg-gray-800 hover:bg-gray-900 ease duration-500 text-gray-300 flex-row items-center justify-between"}>
-                      <h3 className="font-bold">{aside.title ?? ""}</h3>
+                      <h3 className="font-bold">{aside.title ?? ""} <span className={adminNotificationPathStored.filter((item: { adminSectionIndex: string }) => parseInt(item.adminSectionIndex ?? "") === index).length === 0 ? "hidden" : 'bg-red-500 relative left-2 text-white rounded-full px-[6px]'}>
+                        {adminNotificationPathStored.filter((item: { adminSectionIndex: string }) => parseInt(item.adminSectionIndex ?? "") === index).length}
+                      </span>
+                      </h3>
                       <FontAwesomeIcon icon={toggleAsideSections.includes(index) ? faChevronUp : faChevronDown} className="" />
                     </div>
                     <div className={toggleAsideSections.includes(index) ? "flex flex-col ease duration-700 space-y-2 pl-8 pt-3" : "ease duration-500 hidden"}>

@@ -10,7 +10,7 @@ type RepportsValue = {
     EnterpriseId: number,
     monthIndice: number,
     createdAt: string,
-    adminResponse:string,
+    adminResponse: string,
     User: {
         firstname: string,
         lastname: string,
@@ -22,13 +22,16 @@ type RepportsValue = {
 export default function HookComponentModal() {
 
     const [repports, setRepports] = useState<RepportsValue[]>([]);
-    const EnterpriseId = localStorage.getItem("EnterpriseId");
+    let EnterpriseId = localStorage.getItem("EnterpriseId");
 
     useEffect(() => {
         (async () => {
             const allRepports = await controllers.API.getAll(urlAPI, "getAllRepports", null);
-            const getRepportsByEnterprise = allRepports.filter((repport: { EnterpriseId: number }) => repport.EnterpriseId === parseInt(EnterpriseId ?? ""));
-
+            if (parseInt(EnterpriseId ?? "") !== 1) {
+                const getRepportsByEnterprise = allRepports.filter((repport: { EnterpriseId: number }) => repport.EnterpriseId === parseInt(EnterpriseId ?? ""));
+                return setRepports(getRepportsByEnterprise)
+            }
+            const getRepportsByEnterprise = allRepports.filter((repport: { EnterpriseId: number }) => repport.EnterpriseId === 1 || repport.EnterpriseId === 4);
             setRepports(getRepportsByEnterprise)
         })()
     }, [])

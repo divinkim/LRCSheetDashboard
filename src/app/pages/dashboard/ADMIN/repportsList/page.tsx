@@ -44,6 +44,12 @@ export default function Repports() {
         })()
     }, [ComponentModal.at(0)?.Repport?.repportsArray]);
 
+    useEffect(() => {
+        (() => {
+            
+        })()
+    }, [])
+
     const monthsOfYear = [
         "Janvier",
         "Février",

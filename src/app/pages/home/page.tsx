@@ -23,7 +23,7 @@ type PropsType = {
 
 import { Header } from "@/components/Layouts/header";
 import { Sidebar } from "@/components/Layouts/sidebar";
-import { faArrowAltCircleUp, faUserGraduate, faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { faArrowAltCircleUp, faEye, faUserGraduate, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { controllers, urlAPI } from "@/app/main";
@@ -33,7 +33,7 @@ export default function HomePage({ searchParams }: PropsType) {
     // const { selected_time_frame } = await searchParams;
     // const extractTimeFrame = createTimeFrameExtractor(selected_time_frame);
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
-    const enterpriseId = localStorage.getItem("EnterpriseId");
+    const EnterpriseId = localStorage.getItem("EnterpriseId");
     const adminRole = localStorage.getItem("adminRole");
 
     const HomeCard = HomeComponent();
@@ -48,21 +48,22 @@ export default function HomePage({ searchParams }: PropsType) {
                        
                     </Suspense> */}
                     {/* <OverviewCardsGroup /> */}
-                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                         {
                             HomeCard.map((element, index) => (
-                                <Link href={!requireAdminRoles.includes(adminRole ?? "") ? "" : element.path} className={"rounded-xl p-4 h-[200px] dark:bg-gray-800 shadow-xl dark:shadow-none cursor-pointer ease duration-500 hover:scale-95 bg-white"}>
-                                    <div className={cn(element.color, "w-[55px] rounded-full p-4 ")}>
+                                <div className={index === 2 && !requireAdminRoles.includes(adminRole ?? "") ? "hidden" : index === 1 && parseInt(EnterpriseId ?? "") !== 1 ? "hidden" : "rounded-xl p-4 h-[200px] dark:bg-gray-800 shadow-xl dark:shadow-none ease duration-500  bg-white"}>
+                                    <div style={{ background: element.backgroundColor }} className={cn("w-[55px] rounded-full p-4 ")}>
                                         <FontAwesomeIcon icon={element.icon} className='text-white' />
                                     </div>
-                                    <div className="mt-5  font-semibold text-gray-600 dark:text-gray-300">
-                                        <p className="text-[40px]">{index === 2 ? element.value?.toLocaleString() + " FCFA" : element.value}</p>
+                                    <div className="mt-5 relative top-5  font-semibold text-gray-600 dark:text-gray-300">
+                                        <p className="text-[30px]">{index === 2 ? element.value?.toLocaleString() + " FCFA" : element.value}</p>
                                         <div className="flex justify-between w-full">
                                             <p className='text-gray-500'>{element.title}</p>
-                                            <p className="text-green-600">2.45% <span><FontAwesomeIcon icon={faArrowAltCircleUp} /></span></p>
+                                            <Link href={element.path} className="rounded-full  ease duration-500"><FontAwesomeIcon icon={faEye} style={{ background: element.backgroundColor }} className={cn("hover:scale-90 ease duration-500 rounded-full px-3.5 py-4   text-white relative left-1 -top-4")} />
+                                            </Link>
                                         </div>
                                     </div>
-                                </Link>
+                                </div>
                             ))
                         }
                     </div>

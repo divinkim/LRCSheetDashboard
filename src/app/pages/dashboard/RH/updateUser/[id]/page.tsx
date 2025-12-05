@@ -121,7 +121,7 @@ export default function UpdateUser() {
         (async () => {
             const getUserId = window.location.href.split('/').pop();
             const getUser = await controllers.API.getOne(urlAPI, "getUser", parseInt(getUserId ?? ""));
-            console.log("l'utilisateur", getUser)
+            console.log("l'utilisateur", getUser);
             setInputs({
                 firstname: getUser.firstname ?? null,
                 lastname: getUser.lastname ?? null,
@@ -144,7 +144,7 @@ export default function UpdateUser() {
                 DepartmentPostId: getUser.DepartmentPostId ?? null,
                 maritalStatus: getUser.marialStatus ?? null,
                 adminService: getUser.adminService ?? null,
-                status: getUser.status ?? null
+                status: getUser.status ? "Actif" : "Inactif"
             })
         })()
     }, [getAdminRole])
@@ -250,51 +250,68 @@ export default function UpdateUser() {
     // const adminRoles = ['Super-Admin', 'Supervisor-Admin'];
     // const role = localStorage.getItem("adminRole") ?? "";
 
-    let arrayDatas = [
+    const dynamicOptions = [
         {
             alias: "EnterpriseId",
-            value: getEnterprises.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
+            componentOptions: getEnterprises.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
         },
         {
             alias: "departmentPostId",
-            value: getDepartmentPosts.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
+            componentOptions: getDepartmentPosts.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
         },
         {
             alias: "PostId",
-            value: getPosts.filter(item => item.id && item.title).map(item => ({ id: item.id, title: item.title }))
+            componentOptions: getPosts.filter(item => item.id && item.title).map(item => ({ id: item.id, title: item.title }))
         },
         {
             alias: "SalaryId",
-            value: getSalary.filter(item => item.id && item.netSalary).map(item => ({ id: item.id, title: item.netSalary }))
+            componentOptions: getSalary.filter(item => item.id && item.netSalary).map(item => ({ id: item.id, title: item.netSalary }))
         },
         {
             alias: "ContractTypeId",
-            value: getContractTypes.filter(item => item.id && item.title).map(item => ({ id: item.id, title: item.title }))
+            componentOptions: getContractTypes.filter(item => item.id && item.title).map(item => ({ id: item.id, title: item.title }))
         },
         {
             alias: "ContractId",
-            value: getContracts.filter(item => item.id && item.delay).map(item => ({ id: item.id, title: item.delay }))
+            componentOptions: getContracts.filter(item => item.id && item.delay).map(item => ({ id: item.id, title: item.delay }))
         },
         {
             alias: "CountryId",
-            value: getCountry.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
+            componentOptions: getCountry.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
         },
         {
             alias: "CityId",
-            value: getCity.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
+            componentOptions: getCity.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
         },
         {
             alias: "DistrictId",
-            value: getDistrict.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
+            componentOptions: getDistrict.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
         },
         {
             alias: "QuarterId",
-            value: getQuarter.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
+            componentOptions: getQuarter.filter(item => item.id && item.name).map(item => ({ id: item.id, title: item.name }))
         }
     ];
 
+    const staticsOptions = [
+        {
+            alias: "gender",
+            componentOptions: [{ title: "Homme", value: "Homme" }, { title: "Femme", value: "Femme" }, { title: "Aucun", value: "Aucun" }]
+        },
+        {
+            alias: "status",
+            componentOptions: [{ title: "Actif", value: "Actif" }, { title: "Inactif", value: "Inactif" }]
+        },
+        {
+            alias: "role",
+            componentOptions: [{ title: "Super-Admin", value: "Super-Admin" }, { title: "Controller-Admin", value: "Administrateur de contôle" }, { title: "Supervisor-Admin", value: "Administrateur de supervision" }, { title: "Client-User", value: "Utilisateur client" }]
+        },
+    ]
+
     const handleSubmit = async (e: FormEvent) => {
         setIsLoading(true);
+
+        const userId = window.location.href?.split('/').pop();
 
         const requireFields = {
             firstname: inputs.firstname,
@@ -302,6 +319,8 @@ export default function UpdateUser() {
             gender: inputs.gender,
             password: inputs.password,
             EnterpriseId: inputs.EnterpriseId,
+            birthDate: new Date(inputs.birthDate ?? "").toISOString(),
+            address: inputs.address,
             email: inputs.email,
             role: inputs.role ?? null,
             phone: inputs.phone ? `+242${inputs.phone}` : undefined,
@@ -315,38 +334,22 @@ export default function UpdateUser() {
             CityId: inputs.CityId ?? null,
             DistrictId: inputs.DistrictId ?? null,
             QuarterId: inputs.QuarterId ?? null,
-            adminService: inputs.adminService ?? "no data",
+            adminService: inputs.adminService ?? null,
             status: inputs.status === "Actif" ? true : false
         }
 
         console.log(requireFields);
-
-        const response = await controllers.API.SendOne(urlAPI, "createUser", null, requireFields);
+        const response = await controllers.API.UpdateOne(urlAPI, "updateUser", userId, requireFields);
 
         controllers.alertMessage(
             response.status,
             response.title,
             requireRoles.includes(requireFields.role ?? "") ? "L'administrateur a bien été enregistré" : response.message,
-            response.status ? "/dashboard/RH/addUser" : null
+            response.status ? "/pages/dashboard/RH/updateUser/" + userId : null
         );
 
         setIsLoading(false);
     };
-
-    const staticsOptions = [
-        {
-            alias: "gender",
-            value: [{ title: "Homme", value: "Homme" }, { title: "Femme", value: "Femme" }, { title: "Aucun", value: "Aucun" }]
-        },
-        {
-            alias: "status",
-            value: [{ title: "Actif", value: "Actif" }, { title: "Inactif", value: "Inactif" }]
-        },
-        {
-            alias: "role",
-            value: [{ title: "Super-Admin", value: "Super-Admin" }, { title: "Controller-Admin", value: "Administrateur de contôle" }, { title: "Supervisor-Admin", value: "Administrateur de supervision" }, { title: "Client-User", value: "Utilisateur client" }]
-        },
-    ]
 
     return (
         <main className="bg-gray-100 text-gray-700 font-semibold dark:text-gray-300 dark:bg-transparent">
@@ -365,7 +368,7 @@ export default function UpdateUser() {
                                 <div className="flex flex-wrap p-4 font-normal space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element, index) => (
-                                            <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-5 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"}>
+                                            <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"}>
                                                 <FontAwesomeIcon icon={element.icon} className="text-white" /> <span className='text-white'>{element.title}</span>
                                             </Link>
                                         ))
@@ -437,9 +440,9 @@ export default function UpdateUser() {
                                                             {e.placeholder}
                                                         </option>
                                                         {
-                                                            e.dynamicOptions?.status ? arrayDatas
+                                                            e.dynamicOptions?.status ? dynamicOptions
                                                                 .find(item => item.alias === e.alias)
-                                                                ?.value
+                                                                ?.componentOptions
                                                                 ?.map(option => (
                                                                     <option value={option.id}>
                                                                         {option.title}
@@ -452,18 +455,16 @@ export default function UpdateUser() {
                                                                 //         </option>
                                                                 //     ))
                                                                 // ))
-                                                                staticsOptions.find(item => item.alias === e.alias)?.value.map((item) => (
-                                                                    <option value={item.title}>
-                                                                        {item.value}
+                                                                staticsOptions.find(item => item.alias === e.alias)?.componentOptions.map((option) => (
+                                                                    <option value={option.value}>
+                                                                        {option.value}
                                                                     </option>
                                                                 ))
                                                         }
                                                     </select>
                                                 }
-
                                             </div>
                                         </div>
-
                                     ))
                                 ))
                             }

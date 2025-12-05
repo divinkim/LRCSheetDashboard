@@ -124,7 +124,7 @@ export default function HomeComponent() {
             icon: faDollarSign,
             value: getTotalAttendanceDeductions(attendances),
             title: "Gain mensuel actuel",
-            path: "/pages/dashboard/STATS/getAllStatistcs",
+            path: "/pages/dashboard/STATS/amountStatistics",
             backgroundColor: "#22C55E"   // green-500
         },
         {

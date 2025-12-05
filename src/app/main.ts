@@ -147,13 +147,13 @@ export class Api {
 
             if (isPresentFile) {
                 for (const [key, value] of Object.entries(data)) {
-                    if (value === null || value === undefined || value === "") {
-                        return {
-                            status: false,
-                            title: "Champs invalides",
-                            message: "Veuillez saisir tous les champs obligatoires"
-                        }
-                    }
+                    // if (value === null || value === undefined || value === "") {
+                    //     return {
+                    //         status: false,
+                    //         title: "Champs invalides",
+                    //         message: "Veuillez saisir tous les champs obligatoires"
+                    //     }
+                    // }
                     formData.append(key, value);
                 }
 

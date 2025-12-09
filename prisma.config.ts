@@ -7,6 +7,6 @@ export default defineConfig({
   },
   engine: "classic",
   datasource: {
-    url: "mysql://root:AhssrI4626I@vps101055.serveur-vps.net:3306/lrc_sheet_database",
+    url: env("DATABASE_URL"), // <- ici on lit la variable d'environnement
   },
 });

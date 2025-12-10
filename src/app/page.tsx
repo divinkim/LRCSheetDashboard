@@ -58,19 +58,18 @@ export default function SingIn() {
             return;
         }
 
-        const response = await controllers.API.SendOne("http://localhost:3000", "users/auth", null, { email: signInData.email, password: signInData.password });
-
-
+        const response = await controllers.API.SendOne(urlAPI, "loginFromAdmin", null, { email: signInData.email, password: signInData.password });
+      console.log(response.user)
         if (response.status) {
             const localStorageData = {
-                id: response.data.id.toString(),
-                firstname: response.data.firstname,
-                lastname: response.data.lastname,
-                image: response.data.image,
-                authToken: response.authToken,
-                adminRole: response.data?.adminRole,
-                EnterpriseId: response.data?.EnterpriseId,
-                adminService: response.data.adminService,
+                id: response.user.id.toString(),
+                firstname: response.user.firstname,
+                lastname: response.user.lastname,
+                image: response.user.image,
+                authToken: response.user.authToken,
+                adminRole: response.user?.adminRole,
+                EnterpriseId: response.user?.EnterpriseId,
+                adminService: response.user.adminService,
             }
 
             console.log(localStorageData)

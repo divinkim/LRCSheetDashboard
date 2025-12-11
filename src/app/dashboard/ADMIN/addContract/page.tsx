@@ -22,9 +22,9 @@ type ContratValues = {
 
 export default function AddContract() {
 
-    const [getEnterprise, setGetEnterprise] = useState<any []>([])
-    const [getContract, setGetContract] = useState<any []>([])
-    const [getContractType, setGetContractType] = useState<any []>([])
+    const [getEnterprise, setGetEnterprise] = useState<any[]>([])
+    const [getContract, setGetContract] = useState<any[]>([])
+    const [getContractType, setGetContractType] = useState<any[]>([])
     const [getEnterpriseIdOfAdmin, setGetEnterpriseIdOfAdmin] = useState<string | null>(null)
     const [getAdminRole, setGetAdminRole] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false);
@@ -56,23 +56,23 @@ export default function AddContract() {
     //Récupérer les entreprises
     useEffect(() => {
         (async () => {
+            if (typeof (window) === undefined) return;
+            const authToken = localStorage.getItem("authToken")
+            const role = localStorage.getItem("role")
+            let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId")
 
-        const authToken = localStorage.getItem("authToken")
-        const role = localStorage.getItem("role")
-        let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId")
+            setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
+            setGetAdminRole(role)
 
-        setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
-        setGetAdminRole(role)
-
-            const methodName= "getEnterprises"
+            const methodName = "getEnterprises"
             const getEnterprise = await controllers.API.getAll(urlAPI, methodName, null)
 
-            if(parseInt(getEnterpriseIdOfAdmin ?? "") !== 1){
-                const filteredEnterpriseIdOdAdmin = getEnterprise.filter((item: {id: number}) => item.id === parseInt(getEnterpriseIdOfAdmin ?? "") )
+            if (parseInt(getEnterpriseIdOfAdmin ?? "") !== 1) {
+                const filteredEnterpriseIdOdAdmin = getEnterprise.filter((item: { id: number }) => item.id === parseInt(getEnterpriseIdOfAdmin ?? ""))
 
                 setGetEnterprise(filteredEnterpriseIdOdAdmin)
                 return;
-                
+
             }
             setGetEnterprise(getEnterprise)
             console.log("l'id de l'entreprise:", getEnterprise)
@@ -144,7 +144,7 @@ export default function AddContract() {
                 {
                     id: "1 année", value: "1 année"
                 },
-                
+
             ]
         }
     ]
@@ -253,45 +253,45 @@ export default function AddContract() {
                                                         }} type={item.type} maxLength={item.type === "tel" ? 9 : undefined} placeholder={item.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border
                                                      border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
 
-                                                     : 
-                                                     <select onChange={async (u) => {
-                                                        for(const [key, _] of Object.entries(inputsValues)){
-                                                            if(key === item.alias){
-                                                                setInputsValues({
-                                                                    ...inputsValues,
-                                                                    [item.alias]: item.type === "number" ? parseInt(u.target.value) : u.target.value    
-                                                                })
+                                                        :
+                                                        <select onChange={async (u) => {
+                                                            for (const [key, _] of Object.entries(inputsValues)) {
+                                                                if (key === item.alias) {
+                                                                    setInputsValues({
+                                                                        ...inputsValues,
+                                                                        [item.alias]: item.type === "number" ? parseInt(u.target.value) : u.target.value
+                                                                    })
+                                                                }
                                                             }
-                                                        }
-                                                     }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent 
+                                                        }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent 
                                                        border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700" >
 
-                                                        <option selected disabled >
-                                                            {item.placeholder}
-                                                        </option>
+                                                            <option selected disabled >
+                                                                {item.placeholder}
+                                                            </option>
 
-                                                        {
-                                                            
-                                                            item.dynamicOptions?.status ? 
-                                                              arrayDatas?.find(items => items.alias === item.alias)?.value.map(option => (
-                                                                <option value={option.id}>
-                                                                    {option.value}
-                                                                </option>
-                                                            )) :
-                                                                (
-                                                                 
-                                                                    staticData.find(i => i.alias === item.alias)?.value.map((e) => (
-                                                                        <option value={e.id}>
-                                                                            {e.value}
+                                                            {
+
+                                                                item.dynamicOptions?.status ?
+                                                                    arrayDatas?.find(items => items.alias === item.alias)?.value.map(option => (
+                                                                        <option value={option.id}>
+                                                                            {option.value}
                                                                         </option>
-                                                                    ))
+                                                                    )) :
+                                                                    (
 
-                                                                )
+                                                                        staticData.find(i => i.alias === item.alias)?.value.map((e) => (
+                                                                            <option value={e.id}>
+                                                                                {e.value}
+                                                                            </option>
+                                                                        ))
 
-                                                            
-                                                        }
-                                                        
-                                                     </select>
+                                                                    )
+
+
+                                                            }
+
+                                                        </select>
 
                                                 }
 

@@ -21,7 +21,7 @@ type Attendances = {
 
 export default function HomeComponent() {
   const [attendances, setAttendances] = useState<Attendances[]>([]);
-  const EnterpriseId = localStorage.getItem("EnterpriseId");
+  const [EnterpriseId, setEnterpriseId] = useState<string | null>(null)
   const monthIndex = new Date().getMonth();
   const [data, setData] = useState({
     usersNumber: 0,
@@ -34,8 +34,8 @@ export default function HomeComponent() {
   let HomeCard;
   // Nombre d'utilisateur par entreprise
   useEffect(() => {
-    setTimeout(() => {
-      (async () => {
+    (async () => {
+        const EnterpriseId =localStorage.getItem("EnterpriseId");
         const users = await controllers.API.getAll(urlAPI, "getUsers", null);
         if (parseInt(EnterpriseId ?? "") !== 1) {
           const filterUsersByEnterpriseId = users.filter(
@@ -51,8 +51,8 @@ export default function HomeComponent() {
           ...data,
           usersNumber: users.length,
         });
+        setEnterpriseId(EnterpriseId)
       })();
-    }, 1500);
   }, []);
   //Nombre d'entreprise
   useEffect(() => {

@@ -30,7 +30,6 @@ export default function SingIn() {
                         vapidKey: "BM91689dVSwzQt0EWC0MmE0UBLvdkXzahkR0-UFppnWI3rOP8OTakisMCaxco0lXPZzx6jmxbtsbzWECTN6K6lg",
                     });
                     adminFcmToken ? localStorage.setItem("adminFcmToken", adminFcmToken) : "";
-                    console.log("Le token administrateur", adminFcmToken)
                 }
             })
         })();
@@ -46,7 +45,6 @@ export default function SingIn() {
 
     const handleSingnIn = async () => {
         setLoadingHandleSignIn(true);
-
         const regexEmail = /^[a-z0-9]+@[a-z]+\.[a-z]{2,}$/;
         const regexPassWord = /^[a-zA-Z0-9ù*!.-_]{4,}$/;
 
@@ -59,7 +57,7 @@ export default function SingIn() {
         }
 
         const response = await controllers.API.SendOne(urlAPI, "loginFromAdmin", null, { email: signInData.email, password: signInData.password });
-      console.log(response.user)
+        console.log(response.user)
         if (response.status) {
             const localStorageData = {
                 id: response.user.id.toString(),
@@ -89,8 +87,7 @@ export default function SingIn() {
             for (const [key, value] of Object.entries(localStorageData)) {
                 localStorage.setItem(`${key}`, `${value}`);
             }
-
-            return window.location.href = "/pages/home";
+            return window.location.assign("/home");
         }
         setTimeout(() => {
             controllers.alertMessage(response.status, response.title, response.message, null);

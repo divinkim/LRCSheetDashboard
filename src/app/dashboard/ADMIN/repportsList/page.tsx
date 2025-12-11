@@ -33,20 +33,21 @@ export default function Repports() {
     const [monthIndice, setMonthIndice] = useState(new Date().getMonth());
     const [originalRepportsArray, setOriginalRepportsArray] = useState<RepportsValue[]>([]);
     const [originalRepportsArrayCloned, setOriginalRepportsArrayCloned] = useState<RepportsValue[]>([]);
-    let EnterpriseId = localStorage.getItem("EnterpriseId");
-
-    EnterpriseId ? parseInt(EnterpriseId) : null;
+    const [EnterpriseId, setEnterpriseId] = useState<string | null>(null)
 
     useEffect(() => {
         (() => {
+            if (typeof (window) === undefined) return;
+            let EnterpriseId = localStorage.getItem("EnterpriseId");
             setOriginalRepportsArray(ComponentModal.at(0)?.Repport?.repportsArray ?? []);
             setOriginalRepportsArrayCloned(ComponentModal.at(0)?.Repport?.repportsArray ?? []);
+            setEnterpriseId(EnterpriseId)
         })()
     }, [ComponentModal.at(0)?.Repport?.repportsArray]);
 
     useEffect(() => {
         (() => {
-            
+
         })()
     }, [])
 

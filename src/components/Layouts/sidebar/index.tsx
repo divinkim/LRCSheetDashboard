@@ -152,13 +152,13 @@ export function Sidebar() {
         {
           index: 0,
           title: "Envoyer une notification",
-          href: "pages/dashboard/notification/sendNotification",
+          href: "/dashboard/notification/sendNotification",
           icon: faPaperPlane
         },
         {
           index: 1,
           title: "Liste de notification",
-          href: "pages/dashboard/notifications/getAllNotifications",
+          href: "/dashboard/notifications/getAllNotifications",
           icon: faBell
         },
       ]
@@ -172,25 +172,25 @@ export function Sidebar() {
         {
           index: 0,
           title: "Présences au poste",
-          href: "/pages/dashboard/RH/presencesList",
+          href: "/dashboard/RH/presencesList",
           icon: faClipboardCheck
         },
         {
           index: 1,
           title: "Ajouter un collaborateur",
-          href: "/pages/dashboard/RH/addUser",
+          href: "/dashboard/RH/addUser",
           icon: faUserPlus
         },
         {
           index: 2,
           title: "Liste des collaborateurs",
-          href: "/pages/dashboard/RH/usersList",
+          href: "/dashboard/RH/usersList",
           icon: faUsers
         },
         {
           index: 3,
           title: "Liste des collaborateurs au planning",
-          href: "/pages/dashboard/RH/collaboratorsAssociateList",
+          href: "/dashboard/RH/collaboratorsAssociateList",
           icon: faCalendarCheck
         },
       ]
@@ -205,67 +205,67 @@ export function Sidebar() {
         {
           index: 0,
           title: "Permissions",
-          href: "/pages/dashboard/ADMIN/permission",
+          href: "/dashboard/ADMIN/permission",
           icon: faUserShield
         },
         {
           index: 1,
           title: "Rapports",
-          href: "/pages/dashboard/ADMIN/repportsList",
+          href: "/dashboard/ADMIN/repportsList",
           icon: faFileLines
         },
         {
           index: 2,
           title: "Tâche",
-          href: "/pages/dashboard/ADMIN/task",
+          href: "/dashboard/ADMIN/task",
           icon: faCheckCircle
         },
         {
           index: 3,
           title: "Ajouter un contrat",
-          href: "/pages/dashboard/ADMIN/addContract",
+          href: "/dashboard/ADMIN/addContract",
           icon: faFileSignature
         },
         {
           index: 4,
           title: "Liste de contrat",
-          href: "/pages/dashboard/ADMIN/listContrat",
+          href: "/dashboard/ADMIN/listContrat",
           icon: faFileContract
         },
         {
           index: 5,
           title: "Type de contrat",
-          href: "/pages/dashboard/ADMIN/typeContrat",
+          href: "/dashboard/ADMIN/typeContrat",
           icon: faFileContract
         },
         {
           index: 6,
           title: "Liste de Type de contrat",
-          href: "/pages/dashboard/ADMIN/listTypeContrat",
+          href: "/dashboard/ADMIN/listTypeContrat",
           icon: faFileContract
         },
         {
           index: 7,
           title: "Poste",
-          href: "/pages/dashboard/ADMIN/poste",
+          href: "/dashboard/ADMIN/poste",
           icon: faIdBadge
         },
         {
           index: 8,
           title: "Liste de poste",
-          href: "/pages/dashboard/ADMIN/listPost",
+          href: "/dashboard/ADMIN/listPost",
           icon: faSuitcaseRolling
         },
         {
           index: 9,
           title: "Département",
-          href: "/pages/dashboard/ADMIN/departement",
+          href: "/dashboard/ADMIN/departement",
           icon: faBuilding
         },
         {
           index: 10,
           title: "Liste de département",
-          href: "/pages/dashboard/ADMIN/listDepartement",
+          href: "/dashboard/ADMIN/listDepartement",
           icon: faSuitcaseRolling
         }
       ]
@@ -279,49 +279,49 @@ export function Sidebar() {
         {
           index: 0,
           title: "Ajouter un salaire",
-          href: "/pages/dashboard/COMPTA/addSalary",
+          href: "/dashboard/COMPTA/addSalary",
           icon: faMoneyBill1Wave  // salaire / paie
         },
         {
           index: 1,
           title: "Liste des salaires",
-          href: "/pages/dashboard/COMPTA/salaryList",
+          href: "/dashboard/COMPTA/salaryList",
           icon: faFileInvoiceDollar  // récapitulatif des paies
         },
         {
           index: 2,
           title: "Factures clients",
-          href: "/pages/dashboard/COMPTA/clientInvoices",
+          href: "/dashboard/COMPTA/clientInvoices",
           icon: faFileInvoice  // suivi des factures émises
         },
         {
           index: 3,
           title: "Factures fournisseurs",
-          href: "/pages/dashboard/COMPTA/vendorInvoices",
+          href: "/dashboard/COMPTA/vendorInvoices",
           icon: faFileCircleCheck  // suivi des paiements fournisseurs
         },
         {
           index: 4,
           title: "Dépenses",
-          href: "/pages/dashboard/COMPTA/expenses",
+          href: "/dashboard/COMPTA/expenses",
           icon: faMoneyCheckDollar  // gestion des dépenses courantes
         },
         {
           index: 5,
           title: "Rapports financiers",
-          href: "/pages/dashboard/COMPTA/financialReports",
+          href: "/dashboard/COMPTA/financialReports",
           icon: faChartLine  // bilans, comptes de résultat, cash flow
         },
         {
           index: 6,
           title: "Taxes & TVA",
-          href: "/pages/dashboard/COMPTA/taxes",
+          href: "/dashboard/COMPTA/taxes",
           icon: faReceipt  // déclarations fiscales, TVA, impôts
         },
         {
           index: 7,
           title: "Bilan annuel",
-          href: "/pages/dashboard/COMPTA/annualBalance",
+          href: "/dashboard/COMPTA/annualBalance",
           icon: faBalanceScale  // bilan comptable
         },
       ]
@@ -334,19 +334,19 @@ export function Sidebar() {
         {
           index: 0,
           title: "Gain sur déduction",
-          href: "/pages/dashboard/STATS/annualGain",
+          href: "/dashboard/STATS/annualGain",
           icon: faChartLine   // graphique linéaire pour gains/performances
         },
         {
           index: 1,
           title: "Gain sur abonnement",
-          href: "/pages/dashboard/STATS/subscriptionRevenue",
+          href: "/dashboard/STATS/subscriptionRevenue",
           icon: faCreditCard  // abonnement/revenu, carte de paiement
         },
         {
           index: 2,
           title: "Bilan général",
-          href: "/pages/dashboard/STATS/generalPlan",
+          href: "/dashboard/STATS/generalPlan",
           icon: faFileAlt      // bilan/rapport général
         },
       ]
@@ -359,13 +359,13 @@ export function Sidebar() {
         {
           index: 0,
           title: "Enregistrer une entreprise",
-          href: "/pages/dashboard/OTHERS/addEnterprise",
+          href: "/dashboard/OTHERS/addEnterprise",
           icon: faBuildingCircleCheck
         },
         {
           index: 1,
           title: "Liste des entreprises",
-          href: "/pages/dashboard/OTHERS/enterprisesList",
+          href: "/dashboard/OTHERS/enterprisesList",
           icon: faBuildingColumns
         },
       ]
@@ -421,7 +421,7 @@ export function Sidebar() {
             <div className="w-[100px] h-[100px] mx-auto mb-5">
               <img src="/images/logo/logo.png" alt="" className='w-full h-full object-cover' />
             </div>
-            <Link href="/pages/home" className="font-bold hover:text-gray-400 text-gray-300 ease duration-500">
+            <Link href="/home" className="font-bold hover:text-gray-400 text-gray-300 ease duration-500">
               🏠 ACCUEIL
             </Link>
             <h1 className="font-bold text-[17px] mt-5 text-gray-300">Menu général</h1>

@@ -336,7 +336,23 @@ export const formElements = [
 
                 },
 
-            ]
+            ],
+
+            inputDept : [
+                {
+                    label: "Nom",
+                    placeholder: "Saisissez un nom",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "name"
+
+                }
+            ],
+
+            titleDept: "Formulaire d'enregistrement d'un département"
+
+
         }, addOrUpdateEnterprise: {
             navigationLinks: [
 

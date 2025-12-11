@@ -40,21 +40,22 @@ export default function UsersList() {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);             // page courante
     const limit = 5;                                 // items par page
-
     const [enterprises, setEnterprises] = useState<EnterpriseProps[]>([]);
     const [enterprisesListSaved, setEnterprisesListSaved] = useState<EnterpriseProps[]>([])
-
-    const getAdminRole = localStorage.getItem("adminRole");
+    const [getAdminRole, setAdminRole] = useState<string|null>()
     const [loading, setIsLoading] = useState(false);
     const requireRoles = ['Super-Admin', 'Supervisor-Admin'];
 
     useEffect(() => {
         (() => {
+            if (typeof (window) === "undefined") return;
             const authToken = localStorage.getItem("authToken");
+            const getAdminRole = localStorage.getItem("adminRole");
 
             if (authToken === null) {
                 window.location.href = "/"
             }
+            setAdminRole(getAdminRole);
         })()
     }, []);
 

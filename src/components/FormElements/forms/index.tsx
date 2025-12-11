@@ -14,7 +14,6 @@ export const formElements = [
     {
         addOrUpdateUser: {
             navigationLinks: [
-
                 {
                     title: "Liste des utilisateurs",
                     href: "/pages/dashboard/RH/usersList",
@@ -276,7 +275,7 @@ export const formElements = [
                     label: "Nom contrat",
                     placeholder: "Saisissez le nom du contrat ",
                     requireField: false,
-                    type: "text", 
+                    type: "text",
                     selectedInput: false,
                     alias: "ContractType"
 
@@ -306,7 +305,7 @@ export const formElements = [
                     label: "Date de fin",
                     placeholder: "Sélectionnez la date de fin",
                     requireField: true,
-                    type: "date", 
+                    type: "date",
                     selectedInput: false,
                     alias: "endDate"
 
@@ -315,8 +314,8 @@ export const formElements = [
                     label: "Durée",
                     placeholder: "Sélectionnez la durée",
                     requireField: true,
-                    type: "text", 
-                   selectedInput: true,
+                    type: "text",
+                    selectedInput: true,
                     dynamicOptions: {
                         status: true
                     },
@@ -530,6 +529,133 @@ export const formElements = [
                     alias: "logo"
                 },
             ],
+        },
+        addOrUpdateSalary: {
+            navigationLinks: [
+                {
+                    title: "Liste des salaires",
+                    href: "/pages/dashboard/RH/usersList",
+                    icon: faUsers
+                },
+            ],
+
+            addSalaryTitleForm: "Ajouter un salaire",
+            updateUserTitleForm: "Formulaire de modification d'un utilisateur",
+
+            titleForm: "Formulaire d'ajout d'un salaire",
+
+            inputs: [
+                // ---- Inputs classiques ----
+                {
+                    label: "Salaire brute",
+                    placeholder: "Entrez un montant ex:100000...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "grossSalary"
+                },
+                {
+                    label: "Salaire journalier",
+                    placeholder: "Entrez un montant ex:100000...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "dailySalary"
+                },
+                // ---- Select Inputs ----
+                {
+                    label: "Entreprise",
+                    placeholder: "Sélectionnez une entreprise...",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "EnterpriseId"
+                },
+               
+                
+                {
+                    label: "Poste",
+                    placeholder: "Sélectionnez un poste...",
+                    requireField: false,
+                    type: "number",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "PostId"
+                },
+            ],
+
+            inputContrat: [
+                {
+                    label: "Nom contrat",
+                    placeholder: "Saisissez le nom du contrat ",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "ContractType"
+
+                },
+                {
+                    label: "Type de contrat",
+                    placeholder: "Sélectionnez un type de contrat...",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "ContractTypeId"
+
+                },
+                {
+                    label: "Date de début",
+                    placeholder: "Sélectionnez la date de début",
+                    requireField: true,
+                    type: "date",
+                    selectedInput: false,
+                    alias: "startDate"
+
+                },
+                {
+                    label: "Date de fin",
+                    placeholder: "Sélectionnez la date de fin",
+                    requireField: true,
+                    type: "date",
+                    selectedInput: false,
+                    alias: "endDate"
+
+                },
+                {
+                    label: "Durée",
+                    placeholder: "Sélectionnez la durée",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "delay"
+
+                },
+
+                {
+                    label: "Entreprise",
+                    placeholder: "Sélectionnez une entreprise",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "EnterpriseId"
+
+                },
+
+            ]
         }
     }
 ];

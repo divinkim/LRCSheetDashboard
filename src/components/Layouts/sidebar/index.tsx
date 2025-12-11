@@ -13,11 +13,16 @@ import {
   faChevronDown, faChevronUp, faUser, faUserGroup, faBell, faPaperPlane, faList, faFileAlt, faShieldAlt,
   faUserClock, faUsers, faUserPlus, faClipboardList,
   faClipboardCheck, faCalendarCheck, faUserShield, faFileLines, faCheckCircle, faFileContract, faSuitcaseRolling,
-  faCalendarDay, faUmbrellaBeach, faFileSignature, faIdBadge, faBuilding,
+  faCalendarDay, faUmbrellaBeach, faFileSignature, faIdBadge, faBuilding, faChartLine, faCreditCard,
   faMoneyBill1Wave,
   faFileInvoiceDollar,
   faBuildingCircleCheck,
-  faBuildingColumns
+  faBuildingColumns,
+  faFileInvoice,
+  faFileCircleCheck,
+  faMoneyCheckDollar,
+  faReceipt,
+  faBalanceScale
 } from "@fortawesome/free-solid-svg-icons";
 import { title } from "process";
 import { icon } from "@fortawesome/fontawesome-svg-core";
@@ -134,6 +139,9 @@ export function Sidebar() {
     });
   }, [pathname]);
 
+  const EnterpriseId = localStorage.getItem("EnterpriseId");
+  const requiresRole = ['Super-Admin', 'Supervisor-Admin'];
+  const adminRole = localStorage.getItem("adminRole");
 
   const ItemAside = [
     // Onglet notifications
@@ -265,47 +273,87 @@ export function Sidebar() {
 
     // Onglet Comptabilité
     {
-      index: 3,
+      index: 11,
       title: "💵 Comptabilité",
       ItemLists: [
         {
           index: 0,
           title: "Ajouter un salaire",
           href: "/pages/dashboard/COMPTA/addSalary",
-          icon: faMoneyBill1Wave
+          icon: faMoneyBill1Wave  // salaire / paie
         },
         {
           index: 1,
-          title: "Liste de salaire",
+          title: "Liste des salaires",
           href: "/pages/dashboard/COMPTA/salaryList",
-          icon: faFileInvoiceDollar
+          icon: faFileInvoiceDollar  // récapitulatif des paies
+        },
+        {
+          index: 2,
+          title: "Factures clients",
+          href: "/pages/dashboard/COMPTA/clientInvoices",
+          icon: faFileInvoice  // suivi des factures émises
+        },
+        {
+          index: 3,
+          title: "Factures fournisseurs",
+          href: "/pages/dashboard/COMPTA/vendorInvoices",
+          icon: faFileCircleCheck  // suivi des paiements fournisseurs
+        },
+        {
+          index: 4,
+          title: "Dépenses",
+          href: "/pages/dashboard/COMPTA/expenses",
+          icon: faMoneyCheckDollar  // gestion des dépenses courantes
+        },
+        {
+          index: 5,
+          title: "Rapports financiers",
+          href: "/pages/dashboard/COMPTA/financialReports",
+          icon: faChartLine  // bilans, comptes de résultat, cash flow
+        },
+        {
+          index: 6,
+          title: "Taxes & TVA",
+          href: "/pages/dashboard/COMPTA/taxes",
+          icon: faReceipt  // déclarations fiscales, TVA, impôts
+        },
+        {
+          index: 7,
+          title: "Bilan annuel",
+          href: "/pages/dashboard/COMPTA/annualBalance",
+          icon: faBalanceScale  // bilan comptable
         },
       ]
     },
-
     // Onglet Statistiques
     {
-      index: 4,
+      index: 12,
       title: "📊 Statistiques",
       ItemLists: [
         {
           index: 0,
-          title: "",
-          href: "",
-          icon: faBuildingCircleCheck
+          title: "Gain sur déduction",
+          href: "/pages/dashboard/STATS/annualGain",
+          icon: faChartLine   // graphique linéaire pour gains/performances
         },
         {
           index: 1,
-          title: "",
-          href: "",
-          icon: faBuildingColumns
+          title: "Gain sur abonnement",
+          href: "/pages/dashboard/STATS/subscriptionRevenue",
+          icon: faCreditCard  // abonnement/revenu, carte de paiement
+        },
+        {
+          index: 2,
+          title: "Bilan général",
+          href: "/pages/dashboard/STATS/generalPlan",
+          icon: faFileAlt      // bilan/rapport général
         },
       ]
     },
-
     // Onglet Autres
     {
-      index: 5,
+      index: 13,
       title: "🧿 Autres",
       ItemLists: [
         {
@@ -395,11 +443,10 @@ export function Sidebar() {
                       <FontAwesomeIcon icon={toggleAsideSections.includes(index) ? faChevronUp : faChevronDown} className="" />
                     </div>
                     <div className={toggleAsideSections.includes(index) ? "flex flex-col ease duration-700 space-y-2 pl-8 pt-3" : "ease duration-500 hidden"}>
-
                       {aside.ItemLists.map((list) => (
                         <Link href={list.href ?? "/"} onClick={() => {
                           removeAdminPageNotificationCount(aside.index, list.index)
-                        }} className=" flex flex-col">
+                        }} className={cn(aside.index === 11 && list.index === 1 && parseInt(EnterpriseId ?? "") !== 1 ? "hidden" : aside.index === 11 && list.index === 1 && parseInt(EnterpriseId ?? "") === 1 && !requiresRole.includes(adminRole ?? "") ? "hidden" : "block")}>
                           <li className="hover:text-blue-600 pb-2  text-gray-300 ease duration-500"><span><FontAwesomeIcon icon={list.icon} /></span> {list.title} <span className={getAdminPageNotificationCount(aside.index, list?.index) <= 0 ? "hidden" : 'bg-red-500 relative left-2 text-white font-semibold rounded-full px-[6px]'}>
                             {getAdminPageNotificationCount(aside.index, list?.index)}
                           </span>

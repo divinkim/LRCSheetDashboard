@@ -1,4 +1,4 @@
-export function PermissionsList(){
+export default function PermissionsList(){
     return(
         <main>
             

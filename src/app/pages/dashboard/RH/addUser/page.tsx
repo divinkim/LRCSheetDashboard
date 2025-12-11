@@ -79,7 +79,7 @@ export default function AddUser() {
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
         (async () => {
-            const authToken = localStorage.getItem("authToken");
+            // const authToken = localStorage.getItem("authToken");
             const role = localStorage.getItem("adminRole");
             let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
 
@@ -259,7 +259,6 @@ export default function AddUser() {
 
     const handleSubmit = async (e: FormEvent) => {
         setIsLoading(true);
-
         const requireFields = {
             firstname: inputs.firstname,
             lastname: inputs.lastname,

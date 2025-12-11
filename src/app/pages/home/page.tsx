@@ -33,8 +33,17 @@ export default function HomePage({ searchParams }: PropsType) {
     // const { selected_time_frame } = await searchParams;
     // const extractTimeFrame = createTimeFrameExtractor(selected_time_frame);
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
-    const EnterpriseId = localStorage.getItem("EnterpriseId");
-    const adminRole = localStorage.getItem("adminRole");
+    const [EnterpriseId, setEnterpriseId] = useState<string | null>(null)
+    const [adminRole, setAdminRole] = useState<string | null>(null)
+
+    useEffect(() => {
+        (() => {
+            const EnterpriseId = localStorage.getItem("EnterpriseId");
+            const adminRole = localStorage.getItem("adminRole");
+            setEnterpriseId(EnterpriseId);
+            setAdminRole(adminRole);
+        })()
+    }, [])
 
     const HomeCard = HomeComponent();
 

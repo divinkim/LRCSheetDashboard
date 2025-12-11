@@ -72,8 +72,14 @@ export default function PresencesList() {
     const [showAddPresenceModal, setShowAddPresenceModal] = useState(false);
     const [showUpdatePresenceModal, setShowUpdatePresenceModal] = useState(false);
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
-    const adminRole = localStorage.getItem("adminRole");
-    const [createdAt, setCreatedAt] = useState<string | null>(null)
+
+    const [createdAt, setCreatedAt] = useState<string | null>(null);
+    const [adminRole, setAdminRole] = useState<string | null>(null);
+
+    useEffect(() => {
+        const role = localStorage.getItem("adminRole");;
+        setAdminRole(role);
+    }, []);
 
     const [addPresenceInputs, setAddPresenceInputs] = useState<AddPresenceProps>({
         arrivalTime: "",

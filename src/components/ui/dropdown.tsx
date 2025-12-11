@@ -9,6 +9,7 @@ import {
   useContext,
   useEffect,
   useRef,
+  type MutableRefObject,
 } from "react";
 
 type DropdownContextType = {
@@ -34,7 +35,8 @@ type DropdownProps = {
 };
 
 export function Dropdown({ children, isOpen, setIsOpen }: DropdownProps) {
-  const triggerRef = useRef<HTMLElement>(null);
+  // ✅ Utilisation de MutableRefObject pour que .current soit mutable
+  const triggerRef: MutableRefObject<HTMLElement | null> = useRef<HTMLElement>(null);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Escape") {
@@ -44,12 +46,15 @@ export function Dropdown({ children, isOpen, setIsOpen }: DropdownProps) {
 
   useEffect(() => {
     if (isOpen) {
+      // ✅ Stocke l'élément actif avant l'ouverture
       triggerRef.current = document.activeElement as HTMLElement;
 
+      // Désactive les clics sur le body pour le modal
       document.body.style.pointerEvents = "none";
     } else {
       document.body.style.removeProperty("pointer-events");
 
+      // Restaure le focus sur l'élément précédent
       setTimeout(() => {
         triggerRef.current?.focus();
       }, 0);

@@ -22,7 +22,8 @@ import {
   faFileCircleCheck,
   faMoneyCheckDollar,
   faReceipt,
-  faBalanceScale
+  faBalanceScale,
+  faCalendarPlus
 } from "@fortawesome/free-solid-svg-icons";
 import { title } from "process";
 import { icon } from "@fortawesome/fontawesome-svg-core";
@@ -189,6 +190,12 @@ export function Sidebar() {
         },
         {
           index: 3,
+          title: "Ajouter un collaborateur au planning",
+          href: "/dashboard/RH/addUserInPlanningOfWeek",
+          icon: faCalendarPlus
+        },
+        {
+          index: 4,
           title: "Liste des collaborateurs au planning",
           href: "/dashboard/RH/collaboratorsAssociateList",
           icon: faCalendarCheck
@@ -199,7 +206,7 @@ export function Sidebar() {
     // Onglet Administration
     {
       index: 2,
-      title: "👩‍💼 Administration",
+      title: "🗂️ Administration",
       adminService: "ADMINISTRATION",
       ItemLists: [
         {

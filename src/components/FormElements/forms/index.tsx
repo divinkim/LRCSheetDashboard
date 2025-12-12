@@ -20,7 +20,7 @@ export const formElements = [
                     icon: faUsers
                 },
                 {
-                    title: "Ajouter un poste",
+                    title: "Ajouter un posteeee",
                     href: "/pages/dashboard/ADMIN/addPost",
                     icon: faPlusCircle     // Poste = ajout → icône plus circle
                 },
@@ -338,19 +338,44 @@ export const formElements = [
 
             ],
 
+            
+            titleDept: "Formulaire d'enregistrement d'un département",
+
             inputDept : [
                 {
                     label: "Nom",
                     placeholder: "Saisissez un nom",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "name"
+
+                },
+
+                {
+                    label: "Description",
+                    placeholder: "Saisissez une description",
                     requireField: false,
                     type: "text",
                     selectedInput: false,
                     alias: "name"
 
+                },
+
+                {
+                    label: "Entreprise",
+                    placeholder: "Saisissez une entreprise",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: false
+                    },
+                    alias: "EnterpriseId"
+
                 }
             ],
 
-            titleDept: "Formulaire d'enregistrement d'un département"
 
 
         }, addOrUpdateEnterprise: {

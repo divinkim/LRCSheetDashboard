@@ -138,35 +138,35 @@ export default function HomeComponent() {
       icon: faUserGroup,
       value: data.usersNumber,
       title: "Collaborateurs",
-      path: "/pages/dashboard/RH/usersList",
+      path: "/dashboard/RH/usersList",
       backgroundColor: "#3B82F6", // blue-500
     },
     {
       icon: faBuilding,
       value: data.enterprisesNumber,
       title: "Entreprises",
-      path: "/pages/dashboard/OTHERS/enterprisesList",
+      path: "/dashboard/OTHERS/enterprisesList",
       backgroundColor: "#EF4444", // red-500
     },
     {
       icon: faDollarSign,
       value: getTotalAttendanceDeductions(attendances),
       title: "Gain mensuel actuel",
-      path: "/pages/dashboard/STATS/annualGain",
+      path: "/dashboard/STATS/annualGain",
       backgroundColor: "#22C55E", // green-500
     },
     {
       icon: faGlobe,
       value: data.countriesNumber,
       title: "Pays",
-      path: "/pages/dashboard/OTHERS/getCountries",
+      path: "/dashboard/OTHERS/getCountries",
       backgroundColor: "#6B7280", // gray-500
     },
     {
       icon: faCity,
       value: data.citiesNumber,
       title: "Villes",
-      path: "/pages/dashboard/OTHERS/getCities",
+      path: "/dashboard/OTHERS/getCities",
       backgroundColor: "#0EA5E9",
     },
   ];

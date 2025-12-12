@@ -94,6 +94,7 @@ export default function SingIn() {
             setLoadingHandleSignIn(false);
         }, 1000)
     }
+   
     return (
         <>
             <div className="bg-[url('/images/background/background.webp')] bg-no-repeat bg-cover bg-center w-screen h-screen items-center flex">

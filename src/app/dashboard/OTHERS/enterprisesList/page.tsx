@@ -179,7 +179,7 @@ export default function UsersList() {
                                                         text: "Vous n'avez aucun droit d'effectuer cette opération. Veuillez contacter votre administrateur local"
                                                     })
                                                 }
-                                                window.location.href = "/pages/dashboard/OTHERS/updateEnterprise/" + enterprise.id
+                                                window.location.href = "/dashboard/OTHERS/updateEnterprise/" + enterprise.id
                                             }}>
                                                 <p className="text-center">🖊️</p>
                                             </button>
@@ -200,7 +200,7 @@ export default function UsersList() {
                                                 }).then(async (confirmed) => {
                                                     if (confirmed.isConfirmed) {
                                                         const response = await controllers.API.deleteOne(urlAPI, "deleteEnterprise", enterprise.id, {});
-                                                        controllers.alertMessage(response.status, response.title, response.message, "/pages/dashboard/OTHERS/enterprisesList")
+                                                        controllers.alertMessage(response.status, response.title, response.message, "/dashboard/OTHERS/enterprisesList")
                                                     }
                                                 })
                                             }} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">

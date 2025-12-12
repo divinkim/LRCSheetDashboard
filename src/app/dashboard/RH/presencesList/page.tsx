@@ -77,10 +77,11 @@ export default function PresencesList() {
     const [adminRole, setAdminRole] = useState<string | null>(null);
 
     useEffect(() => {
+        if (typeof (window) === "undefined") return
         const role = localStorage.getItem("adminRole");;
         setAdminRole(role);
     }, []);
-
+    console.log("Le role de l'admin",adminRole)
     const [addPresenceInputs, setAddPresenceInputs] = useState<AddPresenceProps>({
         arrivalTime: "",
         createdAt: "",
@@ -146,7 +147,7 @@ export default function PresencesList() {
         const status = response.status;
         const title = response.title;
         const message = response.message;
-        const path = status ? "/pages/dashboard/RH/presencesList" : null
+        const path = status ? "/dashboard/RH/presencesList" : null
 
         controllers.alertMessage(status, title, message, path);
         setIsLoading(false);
@@ -176,7 +177,7 @@ export default function PresencesList() {
         const status = response.status;
         const title = response.title;
         const message = response.message;
-        const path = status ? "/pages/dashboard/RH/presencesList" : null
+        const path = status ? "/dashboard/RH/presencesList" : null
 
         controllers.alertMessage(status, title, message, path);
         setIsLoading(false);
@@ -538,7 +539,7 @@ export default function PresencesList() {
                                                     if (!requireAdminRoles.includes(adminRole ?? "")) {
                                                         return controllers.alertMessage(false, "violation d'accès!", "Vous n'avez aucun droit d'effectuer cette action. Veuillez contacter votre administrateur local.", null)
                                                     }
-                                                    window.location.href = "/pages/dashboard/RH/getAllPresencesOfUser/" + u.UserId
+                                                    window.location.href = "/dashboard/RH/getAllPresencesOfUser/" + u.UserId
                                                 }} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
                                                     <p className="text-center">👁️</p>
                                                 </button>
@@ -559,7 +560,7 @@ export default function PresencesList() {
                                                         return controllers.alertMessage(false, "violation d'accès!", "Vous n'avez aucun droit d'effectuer cette action. Veuillez contacter votre administrateur local.", null)
                                                     }
                                                     const response = await controllers.API.deleteOne(urlAPI, "deleteUserAttendance", u.UserId, { createdAt: u.createdAt });
-                                                    controllers.alertMessage(response.status, response.title, response.message, response.status ? "/pages/dashboard/RH/presencesList" : null);
+                                                    controllers.alertMessage(response.status, response.title, response.message, response.status ? "/dashboard/RH/presencesList" : null);
                                                 }} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
                                                     <p className="text-center">🗑️</p>
                                                 </button>

@@ -79,8 +79,7 @@ export default function AddUser() {
 
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
-        if (typeof window === "undefined") return; // important
-
+        if (typeof (window) === "undefined") return; // important
         (async () => {
             const role = localStorage.getItem("adminRole");
             const getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");

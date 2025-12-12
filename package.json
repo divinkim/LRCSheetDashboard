@@ -33,6 +33,7 @@
     "firebase": "^12.6.0",
     "flatpickr": "^4.6.13",
     "fs": "^0.0.1-security",
+    "get-port": "^7.1.0",
     "https": "^1.0.0",
     "jsonwebtoken": "^9.0.2",
     "jsvectormap": "^1.6.0",

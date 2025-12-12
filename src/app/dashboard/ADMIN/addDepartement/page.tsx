@@ -2,6 +2,9 @@
 import { Header } from "@/components/Layouts/header";
 import { Sidebar } from "@/components/Layouts/sidebar";
 import { formElements } from "@/components/FormElements/forms";
+import Link from "next/link"
+
+import {useEffect, useState } from "react";
 
 
 type input = {
@@ -16,6 +19,17 @@ type input = {
 
 export default function AddDepartment(){
 
+    const [getEnterpriseId, setGetEnterpriseId] = useState<any[]>([])
+    const [inputs, setInputs] = useState({
+      name: null,
+      description:  null,
+      enterpriseId: null,
+      enterprise: null,
+
+    })
+
+    //Récupération des entreprise
+   
 
     return (
         <main className="bg-ray-100 dark:bg-transparent">
@@ -41,9 +55,10 @@ export default function AddDepartment(){
                                 
                                 <hr className="bg-gray-400 h-[1px] boder-0 " />
                                 <div className="flex flex-wrap itemq-center space-y-4 lg:space-x-4">
+                                    
                                    
 
-                                </div>
+                                </div> 
 
 
                             </div>

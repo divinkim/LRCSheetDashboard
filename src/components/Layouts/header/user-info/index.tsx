@@ -112,7 +112,10 @@ export function UserInfo() {
                 title: "Voulez-vous vous déconnecter ?",
                 showCancelButton: true
               }).then((confirm) => {
-                if (confirm.isConfirmed) window.location.href = "/auth/sign-in"
+                if (confirm.isConfirmed) {
+                  localStorage.clear();
+                  window.location.href = "/"
+                }
               })
             }}
           >

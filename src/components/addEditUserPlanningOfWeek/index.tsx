@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { controllers, urlAPI } from "@/app/main";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUsersGear, faUserPen } from "@fortawesome/free-solid-svg-icons";
 
 type Users = {
     lastname: string | null,
@@ -8,42 +10,78 @@ type Users = {
     id: number,
     PlanningId: number,
     EnterpriseId: number,
-     photo: string | null
+    photo: string | null
+}
+
+type Plannings = {
+    startTime: string,
+    breakingStartTime: string,
+    resumeEndTime: string,
+    endTime: string,
+    id: number,
+    PlanningType: {
+        title: string,
+        description: string
+    }
 }
 
 export default function AddOrEditUserPlanningOfWeek() {
     const [users, setUsers] = useState<Users[]>([]);
-
+    const [plannings, setPlannings] = useState<Plannings[]>([]);
+    const [enterpriseId, setEnterpriseId] = useState<string | null>(null);
     useEffect(() => {
         (async () => {
             let getEnterpriseId = localStorage.getItem("EnterpriseId");
 
             const users = await controllers.API.getAll(urlAPI, "getUsers", null);
 
-            const filterUserByEnterpriseId = users.filter((user: { EnterpriseId: number }) => user.EnterpriseId === parseInt(getEnterpriseId ?? ""));
+            const filterUserByEnterpriseId = users.filter((user: { EnterpriseId: number, adminService: string | null }) => user.EnterpriseId === parseInt(getEnterpriseId ?? "") && user.adminService === null);
 
             setUsers(filterUserByEnterpriseId);
-
+            setEnterpriseId(getEnterpriseId)
         })()
     }, []);
 
-   const weekDays = [
-    { id: 1, day: "lundi" },
-    { id: 2, day: "mardi" },
-    { id: 3, day: "mercredi" },
-    { id: 4, day: "jeudi" },
-    { id: 5, day: "vendredi" },
-    { id: 6, day: "samedi" },
-    { id: 7, day: "dimanche" }
-];
+    useEffect(() => {
+        (async () => {
+            const plannings = await controllers.API.getAll(urlAPI, "getPlannings", null);
+            const filterPlanningsByEnterpriseId = plannings.filter((planning: { EnterpriseId: number }) => planning.EnterpriseId === parseInt(enterpriseId ?? ""))
+            setPlannings(filterPlanningsByEnterpriseId);
+        })()
+    }, [users])
 
+    const weekDays = [
+        { id: 1, day: "lundi" },
+        { id: 2, day: "mardi" },
+        { id: 3, day: "mercredi" },
+        { id: 4, day: "jeudi" },
+        { id: 5, day: "vendredi" },
+        { id: 6, day: "samedi" },
+        { id: 7, day: "dimanche" }
+    ];
 
     const addEditUserPlanningOfWeek = {
         addUserInPlanningOfWeek: {
             titlePage: "Ajout d'un collaborateur au planning",
             path: "Dashboard/RH/ajouter au collaborateur au planning",
-        }
+            links: [
+                {
+                    title: "Liste des collaborateurs associés",
+                    icon: faUsersGear,
+                    path: "/dashboard/RH/collaboratorsAssociateInPlanning"
+                },
+                {
+                    title: "Modifier le planning d'un collaborateur",
+                    icon: faUserPen,
+                    path: "/dashboard/RH/updateUserInPlanningOfWeek"
+                }
+            ]
+        },
+        updateUserInPlanningOfWeek: {
+            titlePage: "Ajout d'un collaborateur au planning",
+            path: "Dashboard/RH/ajouter au collaborateur au planning",
+        },
     }
 
-    return { users, addEditUserPlanningOfWeek, weekDays}
+    return { users, addEditUserPlanningOfWeek, weekDays, plannings }
 }

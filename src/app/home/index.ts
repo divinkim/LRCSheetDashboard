@@ -21,7 +21,7 @@ type Attendances = {
 
 export default function HomeComponent() {
   const [attendances, setAttendances] = useState<Attendances[]>([]);
-  const [EnterpriseId, setEnterpriseId] = useState<string | null>(null)
+  const [EnterpriseId, setEnterpriseId] = useState<string | null>(null);
   const monthIndex = new Date().getMonth();
   const [data, setData] = useState({
     usersNumber: 0,
@@ -35,24 +35,24 @@ export default function HomeComponent() {
   // Nombre d'utilisateur par entreprise
   useEffect(() => {
     (async () => {
-        const EnterpriseId =localStorage.getItem("EnterpriseId");
-        const users = await controllers.API.getAll(urlAPI, "getUsers", null);
-        if (parseInt(EnterpriseId ?? "") !== 1) {
-          const filterUsersByEnterpriseId = users.filter(
-            (item: { EnterpriseId: number }) =>
-              item.EnterpriseId === parseInt(EnterpriseId ?? ""),
-          );
-          return setData({
-            ...data,
-            usersNumber: filterUsersByEnterpriseId.length,
-          });
-        }
-        setData({
+      const EnterpriseId = localStorage.getItem("EnterpriseId");
+      const users = await controllers.API.getAll(urlAPI, "getUsers", null);
+      setEnterpriseId(EnterpriseId);
+      if (parseInt(EnterpriseId ?? "") !== 1) {
+        const filterUsersByEnterpriseId = users.filter(
+          (item: { EnterpriseId: number }) =>
+            item.EnterpriseId === parseInt(EnterpriseId ?? ""),
+        );
+        return setData({
           ...data,
-          usersNumber: users.length,
+          usersNumber: filterUsersByEnterpriseId.length,
         });
-        setEnterpriseId(EnterpriseId)
-      })();
+      }
+      setData({
+        ...data,
+        usersNumber: users.length,
+      });
+    })();
   }, []);
   //Nombre d'entreprise
   useEffect(() => {

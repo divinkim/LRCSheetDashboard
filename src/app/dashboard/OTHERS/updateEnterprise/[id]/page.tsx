@@ -120,7 +120,7 @@ export default function UpdateEnterprise() {
             response.status,
             response.title,
             response.message,
-            response.status ? `/pages/dashboard/OTHERS/updateEnterprise/${getEnterpriseId}` : null
+            response.status ? `/dashboard/OTHERS/updateEnterprise/${getEnterpriseId}` : null
         );
 
         setIsLoading(false);

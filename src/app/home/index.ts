@@ -21,7 +21,7 @@ type Attendances = {
 
 export default function HomeComponent() {
   const [attendances, setAttendances] = useState<Attendances[]>([]);
-  const [EnterpriseId, setEnterpriseId] = useState<string | null>(null)
+  const [EnterpriseId, setEnterpriseId] = useState<string | null>(null);
   const monthIndex = new Date().getMonth();
   const [data, setData] = useState({
     usersNumber: 0,
@@ -35,24 +35,24 @@ export default function HomeComponent() {
   // Nombre d'utilisateur par entreprise
   useEffect(() => {
     (async () => {
-        const EnterpriseId =localStorage.getItem("EnterpriseId");
-        const users = await controllers.API.getAll(urlAPI, "getUsers", null);
-        if (parseInt(EnterpriseId ?? "") !== 1) {
-          const filterUsersByEnterpriseId = users.filter(
-            (item: { EnterpriseId: number }) =>
-              item.EnterpriseId === parseInt(EnterpriseId ?? ""),
-          );
-          return setData({
-            ...data,
-            usersNumber: filterUsersByEnterpriseId.length,
-          });
-        }
-        setData({
+      const EnterpriseId = localStorage.getItem("EnterpriseId");
+      const users = await controllers.API.getAll(urlAPI, "getUsers", null);
+      setEnterpriseId(EnterpriseId);
+      if (parseInt(EnterpriseId ?? "") !== 1) {
+        const filterUsersByEnterpriseId = users.filter(
+          (item: { EnterpriseId: number }) =>
+            item.EnterpriseId === parseInt(EnterpriseId ?? ""),
+        );
+        return setData({
           ...data,
-          usersNumber: users.length,
+          usersNumber: filterUsersByEnterpriseId.length,
         });
-        setEnterpriseId(EnterpriseId)
-      })();
+      }
+      setData({
+        ...data,
+        usersNumber: users.length,
+      });
+    })();
   }, []);
   //Nombre d'entreprise
   useEffect(() => {
@@ -138,35 +138,35 @@ export default function HomeComponent() {
       icon: faUserGroup,
       value: data.usersNumber,
       title: "Collaborateurs",
-      path: "/pages/dashboard/RH/usersList",
+      path: "/dashboard/RH/usersList",
       backgroundColor: "#3B82F6", // blue-500
     },
     {
       icon: faBuilding,
       value: data.enterprisesNumber,
       title: "Entreprises",
-      path: "/pages/dashboard/OTHERS/enterprisesList",
+      path: "/dashboard/OTHERS/enterprisesList",
       backgroundColor: "#EF4444", // red-500
     },
     {
       icon: faDollarSign,
       value: getTotalAttendanceDeductions(attendances),
       title: "Gain mensuel actuel",
-      path: "/pages/dashboard/STATS/annualGain",
+      path: "/dashboard/STATS/annualGain",
       backgroundColor: "#22C55E", // green-500
     },
     {
       icon: faGlobe,
       value: data.countriesNumber,
       title: "Pays",
-      path: "/pages/dashboard/OTHERS/getCountries",
+      path: "/dashboard/OTHERS/getCountries",
       backgroundColor: "#6B7280", // gray-500
     },
     {
       icon: faCity,
       value: data.citiesNumber,
       title: "Villes",
-      path: "/pages/dashboard/OTHERS/getCities",
+      path: "/dashboard/OTHERS/getCities",
       backgroundColor: "#0EA5E9",
     },
   ];

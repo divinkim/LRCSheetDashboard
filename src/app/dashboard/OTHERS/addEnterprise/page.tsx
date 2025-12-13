@@ -87,7 +87,7 @@ export default function AddEnterprise() {
             response.status,
             response.title,
             response.message,
-            response.status ? "/pages/dashboard/OTHERS/addEnterprise" : null
+            response.status ? "/dashboard/OTHERS/addEnterprise" : null
         );
 
         setIsLoading(false);

@@ -101,7 +101,7 @@ export default function AddSalary() {
             response.status,
             response.title,
             response.message,
-            response.status ? "/pages/dashboard/COMPTA/addSalary" : null
+            response.status ? "/dashboard/COMPTA/addSalary" : null
         );
 
         setIsLoading(false);

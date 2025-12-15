@@ -44,7 +44,7 @@ export default function AddDepartment(){
             setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
             setGetAdminRole(role)
 
-            const methodName = "getDepartmentPost"
+            const methodName = "getDepartmentPosts"
 
             const getEnterprise = await controllers.API.getAll(urlAPI, methodName, null)
 
@@ -185,7 +185,7 @@ export default function AddDepartment(){
                                                            }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent 
                                                                border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700" >
 
-                                                                <option selected desabled >
+                                                                <option >
                                                                     {e.placeholder}
                                                                 </option>
 

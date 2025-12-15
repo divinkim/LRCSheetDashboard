@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { controllers, urlAPI } from "@/app/main";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsersGear, faUserPen } from "@fortawesome/free-solid-svg-icons";
+import { faUsersGear, faUserPen, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
 type Users = {
     lastname: string | null,
@@ -68,7 +68,7 @@ export default function AddOrEditUserPlanningOfWeek() {
                 {
                     title: "Liste des collaborateurs associés",
                     icon: faUsersGear,
-                    path: "/dashboard/RH/collaboratorsAssociateInPlanning"
+                    path: "/dashboard/RH/WeekDaysPlanningsList"
                 },
                 {
                     title: "Modifier le planning d'un collaborateur",
@@ -78,8 +78,20 @@ export default function AddOrEditUserPlanningOfWeek() {
             ]
         },
         updateUserInPlanningOfWeek: {
-            titlePage: "Ajout d'un collaborateur au planning",
-            path: "Dashboard/RH/ajouter au collaborateur au planning",
+            titlePage: "Modifier le planning d'un collaborateur",
+            path: "Dashboard/RH/Modification du planning d'un collaborateur",
+            links: [
+                {
+                    title: "Liste des collaborateurs associés",
+                    icon: faUsersGear,
+                    path: "/dashboard/RH/WeekDaysPlanningsList"
+                },
+                {
+                    title: "Aujouter un collaborateur au planning",
+                    icon: faUserPlus,
+                    path: "/dashboard/RH/addUserInPlanningOfWeek"
+                }
+            ]
         },
     }
 

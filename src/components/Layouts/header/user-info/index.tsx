@@ -110,9 +110,16 @@ export function UserInfo() {
               Swal.fire({
                 icon: "warning",
                 title: "Voulez-vous vous déconnecter ?",
+                confirmButtonText:"Je veux me déconnecter",
+                cancelButtonText:"Annuler",
+                confirmButtonColor:"#EF4444",
+                cancelButtonColor:"#22C55E",
                 showCancelButton: true
               }).then((confirm) => {
-                if (confirm.isConfirmed) window.location.href = "/auth/sign-in"
+                if (confirm.isConfirmed) {
+                  localStorage.clear();
+                  window.location.href = "/"
+                }
               })
             }}
           >

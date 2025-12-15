@@ -235,6 +235,7 @@ export class Api {
 
             const response = await fetch(`${url}/api/${methodName}`, {
                 method: 'POST',
+                credentials:"include",
                 headers,
                 body,
             });

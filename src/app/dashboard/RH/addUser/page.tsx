@@ -333,6 +333,7 @@ export default function AddUser() {
         );
 
         setIsLoading(false);
+        
     };
 
     return (

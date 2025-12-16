@@ -1,4 +1,4 @@
-import { faCalendarPlus, faPen, faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+ import { faCalendarPlus, faPen, faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 export const tablesModal = [
     {
@@ -78,6 +78,33 @@ export const tablesModal = [
                     { title: "Abonnements", alias: "" },
                     { title: "Statuts", alias: "" },
                     { title: "Actions", alias: "" }
+                ]
+            }
+        },
+        weekDaysPlanningList: {
+            pageTitle: "Liste des collaborateus associés au planning",
+            path: "Dashboard/RH/Liste des collaborateus associés au planning",
+            links: [
+                {
+                    title: "Ajouter un collaborateur au planning de la semaine",
+                    href: "/dashboard/RH/addUserInPlanningOfWeek",
+                    icon: faCalendarPlus
+                },
+                {
+                    title: "Modifier le planning de la semaine d'un collaborateur",
+                    href: "/dashboard/RH/updateUserInPlanningOfWeek",
+                    icon: faCalendarPlus
+                },
+            ],
+            table: {
+                titles: [
+                  { title: "Profils", alias: "" },
+                    { title: "Noms & prénoms", alias: "" },
+                    { title: "Jours", alias: "" },
+                    { title: "Types de planning"},
+                    { title: "Plannings horaires", alias: "" },
+                    { title: "Entreprises"},
+                    { title: "Actions", alias: "" },
                 ]
             }
         }

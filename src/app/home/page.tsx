@@ -60,7 +60,7 @@ export default function HomePage({ searchParams }: PropsType) {
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                         {
                             HomeCard.map((element, index) => (
-                                <div className={index === 2 && !requireAdminRoles.includes(adminRole ?? "") ? "hidden" : index === 1 && parseInt(EnterpriseId ?? "") !== 1 ? "hidden" : "rounded-xl p-4 h-[200px] dark:bg-gray-800 shadow-xl dark:shadow-none ease duration-500  bg-white"}>
+                                <div className={index === 2 && !requireAdminRoles.includes(adminRole ?? "") ? "hidden" : index === 1 && parseInt(EnterpriseId ?? "") !== 1 ? "hidden" : "rounded-xl p-4 h-[200px] dark:bg-gray-800/50 shadow-xl dark:shadow-none ease duration-500  bg-white"}>
                                     <div style={{ background: element.backgroundColor }} className={cn("w-[55px] rounded-full p-4 ")}>
                                         <FontAwesomeIcon icon={element.icon} className='text-white' />
                                     </div>

@@ -17,6 +17,7 @@ type ContratValues = {
     EnterpriseId: number | null
     ContractType: string | null,
     Enterprise: string | null,
+    
 
 }
 

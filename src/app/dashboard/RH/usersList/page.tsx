@@ -102,7 +102,7 @@ export default function UsersList() {
                             <input
                                 type="text"
                                 placeholder="Rechercher un profil..."
-                                className="border  outline-none border-gray-300 dark:bg-transparent px-3 py-2.5 rounded-xl my-6 w-full"
+                                className="border  outline-none border-gray-300 dark:bg-transparent px-3 py-2.5 rounded-md my-6 w-full"
                                 value={search}
                                 onChange={(e) => {
                                     setSearch(e.target.value)
@@ -115,7 +115,7 @@ export default function UsersList() {
                         {
                             tablesModal.map((e) => (
                                 e.usersList.links.map((item) => (
-                                    <Link href={item.href} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded">
+                                    <Link href={item.href} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4">
                                         <FontAwesomeIcon icon={item.icon} className="text-white" />
                                         <span className='text-white font-semibold'> {item.title}</span>
                                     </Link>

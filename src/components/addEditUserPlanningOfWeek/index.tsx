@@ -68,7 +68,7 @@ export default function AddOrEditUserPlanningOfWeek() {
                 {
                     title: "Liste des collaborateurs associés",
                     icon: faUsersGear,
-                    path: "/dashboard/RH/WeekDaysPlanningsList"
+                    path: "/dashboard/RH/weekDaysPlanningsList"
                 },
                 {
                     title: "Modifier le planning d'un collaborateur",
@@ -84,7 +84,7 @@ export default function AddOrEditUserPlanningOfWeek() {
                 {
                     title: "Liste des collaborateurs associés",
                     icon: faUsersGear,
-                    path: "/dashboard/RH/WeekDaysPlanningsList"
+                    path: "/dashboard/RH/Liste des collaborateurs au planning",
                 },
                 {
                     title: "Aujouter un collaborateur au planning",

@@ -76,6 +76,22 @@ export default function AddUser() {
     });
 
     const requireRoles = ['Super-Admin', 'Supervisor-Admin', 'Moderator-Admin'];
+    
+    //Récupère les données de champs en mémoire
+    useEffect(() => {
+        (() => {
+            const inputsMemory = localStorage.getItem("inputMemory");
+            const parseInputsMemory = JSON.parse(inputsMemory ?? "")
+            setInputs(parseInputsMemory)
+        })()
+    }, []);
+
+    //Enregistre en mémoire les données des champs    
+    useEffect(() => {
+        (() => {
+            localStorage.setItem("inputMemory", JSON.stringify(inputs));
+        })()
+    }, [inputs]);
 
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
@@ -202,48 +218,84 @@ export default function AddUser() {
     // const adminRoles = ['Super-Admin', 'Supervisor-Admin'];
     // const role = localStorage.getItem("adminRole") ?? "";
 
-    let arrayDatas = [
+    let dynamicArrayDatas = [
         {
             alias: "EnterpriseId",
-            value: getEnterprises.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
+            arrayData: getEnterprises.filter(item => item.id && item.name).map(item => ({ value: item.id, title: item.name }))
         },
         {
             alias: "DepartmentPostId",
-            value: getDepartmentPosts.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
+            arrayData: getDepartmentPosts.filter(item => item.id && item.name).map(item => ({ value: item.id, title: item.name }))
         },
         {
             alias: "PostId",
-            value: getPosts.filter(item => item.id && item.title).map(item => ({ id: item.id, value: item.title }))
+            arrayData: getPosts.filter(item => item.id && item.title).map(item => ({ value: item.id, title: item.name }))
         },
         {
             alias: "SalaryId",
-            value: getSalary.filter(item => item.id && item.netSalary).map(item => ({ id: item.id, value: item.netSalary }))
+            arrayData: getSalary.filter(item => item.id && item.netSalary).map(item => ({ value: item.id, title: item.netSalary }))
         },
         {
             alias: "ContractTypeId",
-            value: getContractTypes.filter(item => item.id && item.title).map(item => ({ id: item.id, value: item.title }))
+            arrayData: getContractTypes.filter(item => item.id && item.title).map(item => ({ value: item.id, title: item.title }))
         },
         {
             alias: "ContractId",
-            value: getContracts.filter(item => item.id && item.delay).map(item => ({ id: item.id, value: item.delay }))
+            arrayData: getContracts.filter(item => item.id && item.delay).map(item => ({ value: item.id, title: item.delay }))
         },
         {
             alias: "CountryId",
-            value: getCountry.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
+            arrayData: getCountry.filter(item => item.id && item.name).map(item => ({ value: item.id, title: item.name }))
         },
         {
             alias: "CityId",
-            value: getCity.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
+            arrayData: getCity.filter(item => item.id && item.name).map(item => ({ value: item.id, title: item.name }))
         },
         {
             alias: "DistrictId",
-            value: getDistrict.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
+            arrayData: getDistrict.filter(item => item.id && item.name).map(item => ({ value: item.id, title: item.name }))
         },
         {
             alias: "QuarterId",
-            value: getQuarter.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
+            arrayData: getQuarter.filter(item => item.id && item.name).map(item => ({ value: item.id, title: item.name }))
         }
     ];
+
+    let staticArrayData = [
+        {
+            alias: "gender",
+            arrayData: [
+                { title: "Homme", value: "Homme" },
+                {
+                    title: "Femme",
+                    value: "Femme"
+                },
+                {
+                    title: "Aucun",
+                    value: "Aucun"
+                }
+            ]
+
+        },
+
+        {
+            alias: "role",
+            arrayData: [
+                {
+                    title: "Super administrateur",
+                    value: "Super-Admin"
+                },
+                {
+                    title: "Administrateur de gestion",
+                    value: "Supervisor-Admin"
+                },
+                {
+                    title: "Administrateur de contrôle",
+                    value: "Controllor-Admin"
+                }
+            ]
+        },
+    ]
 
     const handleSubmit = async (e: FormEvent) => {
         setIsLoading(true);
@@ -266,8 +318,7 @@ export default function AddUser() {
             CityId: inputs.CityId ?? null,
             DistrictId: inputs.DistrictId ?? null,
             QuarterId: inputs.QuarterId ?? null,
-            adminService: inputs.adminService ?? "no data",
-
+            adminService: inputs.adminService ?? "aucune donnée",
         }
 
         console.log(requireFields);
@@ -290,7 +341,7 @@ export default function AddUser() {
             <div className="flex">
                 <Sidebar />
                 <div className="mx-4 mt-6 mb-4 w-full">
-                    
+
                     {
                         formElements.map((element) => (
                             <div className="text-gray-700 w-full space-y-4 md:space-y-0 items-center">
@@ -302,7 +353,7 @@ export default function AddUser() {
                                 <div className="flex flex-wrap py-4 lg:space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element, index) => (
-                                            <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"}>
+                                            <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4 relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-3 px-4 relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4"}>
                                                 <FontAwesomeIcon icon={element.icon} className="text-white" /> <span className='text-white'>{element.title}</span>
                                             </Link>
                                         ))
@@ -371,66 +422,23 @@ export default function AddUser() {
                                                         {e.placeholder}
                                                     </option>
                                                     {
-                                                        e.dynamicOptions?.status ? arrayDatas
+                                                        e.dynamicOptions?.status ? dynamicArrayDatas
                                                             .find(item => item.alias === e.alias)
-                                                            ?.value
+                                                            ?.arrayData
                                                             ?.map(option => (
-                                                                <option value={option.id}>
-                                                                    {option.value}
+                                                                <option value={option.value}>
+                                                                    {option.title}
                                                                 </option>
                                                             )) :
-                                                            <div>
-                                                                {/* Genre */}
-                                                                <div className={e.alias === "gender" ? "block" : "hidden"}>
-                                                                    <option value="Homme">
-                                                                        Homme
-                                                                    </option>
-                                                                    <option value="Femme">
-                                                                        Femme
-                                                                    </option>
-                                                                    <option value="Aucun">
-                                                                        Aucun
-                                                                    </option>
-                                                                </div>
-                                                                {/* Rôle */}
-                                                                <div className={e.alias === "role" ? "block" : "hidden"}>
-                                                                    <option value="Super-Admin" className={requireRoles.includes(getAdminRole ?? "") ? "hidden" : "block"}>
-                                                                        Super administrateur
-                                                                    </option>
-                                                                    <option value="Supervisor-Admin" className={getAdminRole === "Supervisor-Admin" ? "hidden" : "block"}>
-                                                                        Administrateur de supervision
-                                                                    </option>
-                                                                    <option value="Controller-Admin" className={getAdminRole === "Controller-Admin" ? "hidden" : "block"}>
-                                                                        Administrateur de contrôle
-                                                                    </option>
-                                                                    <option value="User-Cient">
-                                                                        Utiisateur client
-                                                                    </option>
-                                                                </div>
-                                                                {/* Admin Service */}
-                                                                <div className={e.alias === "adminService" && inputs.role === "Controller-Admin" ? "block" : "hidden"}>
-                                                                    <option value="RH">
-                                                                        Ressources humaines
-                                                                    </option>
-                                                                    <option value="COMPTA">
-                                                                        Comptabilité
-                                                                    </option>
-                                                                    <option value="ADMINISTRATION">
-                                                                        Administration
-                                                                    </option>
-                                                                    <option value="HOME">
-                                                                        Accueil
-                                                                    </option>
-                                                                </div>
-                                                            </div>
+                                                            staticArrayData.find(item => item.alias === e.alias)?.arrayData.map(option => (
+                                                                <option value={option.value}>
+                                                                    {option.title}
+                                                                </option>
+                                                            ))
                                                     }
                                                 </select>
-
                                             }
-
                                         </div>
-
-
                                     ))
                                 ))
                             }

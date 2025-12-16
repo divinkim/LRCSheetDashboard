@@ -20,32 +20,31 @@ export const formElements = [
                     icon: faUsers
                 },
                 {
-                    title: "Ajouter un posteeee",
+                    title: "Ajouter un poste",
                     href: "/pages/dashboard/ADMIN/addPost",
-                    icon: faPlusCircle     // Poste = ajout → icône plus circle
+                    icon: faPlusCircle 
                 },
                 {
                     title: "Ajouter un département",
                     href: "/pages/dashboard/ADMIN/addDepartment",
-                    icon: faBuilding       // Département = bâtiment
+                    icon: faBuilding
                 },
                 {
                     title: "Ajouter un salaire",
                     href: "/pages/dashboard/COMPTA/addSalary",
-                    icon: faMoneyBillWave  // Salaire = billet
+                    icon: faMoneyBillWave
                 },
                 {
                     title: "Ajouter un arrondissement",
                     href: "/pages/dashboard/OTHERS/addDistrict",
-                    icon: faMapMarkedAlt   // Arrondissement = zone / map
+                    icon: faMapMarkedAlt
                 },
                 {
                     title: "Ajouter un quartier",
                     href: "/pages/dashboard/OTHERS/addQuarter",
-                    icon: faMapPin         // Quartier = pin/point sur la carte
+                    icon: faMapPin
                 }
             ],
-
             navigateLinks: [
                 {
                     title: "Liste des contrats",
@@ -58,6 +57,41 @@ export const formElements = [
             updateUserTitleForm: "Formulaire de modification d'un utilisateur",
 
             tilteContract: "Formulaire de création de contrat",
+            titleTypeContract: "Formulaire de création d'un type de contract",
+
+            inputTypeConract: [
+                {
+                    label: "Nom du titre",
+                    placeholder: "Saisissez un titre",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "title"
+                },
+
+                {
+                    label: "Description",
+                    placeholder: "Saisissez la description",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "description"
+                },
+
+                {
+                    lable: "Entreprise",
+                    placeholder: "Sélectionnez une entreprise",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: false
+                    },
+                    alias: "EnterpriseId"
+                }
+
+
+            ],
 
             inputs: [
                 // ---- Inputs classiques ----
@@ -78,7 +112,7 @@ export const formElements = [
                     alias: "photo"
                 },
                 {
-                    label: "Rôle",
+                    label: "Rôle utiisateur",
                     placeholder: "Sélectionnez un rôle",
                     requireField: true,
                     type: "text",
@@ -375,9 +409,6 @@ export const formElements = [
 
                 }
             ],
-
-
-
         }, addOrUpdateEnterprise: {
             navigationLinks: [
 

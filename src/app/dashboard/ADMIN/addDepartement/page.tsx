@@ -25,7 +25,7 @@ export default function AddDepartment(){
     const [getEnterpriseId, setGetEnterpriseId] = useState<any[]>([])
     const [getEnterpriseIdOfAdmin, setGetEnterpriseIdOfAdmin] = useState<string | null>(null)
     const [getAdminRole, setGetAdminRole] = useState<string | null>(null)
-    const [isLoading, setIsLoading] = useStata(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const [inputs, setInputs] = useState<input>({
       name: null,
@@ -75,6 +75,7 @@ export default function AddDepartment(){
     ]
 
     const handleSubmit = async (e: FormEvent) => {
+        setIsLoading(true)
 
         const datas = {
             name : inputs.name,
@@ -95,6 +96,8 @@ export default function AddDepartment(){
         response.status ? "/dashboard/ADMIN/addDepartment" : null
 
        )
+
+       setIsLoading(false)
        
     }
    
@@ -181,9 +184,20 @@ export default function AddDepartment(){
                                                          })
                                                         }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent 
                                                             border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700" >
-                                                             <option selected desabled>
+                                                             <option selected>
                                                                  {e.placeholder}
                                                              </option>
+                                                             {
+                                                                e.dynamicOptions?.status && (
+                                                                arrayData?.find(item => item.alias === e.alias)?.
+                                                                value.map(option => (
+                                                                    <option value={option.id}>
+                                                                        {option.value}
+                                                                    </option>
+                                                                ))
+                                                            )
+
+                                                             }
                                                        </select>
                                                     }
                                                 </div>

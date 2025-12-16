@@ -34,6 +34,7 @@ type InputsValue = {
     DepartmentPostId: number | null,
     maritalStatus: string | null,
     adminService: string | null,
+    [key: string]: string | number | null,
 }
 
 
@@ -80,19 +81,13 @@ export default function AddUser() {
     //Récupère les données de champs en mémoire
     useEffect(() => {
         (() => {
-            const inputsMemory = localStorage.getItem("inputMemory");
-            const parseInputsMemory = JSON.parse(inputsMemory ?? "")
-            setInputs(parseInputsMemory)
+            const inputMemory = localStorage.getItem("inputMemory");
+            const parseInputMemory = JSON.parse(inputMemory ?? "");
+            setInputs(parseInputMemory)
         })()
     }, []);
-
-    //Enregistre en mémoire les données des champs    
-    useEffect(() => {
-        (() => {
-            localStorage.setItem("inputMemory", JSON.stringify(inputs));
-        })()
-    }, [inputs]);
-
+console.log("donné en mémoire", inputs)
+   
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
         if (typeof (window) === "undefined") return; // important
@@ -325,6 +320,8 @@ export default function AddUser() {
 
         const response = await controllers.API.SendOne(urlAPI, "createUser", null, requireFields);
 
+        if(response.status) localStorage.removeItem("inputMemory")
+
         controllers.alertMessage(
             response.status,
             response.title,
@@ -333,7 +330,6 @@ export default function AddUser() {
         );
 
         setIsLoading(false);
-        
     };
 
     return (
@@ -342,7 +338,6 @@ export default function AddUser() {
             <div className="flex">
                 <Sidebar />
                 <div className="mx-4 mt-6 mb-4 w-full">
-
                     {
                         formElements.map((element) => (
                             <div className="text-gray-700 w-full space-y-4 md:space-y-0 items-center">
@@ -385,7 +380,7 @@ export default function AddUser() {
                                         <div className={cn('w-full mb-4',)}>
                                             <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
                                             {!e.selectedInput ?
-                                                <input onChange={async (v) => {
+                                                <input value={inputs[e.alias] ?? ""} onChange={async (v) => {
                                                     for (const [key, _] of Object.entries(inputs)) {
                                                         if (key === e.alias) {
                                                             if (e.type === "file") {
@@ -405,10 +400,10 @@ export default function AddUser() {
                                                             })
                                                         }
                                                     }
-
+                                                    localStorage.setItem("inputMemory", JSON.stringify(inputs))
                                                 }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 f dark:text-gray-300 text-gray-700" />
                                                 :
-                                                <select onChange={(v) => {
+                                                <select value={inputs[e.alias] ?? ""} onChange={(v) => {
                                                     for (const [key, _] of Object.entries(inputs)) {
                                                         if (key === e.alias) {
                                                             setInputs({
@@ -417,7 +412,7 @@ export default function AddUser() {
                                                             })
                                                         }
                                                     }
-
+                                                    localStorage.setItem("inputMemory", JSON.stringify(inputs))
                                                 }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
                                                     <option value="" selected disabled>
                                                         {e.placeholder}

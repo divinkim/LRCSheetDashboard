@@ -310,6 +310,7 @@ export default function UpdateUser() {
 
     const handleSubmit = async (e: FormEvent) => {
         setIsLoading(true);
+        
 
         const userId = window.location.href?.split('/').pop();
 

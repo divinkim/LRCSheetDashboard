@@ -36,7 +36,6 @@ type InputsValue = {
     adminService: string | null,
 }
 
-
 export default function AddUser() {
     const [getEnterprises, setGetEnterprises] = useState<any[]>([]);
     const [getDepartmentPosts, setGetDepartmentPosts] = useState<any[]>([]);
@@ -79,26 +78,39 @@ export default function AddUser() {
 
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
-        if (typeof (window) === "undefined") return; // important
         (async () => {
+            // const authToken = localStorage.getItem("authToken");
             const role = localStorage.getItem("adminRole");
-            const getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
+            let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
 
             setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
-            setAdminRole(role);
+            setAdminRole(role)
+
+            // if (authToken === null) {
+            //     return window.location.href = "/"
+            // } else if (!requireRoles.includes(role ?? "")) {
+            //     Swal.fire({
+            //         icon: "warning",
+            //         title: "Violation d'accès !",
+            //         text: "Vous n'êtes pas autorisé à accéder à cette page. Veuillez vous rapprocher de votre administreur pour plus d'infos !",
+            //     });
+            //     setTimeout(() => {
+            //         window.location.href = "/Dashboard"
+
+            //     }, 2000);
+            // }
 
             const getEnterprises = await controllers.API.getAll(urlAPI, "getEnterprises", null);
 
             if (parseInt(getEnterpriseIdOfAdmin ?? "") !== 1) {
-                const filterEnterpriseByEnterpriseId = getEnterprises.filter(
-                    (enterprise: { id: number }) => enterprise.id === parseInt(getEnterpriseIdOfAdmin ?? "")
-                );
-                setGetEnterprises(filterEnterpriseByEnterpriseId);
-                return;
-            }
 
+                const filterEnterpriseByEnterpriseId = getEnterprises.filter((enterprise: { id: number }) => enterprise.id === parseInt(getEnterpriseIdOfAdmin ?? ""));
+                setGetEnterprises(filterEnterpriseByEnterpriseId);
+                return
+            }
             setGetEnterprises(getEnterprises);
-        })();
+            console.log(getEnterprises);
+        })()
     }, []);
 
     // Récupération des départements d'entreprises
@@ -291,7 +303,6 @@ export default function AddUser() {
             <div className="flex">
                 <Sidebar />
                 <div className="mx-4 mt-6 mb-4 w-full">
-                    
                     {
                         formElements.map((element) => (
                             <div className="text-gray-700 w-full space-y-4 md:space-y-0 items-center">

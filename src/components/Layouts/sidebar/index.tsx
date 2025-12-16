@@ -265,8 +265,8 @@ export function Sidebar() {
         },
         {
           index: 9,
-          title: "Département",
-          href: "/dashboard/ADMIN/departement",
+          title: "Ajouter un département",
+          href: "/dashboard/ADMIN/addDepartement",
           icon: faBuilding
         },
         {

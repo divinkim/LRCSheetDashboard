@@ -16,39 +16,39 @@ export const formElements = [
             navigationLinks: [
                 {
                     title: "Liste des utilisateurs",
-                    href: "/pages/dashboard/RH/usersList",
+                    href: "/dashboard/RH/usersList",
                     icon: faUsers
                 },
                 {
                     title: "Ajouter un poste",
-                    href: "/pages/dashboard/ADMIN/addPost",
+                    href: "/dashboard/ADMIN/addPost",
                     icon: faPlusCircle 
                 },
                 {
                     title: "Ajouter un département",
-                    href: "/pages/dashboard/ADMIN/addDepartment",
+                    href: "/dashboard/ADMIN/addDepartment",
                     icon: faBuilding
                 },
                 {
                     title: "Ajouter un salaire",
-                    href: "/pages/dashboard/COMPTA/addSalary",
+                    href: "/dashboard/COMPTA/addSalary",
                     icon: faMoneyBillWave
                 },
                 {
                     title: "Ajouter un arrondissement",
-                    href: "/pages/dashboard/OTHERS/addDistrict",
+                    href: "/dashboard/OTHERS/addDistrict",
                     icon: faMapMarkedAlt
                 },
                 {
                     title: "Ajouter un quartier",
-                    href: "/pages/dashboard/OTHERS/addQuarter",
+                    href: "/dashboard/OTHERS/addQuarter",
                     icon: faMapPin
                 }
             ],
             navigateLinks: [
                 {
                     title: "Liste des contrats",
-                    href: "/pages/dashboard/ADMIN/listContrat",
+                    href: "/dashboard/ADMIN/listContrat",
                     icon: faFileContract
                 },
             ],
@@ -414,17 +414,17 @@ export const formElements = [
 
                 {
                     title: "Liste des entreprises",
-                    href: "/pages/dashboard/OTHERS/enterprisesList",
+                    href: "/dashboard/OTHERS/enterprisesList",
                     icon: faUsers
                 },
                 {
                     title: "Ajouter un ville",
-                    href: "/pages/dashboard/ADMIN/addCity",
+                    href: "/dashboard/ADMIN/addCity",
                     icon: faPlusCircle     // Poste = ajout → icône plus circle
                 },
                 {
                     title: "Ajouter un pays",
-                    href: "/pages/dashboard/ADMIN/addCountry",
+                    href: "/dashboard/ADMIN/addCountry",
                     icon: faBuilding       // Département = bâtiment
                 },
             ],
@@ -432,7 +432,7 @@ export const formElements = [
             navigateLinks: [
                 {
                     title: "Liste des contrats",
-                    href: "/pages/dashboard/ADMIN/listContrat",
+                    href: "/dashboard/ADMIN/listContrat",
                     icon: faFileContract
                 },
             ],
@@ -606,7 +606,7 @@ export const formElements = [
             navigationLinks: [
                 {
                     title: "Liste des salaires",
-                    href: "/pages/dashboard/RH/usersList",
+                    href: "/dashboard/RH/usersList",
                     icon: faUsers
                 },
             ],

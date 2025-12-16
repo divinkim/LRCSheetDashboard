@@ -40,7 +40,7 @@ export default function UsersList() {
 
     const getAdminRole = localStorage.getItem("adminRole");
     const [loading, setIsLoading] = useState(false);
-    const requireRoles = ['Super-Admin', 'Supervisor-Admin'];
+    const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
 
     useEffect(() => {
         (() => {
@@ -162,24 +162,32 @@ export default function UsersList() {
                                         </td>
                                         <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.status ? <p className="bg-green-500 rounded-full p-2 text-white">Actif</p> : <p className='bg-red-500 rounded-full p-2 text-white'>Inactif</p>}</td>
                                         <td className="text-center py-5 font-semibold border-b border-r  space-x-3 flex  h-auto p-2 border-gray-400 dark:border-gray-300">
-                                            <Link href={`../RH/getUserProfil/${u.id}`} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
+                                            <Link onClick={() => {
+                                                if (!requireAdminRoles.includes(getAdminRole ?? "")) {
+                                                    Swal.fire({
+                                                        icon: 'warning',
+                                                        title: "Violation d'accès!",
+                                                        text: "Vous n'avez aucun droit d'effectuer cette action. Contacter votre administrateur de gestion",
+                                                    });
+                                                }
+                                            }} href={requireAdminRoles.includes(getAdminRole ?? "")? `/dashboard/RH/getUserProfil/${u.id}`:""} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
                                                 <p className="text-center">👁️</p>
                                             </Link>
                                             <button className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md" onClick={() => {
-                                                if (!requireRoles.includes(getAdminRole ?? "")) {
+                                                if (!requireAdminRoles.includes(getAdminRole ?? "")) {
                                                     return Swal.fire({
                                                         icon: "warning",
                                                         title: "Vioaltion d'accès!",
                                                         text: "Vous n'avez aucun droit d'effectuer cette opération. Veuillez contacter votre administrateur local"
-                                                    })
+                                                    });
                                                 }
                                             }}>
-                                                <Link href={`../RH/updateUser/${u.id}`} >
+                                                <Link href={`/dashboard/RH/updateUser/${u.id}`} >
                                                     <p className="text-center">🖊️</p>
                                                 </Link>
                                             </button>
                                             <button type="button" onClick={() => {
-                                                if (!requireRoles.includes(getAdminRole ?? "")) {
+                                                if (!requireAdminRoles.includes(getAdminRole ?? "")) {
                                                     return Swal.fire({
                                                         icon: "warning",
                                                         title: "Vioaltion d'accès!",

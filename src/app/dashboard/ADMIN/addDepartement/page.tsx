@@ -94,7 +94,6 @@ export default function AddDepartment(){
         response.title,
         response.message,
         response.status ? "/dashboard/ADMIN/addDepartment" : null
-
        )
 
        setIsLoading(false)

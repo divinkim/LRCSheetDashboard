@@ -5,7 +5,7 @@ import {
     faBuilding,
     faMoneyBillWave,
     faMapMarkedAlt,
-    faMapPin, faFileContract
+    faMapPin, faFileContract, faSuitcaseRolling, faIdBadge
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { title } from "process";
@@ -728,6 +728,78 @@ export const formElements = [
                 },
 
             ]
+        },
+        addOrEditPost:{
+            navigationLinks: [
+                {
+                    title: "Liste des Postes",
+                    href: "/dashboard/ADMIN/potsList",
+                    icon: faIdBadge
+                },
+                {
+                    title: "Ajouter une entreprise",
+                    href: "/dashboard/OTHERS/addEnterprise",
+                    icon: faBuilding
+                },
+                {
+                    title: "Ajouter un département",
+                    href: "/dashboard/ADMIN/addDepartment",
+                    icon: faSuitcaseRolling
+                }
+            ],
+
+            addPostTitlePage: "Ajouter un un poste",
+            updatePostTitlePage: "Modifier un poste",
+
+            titleForm: "Formulaire d'ajout d'un poste",
+
+            inputs: [
+                // ---- Inputs classiques ----
+                {
+                    label: "Titre",
+                    placeholder: "Entrez un titre...",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    textarea:false,
+                    alias: "title"
+                },
+                
+                // ---- Select Inputs ----
+                {
+                    label: "Entreprise",
+                    placeholder: "Sélectionnez une entreprise...",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    textarea:false,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "EnterpriseId"
+                },  
+                {
+                    label: "Département d'entreprise",
+                    placeholder: "Sélectionnez un département",
+                    requireField: true,
+                    type: "number",
+                    textarea:false,
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "DepartmentPostId"
+                },
+                {
+                    label: "Description",
+                    placeholder: "Veuillez saisir une description",
+                    requireField: true,
+                    textarea:true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "description"
+                },
+            ],
         }
     }
 ];

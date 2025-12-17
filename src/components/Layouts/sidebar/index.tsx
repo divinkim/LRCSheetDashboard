@@ -254,7 +254,7 @@ export function Sidebar() {
         {
           index: 7,
           title: "Poste",
-          href: "/dashboard/ADMIN/poste",
+          href: "/dashboard/ADMIN/addPost",
           icon: faIdBadge
         },
         {

@@ -30,7 +30,7 @@ type DynamicArrayData = {
 }
 
 export default function AddPost() {
-    const { dynamicArrayDatas, staticArrayData, dynamicArrayFilter } = AddOrUpdatePostHookModal();
+    const { dynamicArrayDatas, staticArrayData, sendEnterpriseId } = AddOrUpdatePostHookModal();
     const [isLoading, setIsLoading] = useState(false);
     const [inputs, setInputs] = useState<InputsValue>({
         EnterpriseId: null,
@@ -38,8 +38,7 @@ export default function AddPost() {
         title: null,
         description: null,
     });
-    const [dynamicElementIndex, setDynamicElemntIndex] = useState<number>(0);
-    const [dynamicElementValue, setDynamicElementValue] = useState<number>(0);
+
 
     const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<DynamicArrayData[]>([]);
     //Récupère les données de champs en mémoire
@@ -52,18 +51,6 @@ export default function AddPost() {
     }, [dynamicArrayDatas]);
 
     console.log("les données en mémoire", inputs);
-
-    //Filtre les données dynamiques en fonction de la valeur de l'élément sélectionné
-    useEffect(() => {
-        const dynamicArrayUpdated = dynamicArrayFilter(dynamicElementIndex, dynamicElementValue);
-
-        const saveDynamicArrayDataCloned = dynamicArrayDatasCloned[dynamicElementIndex] = {
-            ...dynamicArrayDatasCloned,
-            dynamicArrayUpdated
-        }
-
-        setDynamicArrayDatasCloned(saveDynamicArrayDataCloned)
-    }, [dynamicElementValue])
 
     const handleSubmit = async (e: FormEvent) => {
         setIsLoading(true);
@@ -170,12 +157,13 @@ export default function AddPost() {
                                                     <select value={inputs[e.alias] ?? ""} onChange={(v) => {
                                                         let field = e.alias;
                                                         if (e.type === "number") {
-                                                            setDynamicElemntIndex(e.dynamicElementindex);
-                                                            setDynamicElementValue(parseInt(v.target.value));
+                                                            // Mise en mémoire des informations des données dynamiques
+                                                            sendEnterpriseId()
 
                                                             const fieldValue = { ...inputs, [field]: parseInt(v.target.value) };
 
                                                             setInputs(fieldValue);
+
                                                             localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
                                                         }
                                                         const fieldValue = { ...inputs, [field]: v.target.value };

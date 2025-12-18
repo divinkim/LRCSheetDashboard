@@ -14,7 +14,7 @@ type DynamicArrayData = {
 export default function AddOrUpdatePostHookModal() {
     const [enterprises, setEnterprises] = useState<any[]>([]);
     const [getDepartmentPosts, setGetDepartmentPosts] = useState<any[]>([]);
-
+    const [EnterpriseId, setEnterpriseId] = useState(0)
     const [getEnterpriseIdOfadmin, setEnterpriseIdOfAdmin] = useState<string | null>(null)
     const [getAdminRole, setAdminRole] = useState<string | null>(null)
 
@@ -46,13 +46,13 @@ export default function AddOrUpdatePostHookModal() {
         (async () => {
             const getDepartmentPosts = await controllers.API.getAll(urlAPI, "getDepartmentPosts", null);
             if (getAdminRole !== "Super-Admin") {
-                const filteredDepartmentPosts = getDepartmentPosts.filter((department: { EnterpriseId: number }) => department.EnterpriseId === parseInt(getEnterpriseIdOfadmin ?? ""));
+                const filteredDepartmentPosts = getDepartmentPosts.filter((department: { EnterpriseId: number }) => department.EnterpriseId === EnterpriseId);
                 setGetDepartmentPosts(filteredDepartmentPosts)
             } else {
                 setGetDepartmentPosts(getDepartmentPosts)
             }
         })()
-    }, [enterprises]);
+    }, [EnterpriseId]);
 
     // const adminRoles = ['Super-Admin', 'Supervisor-Admin'];
     // const role = localStorage.getItem("adminRole") ?? "";
@@ -104,10 +104,9 @@ export default function AddOrUpdatePostHookModal() {
         },
     ]
 
-    function dynamicArrayFilter(index: number, value: number) {
-        const dynamicArrayDatasFiltered = dynamicArrayDatas[index].arrayData.filter(item => item.value === value);
-        return dynamicArrayDatasFiltered;
+    function sendEnterpriseId(EnterpriseId: number) {
+        setEnterpriseId(EnterpriseId)
     }
 
-    return { dynamicArrayDatas, staticArrayData, dynamicArrayFilter }
+    return { dynamicArrayDatas, staticArrayData,  sendEnterpriseId}
 }

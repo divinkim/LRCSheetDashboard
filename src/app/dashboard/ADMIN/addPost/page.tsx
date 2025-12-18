@@ -21,8 +21,16 @@ type InputsValue = {
     [key: string]: string | number | null
 }
 
+type DynamicArrayData = {
+    alias: string,
+    arrayData: {
+        value: any,
+        title: string,
+    }[],
+}
+
 export default function AddPost() {
-    const { dynamicArrayDatas, staticArrayData } = AddOrUpdatePostHookModal();
+    const { dynamicArrayDatas, staticArrayData, dynamicArrayFilter } = AddOrUpdatePostHookModal();
     const [isLoading, setIsLoading] = useState(false);
     const [inputs, setInputs] = useState<InputsValue>({
         EnterpriseId: null,
@@ -30,17 +38,32 @@ export default function AddPost() {
         title: null,
         description: null,
     });
+    const [dynamicElementIndex, setDynamicElemntIndex] = useState<number>(0);
+    const [dynamicElementValue, setDynamicElementValue] = useState<number>(0);
 
+    const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<DynamicArrayData[]>([]);
     //Récupère les données de champs en mémoire
     useEffect(() => {
         (() => {
             const inputMemory = localStorage.getItem("inputMemory");
-            const parseInputMemory = JSON.parse(inputMemory ?? "");
-            setInputs(parseInputMemory)
-        })()
-    }, []);
+            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });
+            setDynamicArrayDatasCloned(dynamicArrayDatas);
+        })();
+    }, [dynamicArrayDatas]);
 
-    console.log("les données en mémoire", inputs)
+    console.log("les données en mémoire", inputs);
+
+    //Filtre les données dynamiques en fonction de la valeur de l'élément sélectionné
+    useEffect(() => {
+        const dynamicArrayUpdated = dynamicArrayFilter(dynamicElementIndex, dynamicElementValue);
+
+        const saveDynamicArrayDataCloned = dynamicArrayDatasCloned[dynamicElementIndex] = {
+            ...dynamicArrayDatasCloned,
+            dynamicArrayUpdated
+        }
+
+        setDynamicArrayDatasCloned(saveDynamicArrayDataCloned)
+    }, [dynamicElementValue])
 
     const handleSubmit = async (e: FormEvent) => {
         setIsLoading(true);
@@ -91,7 +114,7 @@ export default function AddPost() {
                         ))
                     }
 
-                    <div className='dark:border mt-8 w-full mx-auto w-full lg:w-[70%] font-semibold h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none p-4'>
+                    <div className='dark:border mt-8 w-full mx-auto lg:w-[70%] font-semibold h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none p-4'>
                         {
                             formElements.map((element) => (
 
@@ -146,25 +169,24 @@ export default function AddPost() {
                                                     :
                                                     <select value={inputs[e.alias] ?? ""} onChange={(v) => {
                                                         let field = e.alias;
-                                                        for (const [key, _] of Object.entries(inputs)) {
-                                                            if (key === field) {
-                                                                setInputs({
-                                                                    ...inputs,
-                                                                    [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
-                                                                })
-                                                                localStorage.setItem("inputMemory", JSON.stringify({
-                                                                    ...inputs,
-                                                                    [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
-                                                                }))
-                                                            }
-                                                        }
+                                                        if (e.type === "number") {
+                                                            setDynamicElemntIndex(e.dynamicElementindex);
+                                                            setDynamicElementValue(parseInt(v.target.value));
 
+                                                            const fieldValue = { ...inputs, [field]: parseInt(v.target.value) };
+
+                                                            setInputs(fieldValue);
+                                                            localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
+                                                        }
+                                                        const fieldValue = { ...inputs, [field]: v.target.value };
+                                                        setInputs(fieldValue);
+                                                        localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
                                                     }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
                                                         <option value="" selected disabled>
                                                             {e.placeholder}
                                                         </option>
                                                         {
-                                                            e.dynamicOptions?.status ? dynamicArrayDatas
+                                                            e.dynamicOptions?.status ? dynamicArrayDatasCloned
                                                                 .find(item => item.alias === e.alias)
                                                                 ?.arrayData
                                                                 ?.map(option => (

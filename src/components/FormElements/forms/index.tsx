@@ -22,7 +22,7 @@ export const formElements = [
                 {
                     title: "Ajouter un poste",
                     href: "/dashboard/ADMIN/addPost",
-                    icon: faPlusCircle 
+                    icon: faPlusCircle
                 },
                 {
                     title: "Ajouter un département",
@@ -89,7 +89,6 @@ export const formElements = [
                     },
                     alias: "EnterpriseId"
                 }
-
 
             ],
 
@@ -372,10 +371,10 @@ export const formElements = [
 
             ],
 
-            
+
             titleDept: "Formulaire d'enregistrement d'un département",
 
-            inputDept : [
+            inputDept: [
                 {
                     label: "Nom",
                     placeholder: "Saisissez un nom",
@@ -646,8 +645,8 @@ export const formElements = [
                     },
                     alias: "EnterpriseId"
                 },
-               
-                
+
+
                 {
                     label: "Poste",
                     placeholder: "Sélectionnez un poste...",
@@ -729,7 +728,7 @@ export const formElements = [
 
             ]
         },
-        addOrEditPost:{
+        addOrEditPost: {
             navigationLinks: [
                 {
                     title: "Liste des Postes",
@@ -761,30 +760,34 @@ export const formElements = [
                     requireField: true,
                     type: "text",
                     selectedInput: false,
-                    textarea:false,
+                    textarea: false,
                     alias: "title"
                 },
-                
+
                 // ---- Select Inputs ----
                 {
+
                     label: "Entreprise",
                     placeholder: "Sélectionnez une entreprise...",
                     requireField: true,
                     type: "number",
                     selectedInput: true,
-                    textarea:false,
+                    textarea: false,
                     dynamicOptions: {
                         status: true
                     },
+                    dynamicElementIndex: 1,
                     alias: "EnterpriseId"
-                },  
+                },
                 {
+                    index: 1,
                     label: "Département d'entreprise",
                     placeholder: "Sélectionnez un département",
                     requireField: true,
                     type: "number",
-                    textarea:false,
+                    textarea: false,
                     selectedInput: true,
+                    dynamicElementIndex: 2,
                     dynamicOptions: {
                         status: true
                     },
@@ -794,7 +797,7 @@ export const formElements = [
                     label: "Description",
                     placeholder: "Veuillez saisir une description",
                     requireField: true,
-                    textarea:true,
+                    textarea: true,
                     type: "text",
                     selectedInput: false,
                     alias: "description"

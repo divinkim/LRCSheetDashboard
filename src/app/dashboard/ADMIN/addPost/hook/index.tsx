@@ -3,6 +3,14 @@ import { urlAPI } from "@/app/main";
 import { controllers } from "@/app/main";
 import { FormEvent, useEffect, useState } from "react";
 
+type DynamicArrayData = {
+    alias: string,
+    arrayData: {
+        value: any,
+        title: string,
+    }[],
+}
+
 export default function AddOrUpdatePostHookModal() {
     const [enterprises, setEnterprises] = useState<any[]>([]);
     const [getDepartmentPosts, setGetDepartmentPosts] = useState<any[]>([]);
@@ -49,7 +57,7 @@ export default function AddOrUpdatePostHookModal() {
     // const adminRoles = ['Super-Admin', 'Supervisor-Admin'];
     // const role = localStorage.getItem("adminRole") ?? "";
 
-    let dynamicArrayDatas = [
+    let dynamicArrayDatas: DynamicArrayData[] = [
         {
             alias: "EnterpriseId",
             arrayData: enterprises.filter(item => item.id && item.name).map(item => ({ value: item.id, title: item.name }))
@@ -96,5 +104,10 @@ export default function AddOrUpdatePostHookModal() {
         },
     ]
 
-    return { dynamicArrayDatas, staticArrayData }
+    function dynamicArrayFilter(index: number, value: number) {
+        const dynamicArrayDatasFiltered = dynamicArrayDatas[index].arrayData.filter(item => item.value === value);
+        return dynamicArrayDatasFiltered;
+    }
+
+    return { dynamicArrayDatas, staticArrayData, dynamicArrayFilter }
 }

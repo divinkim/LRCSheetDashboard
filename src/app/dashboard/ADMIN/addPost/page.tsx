@@ -30,7 +30,7 @@ type DynamicArrayData = {
 }
 
 export default function AddPost() {
-    const { dynamicArrayDatas, staticArrayData, sendEnterpriseId } = AddOrUpdatePostHookModal();
+    const { dynamicArrayDatas, staticArrayData, sendNumberValue } = AddOrUpdatePostHookModal();
     const [isLoading, setIsLoading] = useState(false);
     const [inputs, setInputs] = useState<InputsValue>({
         EnterpriseId: null,
@@ -50,17 +50,10 @@ export default function AddPost() {
         })();
     }, [dynamicArrayDatas]);
 
-    console.log("les données en mémoire", inputs);
-
     const handleSubmit = async (e: FormEvent) => {
         setIsLoading(true);
 
-        const requireFields = {
-        }
-
-        console.log(requireFields);
-
-        const response = await controllers.API.SendOne(urlAPI, "createPost", null, requireFields);
+        const response = await controllers.API.SendOne(urlAPI, "createPoste", null, inputs);
 
         if (response.status) localStorage.removeItem("inputMemory")
 
@@ -123,51 +116,50 @@ export default function AddPost() {
                                             <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
                                             {!e.selectedInput && !e.textarea ?
                                                 <input value={inputs[e.alias] ?? ""} onChange={async (v) => {
-                                                    let field = e.alias;
+                                                    const field = e.alias;
+                                                    let fieldValue
+
                                                     if (e.type === "file") {
                                                         const files = v.target.files?.[0];
                                                         const response = await controllers.API.SendOne(urlAPI, "sendFiles", null, { files });
                                                         if (response.status) {
-                                                            setInputs({
-                                                                ...inputs,
-                                                                [field]: response.filename
-                                                            })
+                                                            fieldValue = {
+                                                                ...inputs, [field]: response.filename
+                                                            }
+                                                            setInputs(fieldValue);
+
+                                                            localStorage.setItem("inputMemory", JSON.stringify(fieldValue));
                                                         }
+                                                        return;
                                                     }
-                                                    setInputs({
-                                                        ...inputs,
-                                                        [field]: v.target.value
-                                                    });
-                                                    localStorage.setItem("inputMemory", JSON.stringify({ ...inputs, [field]: v.target.value }))
+                                                    fieldValue = { ...inputs, [field]: v.target.value }
+                                                    setInputs(fieldValue);
+
+                                                    localStorage.setItem("inputMemory", JSON.stringify(fieldValue));
 
                                                 }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 f dark:text-gray-300 text-gray-700" />
                                                 :
                                                 e.textarea && !e.selectedInput ?
                                                     <textarea placeholder={e.placeholder ?? ""} value={inputs[e.alias] ?? ""} onChange={(v) => {
-                                                        setInputs({
-                                                            ...inputs,
-                                                            [e.alias]: v.target.value
-                                                        });
-                                                        localStorage.setItem("inputMemory", JSON.stringify({
-                                                            ...inputs,
-                                                            [e.alias]: v.target.value
-                                                        }))
+                                                        const field = e.alias;
+
+                                                        const fieldValue = { ...inputs, [field]: v.target.value }
+
+                                                        setInputs(fieldValue);
+
+                                                        localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
                                                     }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 h-[100px] bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 dark:text-gray-300 text-gray-700"></textarea>
                                                     :
                                                     <select value={inputs[e.alias] ?? ""} onChange={(v) => {
-                                                        let field = e.alias;
-                                                        if (e.type === "number") {
-                                                            // Mise en mémoire des informations des données dynamiques
-                                                            sendEnterpriseId()
+                                                        const field = e.alias;
 
-                                                            const fieldValue = { ...inputs, [field]: parseInt(v.target.value) };
+                                                        const fieldValue = {
+                                                            ...inputs,
+                                                            [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
+                                                        };
 
-                                                            setInputs(fieldValue);
+                                                        if (e.type === "number") sendNumberValue(parseInt(v.target.value), e.alias);
 
-                                                            localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
-                                                        }
-                                                        const fieldValue = { ...inputs, [field]: v.target.value };
-                                                        setInputs(fieldValue);
                                                         localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
                                                     }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
                                                         <option value="" selected disabled>

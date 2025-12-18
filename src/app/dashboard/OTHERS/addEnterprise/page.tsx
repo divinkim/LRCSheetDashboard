@@ -12,6 +12,8 @@ import Swal from "sweetalert2";
 import { urlAPI } from "@/app/main";
 import { cn } from "@/lib/utils";
 
+import { EnterpriseHookModal } from "./hook";
+
 type EnterpriseProps = {
     name: string | null,
     description: string | null,
@@ -32,6 +34,7 @@ type EnterpriseProps = {
     nui: string | null,
     subscriptionType: string | null,
     subscriptionStatus: string | null,
+    [key: string]: string | null | number
 }
 
 export default function AddEnterprise() {
@@ -57,32 +60,23 @@ export default function AddEnterprise() {
         subscriptionStatus: "null"
     });
     const [isLoading, setIsLoading] = useState(false);
-    const [countries, setCountries] = useState<any[]>([]);
-    const [cities, setCities] = useState<any[]>([]);
+    const { dynamicDatasArray, staticDatasArray, getNumberValue } = EnterpriseHookModal();
 
+    //Récupération des données en mémoire du localStorage
     useEffect(() => {
-        (async () => {
-            const getCountries = await controllers.API.getAll(urlAPI, "getCountries", null);
-            setCountries(getCountries)
+        (() => {
+            const inputMemory = localStorage.getItem("inputMemory");
+            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });
         })();
-    }, []);
-
-    useEffect(() => {
-        (async () => {
-            const getCities = await controllers.API.getAll(urlAPI, "getCities", null);
-            if (getCities?.length > 0) {
-                const filteredCities = getCities.filter((item: { CountriesTypeId: number }) => item.CountriesTypeId === inputs.CountryId);
-                setCities(filteredCities);
-                console.log(filteredCities)
-            }
-        })();
-    }, [inputs.CountryId]);
+    }, [dynamicDatasArray]);
 
     const handleSubmit = async (e: FormEvent) => {
         setIsLoading(true);
 
         const response = await controllers.API.SendOne(urlAPI, "createEnterprise", null, inputs);
 
+        if (response.status) localStorage.removeItem("inputMemory");
+            
         controllers.alertMessage(
             response.status,
             response.title,
@@ -93,35 +87,12 @@ export default function AddEnterprise() {
         setIsLoading(false);
     };
 
-    const arrayOptions = [
-        {
-            alias: "CountryId",
-            value: countries.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
-        },
-        {
-            alias: "CityId",
-            value: cities.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
-        },
-        {
-            alias: "subscriptionType",
-            value: [{ id: 0, value: "starter" }, { id: 1, value: "pro" }, { id: 2, value: "premium" }]
-        },
-        {
-            alias: "subscriptionStatus",
-            value: [{ id: 0, value: "expired" }, { id: 1, value: "onGoing" }]
-        },
-        {
-            alias: "legalForm",
-            value: [{ id: 0, value: "SARL" }, { id: 1, value: "SA" }, { id: 1, value: "SARLU" }, { id: 1, value: "ORGANISATION" }]
-        },
-    ]
-
     return (
         <main className="bg-gray-100 dark:bg-transparent">
             <Header />
             <div className="flex">
                 <Sidebar />
-                <div className="mx-4 mt-6 mb-4 w-full">
+                <div className="mx-4 mt-6 mb-4 w-full font-semibold">
                     {
                         formElements.map((element) => (
                             <div className="text-gray-700 w-full space-y-4 md:space-y-0 items-center">
@@ -133,7 +104,7 @@ export default function AddEnterprise() {
                                 <div className="flex flex-wrap py-4 lg:space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateEnterprise.navigationLinks.map((element, index) => (
-                                            <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"}>
+                                            <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-3  px-4 relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-3  px-4 relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-3  px-4"}>
                                                 <FontAwesomeIcon icon={element.icon} className="text-white" /> <span className='text-white'>{element.title}</span>
                                             </Link>
                                         ))
@@ -162,27 +133,24 @@ export default function AddEnterprise() {
                                             <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
                                             {!e.selectedInput ?
                                                 <div>
-                                                    <input onChange={async (v) => {
-                                                        for (const [key, _] of Object.entries(inputs)) {
-                                                            if (key === e.alias) {
-                                                                if (e.type === "file") {
-                                                                    const files = v.target.files?.[0];
-                                                                    const response = await controllers.API.SendOne(urlAPI, "sendFiles", null, { files });
-                                                                    console.log("L efichier image", response)
-                                                                    if (response.status) {
-                                                                        return setInputs({
-                                                                            ...inputs,
-                                                                            [e.alias]: response.filename
-                                                                        })
-                                                                    }
-                                                                }
-                                                                setInputs({
-                                                                    ...inputs,
-                                                                    [e.alias]: v.target.value
-                                                                })
-                                                            }
-                                                        }
+                                                    <input value={inputs[e.alias] ?? ""} onChange={async (v) => {
+                                                        const field = e.alias;
+                                                        let fieldValue;
+                                                        if (e.type === "file") {
+                                                            const files = v.target.files?.[0];
+                                                            const response = await controllers.API.SendOne(urlAPI, "sendFiles", null, { files });
 
+                                                            fieldValue = { ...inputs, [field]: response.filename }
+
+                                                            if (response.status) {
+                                                                setInputs(fieldValue);
+                                                                localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
+                                                            }
+                                                            return
+                                                        }
+                                                        fieldValue = { ...inputs, [field]: v.target.value }
+                                                        setInputs(fieldValue);
+                                                        localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
                                                     }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
                                                     <div className={e.alias === "logo" && inputs.logo ? "h-[200px]" : "hidden"}>
                                                         <img src={`${urlAPI}/images/${inputs.logo}`} className='h-[200px] w-full object-cover' alt="" />
@@ -190,28 +158,41 @@ export default function AddEnterprise() {
                                                 </div>
                                                 :
                                                 <div>
-                                                    <select onChange={(v) => {
-                                                        for (const [key, _] of Object.entries(inputs)) {
-                                                            if (key === e.alias) {
-                                                                setInputs({
-                                                                    ...inputs,
-                                                                    [e.alias]: e.type === "number" ? parseInt(v.target.value) : v.target.value
-                                                                })
-                                                            }
+                                                    <select value={inputs[e.alias] ?? ""} onChange={(v) => {
+                                                        const field = e.alias;
+
+                                                        let fieldValue = {
+                                                            ...inputs,
+                                                            [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
                                                         }
 
+                                                        if (e.type === "number")
+                                                            getNumberValue(parseInt(v.target.value), e.alias);
+
+                                                        setInputs(fieldValue)
+
+                                                        localStorage.setItem("inputMemory", JSON.stringify(fieldValue));
                                                     }} name="" id="" className="w-full mt-1 cursor-pointer outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
                                                         <option value="" selected disabled>
                                                             {e.placeholder}
                                                         </option>
                                                         {
-                                                            arrayOptions.find(item => item.alias === e.alias)
-                                                                ?.value
-                                                                ?.map(option => (
-                                                                    <option value={e.type === "number" ? option.id : option.value}>
-                                                                        {option.value === "expired" ? "expiré" : option.value === "onGoing" ? "en cours" : option.value}
-                                                                    </option>
-                                                                ))
+                                                            e.dynamicOptions?.status ?
+                                                                dynamicDatasArray.find(item => item.alias === e.alias)
+                                                                    ?.arrayData
+                                                                    ?.map(option => (
+                                                                        <option value={option.value}>
+                                                                            {option.title}
+                                                                        </option>
+                                                                    ))
+                                                                :
+                                                                staticDatasArray.find(item => item.alias === e.alias)
+                                                                    ?.arrayData
+                                                                    ?.map(option => (
+                                                                        <option value={option.value}>
+                                                                            {option.title}
+                                                                        </option>
+                                                                    ))
                                                         }
                                                     </select>
 
@@ -226,7 +207,7 @@ export default function AddEnterprise() {
                         <div className="flex w-full justify-end ">
                             <button type="button" onClick={(e) => {
                                 handleSubmit(e)
-                            }} className="bg-blue-600 my-2 hover:bg-blue-700 relative xl:right-5 rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
+                            }} className="bg-blue-600 my-2 hover:bg-blue-700 relative rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
                                 <p className={isLoading ? "hidden" : "block"}> Exécuter</p>
                                 <p className={isLoading ? "block" : "hidden"}><ClipLoader color="#fff" size={16} /></p>
                             </button>
@@ -234,7 +215,6 @@ export default function AddEnterprise() {
                     </div>
                 </div>
             </div>
-
         </main>
     )
 }

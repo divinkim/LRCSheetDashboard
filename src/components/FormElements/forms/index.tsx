@@ -45,6 +45,7 @@ export const formElements = [
                     icon: faMapPin
                 }
             ],
+
             navigateLinks: [
                 {
                     title: "Liste des contrats",
@@ -56,7 +57,7 @@ export const formElements = [
             addUserTitleForm: "Formulaire d'enregistrement d'un collaborateur",
             updateUserTitleForm: "Formulaire de modification d'un utilisateur",
 
-            tilteContract: "Formulaire de création de contrat",
+            
             titleTypeContract: "Formulaire de création d'un type de contract",
 
             inputTypeConract: [
@@ -408,7 +409,9 @@ export const formElements = [
 
                 }
             ],
-        }, addOrUpdateEnterprise: {
+        },
+        
+        addOrUpdateEnterprise: {
             navigationLinks: [
 
                 {
@@ -601,64 +604,27 @@ export const formElements = [
                 },
             ],
         },
-        addOrUpdateSalary: {
-            navigationLinks: [
+
+        //Formulaire du contrat
+        addContractUser: {
+            navigationsLinks: [
+
                 {
-                    title: "Liste des salaires",
-                    href: "/dashboard/RH/usersList",
-                    icon: faUsers
+                    title: "Ajouter un contrat",
+                    href: "/dashboard/ADMIN/addContrat"
+
                 },
+
+                {
+                    title: "Liste des contrats",
+                    href: "/dashboard/ADMIN/contractsList",
+                    icon: faFileContract
+                }
+
             ],
 
-            addSalaryTitleForm: "Ajouter un salaire",
-            updateUserTitleForm: "Formulaire de modification d'un utilisateur",
-
-            titleForm: "Formulaire d'ajout d'un salaire",
-
-            inputs: [
-                // ---- Inputs classiques ----
-                {
-                    label: "Salaire brute",
-                    placeholder: "Entrez un montant ex:100000...",
-                    requireField: false,
-                    type: "text",
-                    selectedInput: false,
-                    alias: "grossSalary"
-                },
-                {
-                    label: "Salaire journalier",
-                    placeholder: "Entrez un montant ex:100000...",
-                    requireField: false,
-                    type: "text",
-                    selectedInput: false,
-                    alias: "dailySalary"
-                },
-                // ---- Select Inputs ----
-                {
-                    label: "Entreprise",
-                    placeholder: "Sélectionnez une entreprise...",
-                    requireField: true,
-                    type: "number",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true
-                    },
-                    alias: "EnterpriseId"
-                },
-
-
-                {
-                    label: "Poste",
-                    placeholder: "Sélectionnez un poste...",
-                    requireField: false,
-                    type: "number",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true
-                    },
-                    alias: "PostId"
-                },
-            ],
+            tilteContract: "Formulaire de création de contrat",
+            titleForm: "Ajouter un contrat",
 
             inputContrat: [
                 {
@@ -726,8 +692,72 @@ export const formElements = [
 
                 },
 
-            ]
+            ],
         },
+
+
+        addOrUpdateSalary: {
+            navigationLinks: [
+                {
+                    title: "Liste des salaires",
+                    href: "/dashboard/RH/usersList",
+                    icon: faUsers
+                },
+            ],
+
+            addSalaryTitleForm: "Ajouter un salaire",
+            updateUserTitleForm: "Formulaire de modification d'un utilisateur",
+
+            titleForm: "Formulaire d'ajout d'un salaire",
+
+            inputs: [
+                // ---- Inputs classiques ----
+                {
+                    label: "Salaire brute",
+                    placeholder: "Entrez un montant ex:100000...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "grossSalary"
+                },
+                {
+                    label: "Salaire journalier",
+                    placeholder: "Entrez un montant ex:100000...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "dailySalary"
+                },
+                // ---- Select Inputs ----
+                {
+                    label: "Entreprise",
+                    placeholder: "Sélectionnez une entreprise...",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "EnterpriseId"
+                },
+
+
+                {
+                    label: "Poste",
+                    placeholder: "Sélectionnez un poste...",
+                    requireField: false,
+                    type: "number",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "PostId"
+                },
+            ],
+
+            
+        },
+
         addOrEditPost: {
             navigationLinks: [
                 {

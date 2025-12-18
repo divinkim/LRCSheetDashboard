@@ -18,7 +18,6 @@ type ContratValues = {
     EnterpriseId: number | null
     ContractType: string | null,
     Enterprise: string | null,
-    
 
 }
 
@@ -35,11 +34,6 @@ export default function AddContract() {
         ContractType: null,
         Enterprise: null,
     })
-
-   
-
-
-    
 
 
     const handleSubmit = async (e: FormEvent) => {
@@ -89,14 +83,14 @@ export default function AddContract() {
 
                             <div key={index} className="flex flex-wrap text-gray-700 w-full space-y-4 md:space-y-0 items-center justify-between" >
                                 <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">
-                                    Ajouter un contrat
+                                    {e.addContractUser.titleForm}
                                 </h1>
 
                                 <div className="flex flex-wrap space-x-4 space-y-4 items-center ">
-                                    {e.addOrUpdateUser.navigateLinks.map((item, index) => (
+                                    {e.addContractUser.navigationsLinks.map((item, index) => (
                                         <Link key={index} href={item.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" :
                                             index === 5 ? "bg-blue-800 2xl:right-5 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"} >
-                                            <FontAwesomeIcon icon={item.icon} className="text-white" />
+                                               {/**  <FontAwesomeIcon icon={item.icon} /> */}
                                             <span className='text-white'>{item.title}</span>
                                         </Link>
                                     ))}
@@ -112,7 +106,7 @@ export default function AddContract() {
                         {
                             formElements.map((e, index) => (
                                 <div key={index} className="flex flex-wrap space-y-4 justify-between mb-2 items-center dark:text-gray-300 text-gray-700">
-                                    <h2 className="font-bold">{e.addOrUpdateUser.tilteContract}</h2>
+                                    <h2 className="font-bold">{e.addContractUser.tilteContract}</h2>
                                     <p className="font-semibold"> <span className="text-red-600">*</span> Champs obligatoires</p>
                                 </div>
 
@@ -123,7 +117,7 @@ export default function AddContract() {
                         <div className='grid grid-cols-1 mt-4 md:grid-cols-2 gap-4 w-full '>
                             {
                                 formElements.map((e, i) => (
-                                    e.addOrUpdateUser.inputContrat.map((item, index) => (
+                                    e.addContractUser.inputContrat.map((item, index) => (
                                         <div key={index} className="flex flex-col w-full ">
                                             <div className=''>
                                                 <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700">
@@ -132,8 +126,9 @@ export default function AddContract() {
                                                 {
                                                     !item.selectedInput ?
                                                         <input onChange={async (u) => {
+                                                            let field = item.alias
                                                             for (const [key, _] of Object.entries(inputsValues)) {
-                                                                if (key === item.alias) {
+                                                                if (key === field) {
                                                                     setInputsValues({
                                                                         ...inputsValues,
                                                                         [item.alias]: u.target.value

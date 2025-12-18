@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react"
 import { ClipLoader } from "react-spinners";
+import AddContractHookModal from "./hook";
 
 type ContratValues = {
     startDate: number | null,
@@ -17,16 +18,13 @@ type ContratValues = {
     EnterpriseId: number | null
     ContractType: string | null,
     Enterprise: string | null,
+    
 
 }
 
 export default function AddContract() {
 
-    const [getEnterprise, setGetEnterprise] = useState<any[]>([])
-    const [getContract, setGetContract] = useState<any[]>([])
-    const [getContractType, setGetContractType] = useState<any[]>([])
-    const [getEnterpriseIdOfAdmin, setGetEnterpriseIdOfAdmin] = useState<string | null>(null)
-    const [getAdminRole, setGetAdminRole] = useState<string | null>(null)
+    const {dynamicArrayData, staticArrayData} = AddContractHookModal()
     const [isLoading, setIsLoading] = useState(false);
     const [inputsValues, setInputsValues] = useState<ContratValues>({
         startDate: null,
@@ -38,117 +36,10 @@ export default function AddContract() {
         Enterprise: null,
     })
 
-    //Récupérer la liste des contrats
-    useEffect(() => {
-        (async () => {
-
-            const methodName = "getContracts"
-            const getContract = await controllers.API.getAll(urlAPI, methodName, null)
-            const filteredContrat = getContract.filter(
-                (item: { ContractTypeId: number, EnterpriseId: number }) =>
-                    item.ContractTypeId === inputsValues.ContractTypeId && item.EnterpriseId === inputsValues.EnterpriseId)
-            setGetContract(filteredContrat)
-            console.log("La liste des contrats:", filteredContrat)
-
-        })()
-    }, [inputsValues.ContractTypeId])
-
-    //Récupérer les entreprises
-    useEffect(() => {
-        (async () => {
-            if (typeof (window) === undefined) return;
-            const authToken = localStorage.getItem("authToken")
-            const role = localStorage.getItem("role")
-            let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId")
-
-            setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
-            setGetAdminRole(role)
-
-            const methodName = "getEnterprises"
-            const getEnterprise = await controllers.API.getAll(urlAPI, methodName, null)
-
-            if (parseInt(getEnterpriseIdOfAdmin ?? "") !== 1) {
-                const filteredEnterpriseIdOdAdmin = getEnterprise.filter((item: { id: number }) => item.id === parseInt(getEnterpriseIdOfAdmin ?? ""))
-
-                setGetEnterprise(filteredEnterpriseIdOdAdmin)
-                return;
-
-            }
-            setGetEnterprise(getEnterprise)
-            console.log("l'id de l'entreprise:", getEnterprise)
-
-        })()
-    }, [])
-
-    //Récupérer le type de contrat
-    useEffect(() => {
-        (async () => {
-
-            const methodName = "getContractTypes"
-            const getContractType = await controllers.API.getAll(urlAPI, methodName, null)
-            const filteredContratType = getContractType.filter(
-                (item: { ContractTypeId: number, EnterpriseId: number }) =>
-                    item.EnterpriseId === inputsValues.EnterpriseId)
-            setGetContractType(filteredContratType)
-            console.log("La liste des contrats:", filteredContratType)
-
-        })()
-    }, [inputsValues.EnterpriseId])
+   
 
 
-    let arrayDatas = [
-
-        {
-            alias: "ContractTypeId",
-            value: getContractType.filter(item => item.id && item.title).map(item => (
-                { id: item.id, value: item.title }))
-        },
-
-        {
-            alias: "EnterpriseId",
-            value: getEnterprise.filter(item => item.id && item.name).map(item => (
-                { id: item.id, value: item.name })),
-        },
-
-        {
-            alias: "delay",
-            value: [
-                {
-                    id: "3 mois", value: "3 mois"
-                },
-
-                {
-                    id: "6 mois", value: "6 mois"
-                },
-
-                {
-                    id: "1 année", value: "1 année"
-                },
-            ]
-        },
-
-    ]
-
-    const staticData = [
-        {
-            alias: "delay",
-            value: [
-                {
-                    id: "3 mois", value: "3 mois"
-                },
-
-                {
-                    id: "6 mois", value: "6 mois"
-                },
-
-                {
-                    id: "1 année", value: "1 année"
-                },
-
-            ]
-        }
-    ]
-
+    
 
 
     const handleSubmit = async (e: FormEvent) => {
@@ -272,15 +163,15 @@ export default function AddContract() {
 
                                                             {
 
-                                                                item.dynamicOptions?.status ?
-                                                                    arrayDatas?.find(items => items.alias === item.alias)?.value.map(option => (
+                                                                item.dynamicOptions?.status ? dynamicArrayData
+                                                                    .find(items => items.alias === item.alias)?.value.map(option => (
                                                                         <option value={option.id}>
                                                                             {option.value}
                                                                         </option>
                                                                     )) :
                                                                     (
 
-                                                                        staticData.find(i => i.alias === item.alias)?.value.map((e) => (
+                                                                        staticArrayData.find(i => i.alias === item.alias)?.value.map((e) => (
                                                                             <option value={e.id}>
                                                                                 {e.value}
                                                                             </option>

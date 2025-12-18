@@ -5,7 +5,7 @@ import {
     faBuilding,
     faMoneyBillWave,
     faMapMarkedAlt,
-    faMapPin, faFileContract
+    faMapPin, faFileContract, faSuitcaseRolling, faIdBadge
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { title } from "process";
@@ -16,40 +16,39 @@ export const formElements = [
             navigationLinks: [
                 {
                     title: "Liste des utilisateurs",
-                    href: "/pages/dashboard/RH/usersList",
+                    href: "/dashboard/RH/usersList",
                     icon: faUsers
                 },
                 {
-                    title: "Ajouter un posteeee",
-                    href: "/pages/dashboard/ADMIN/addPost",
-                    icon: faPlusCircle     // Poste = ajout → icône plus circle
+                    title: "Ajouter un poste",
+                    href: "/dashboard/ADMIN/addPost",
+                    icon: faPlusCircle 
                 },
                 {
                     title: "Ajouter un département",
-                    href: "/pages/dashboard/ADMIN/addDepartment",
-                    icon: faBuilding       // Département = bâtiment
+                    href: "/dashboard/ADMIN/addDepartment",
+                    icon: faBuilding
                 },
                 {
                     title: "Ajouter un salaire",
-                    href: "/pages/dashboard/COMPTA/addSalary",
-                    icon: faMoneyBillWave  // Salaire = billet
+                    href: "/dashboard/COMPTA/addSalary",
+                    icon: faMoneyBillWave
                 },
                 {
                     title: "Ajouter un arrondissement",
-                    href: "/pages/dashboard/OTHERS/addDistrict",
-                    icon: faMapMarkedAlt   // Arrondissement = zone / map
+                    href: "/dashboard/OTHERS/addDistrict",
+                    icon: faMapMarkedAlt
                 },
                 {
                     title: "Ajouter un quartier",
-                    href: "/pages/dashboard/OTHERS/addQuarter",
-                    icon: faMapPin         // Quartier = pin/point sur la carte
+                    href: "/dashboard/OTHERS/addQuarter",
+                    icon: faMapPin
                 }
             ],
-
             navigateLinks: [
                 {
                     title: "Liste des contrats",
-                    href: "/pages/dashboard/ADMIN/listContrat",
+                    href: "/dashboard/ADMIN/listContrat",
                     icon: faFileContract
                 },
             ],
@@ -58,6 +57,41 @@ export const formElements = [
             updateUserTitleForm: "Formulaire de modification d'un utilisateur",
 
             tilteContract: "Formulaire de création de contrat",
+            titleTypeContract: "Formulaire de création d'un type de contract",
+
+            inputTypeConract: [
+                {
+                    label: "Nom du titre",
+                    placeholder: "Saisissez un titre",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "title"
+                },
+
+                {
+                    label: "Description",
+                    placeholder: "Saisissez la description",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "description"
+                },
+
+                {
+                    lable: "Entreprise",
+                    placeholder: "Sélectionnez une entreprise",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: false
+                    },
+                    alias: "EnterpriseId"
+                }
+
+
+            ],
 
             inputs: [
                 // ---- Inputs classiques ----
@@ -78,7 +112,7 @@ export const formElements = [
                     alias: "photo"
                 },
                 {
-                    label: "Rôle",
+                    label: "Rôle utiisateur",
                     placeholder: "Sélectionnez un rôle",
                     requireField: true,
                     type: "text",
@@ -375,25 +409,22 @@ export const formElements = [
 
                 }
             ],
-
-
-
         }, addOrUpdateEnterprise: {
             navigationLinks: [
 
                 {
                     title: "Liste des entreprises",
-                    href: "/pages/dashboard/OTHERS/enterprisesList",
+                    href: "/dashboard/OTHERS/enterprisesList",
                     icon: faUsers
                 },
                 {
                     title: "Ajouter un ville",
-                    href: "/pages/dashboard/ADMIN/addCity",
+                    href: "/dashboard/ADMIN/addCity",
                     icon: faPlusCircle     // Poste = ajout → icône plus circle
                 },
                 {
                     title: "Ajouter un pays",
-                    href: "/pages/dashboard/ADMIN/addCountry",
+                    href: "/dashboard/ADMIN/addCountry",
                     icon: faBuilding       // Département = bâtiment
                 },
             ],
@@ -401,7 +432,7 @@ export const formElements = [
             navigateLinks: [
                 {
                     title: "Liste des contrats",
-                    href: "/pages/dashboard/ADMIN/listContrat",
+                    href: "/dashboard/ADMIN/listContrat",
                     icon: faFileContract
                 },
             ],
@@ -575,7 +606,7 @@ export const formElements = [
             navigationLinks: [
                 {
                     title: "Liste des salaires",
-                    href: "/pages/dashboard/RH/usersList",
+                    href: "/dashboard/RH/usersList",
                     icon: faUsers
                 },
             ],
@@ -697,6 +728,78 @@ export const formElements = [
                 },
 
             ]
+        },
+        addOrEditPost:{
+            navigationLinks: [
+                {
+                    title: "Liste des Postes",
+                    href: "/dashboard/ADMIN/potsList",
+                    icon: faIdBadge
+                },
+                {
+                    title: "Ajouter une entreprise",
+                    href: "/dashboard/OTHERS/addEnterprise",
+                    icon: faBuilding
+                },
+                {
+                    title: "Ajouter un département",
+                    href: "/dashboard/ADMIN/addDepartment",
+                    icon: faSuitcaseRolling
+                }
+            ],
+
+            addPostTitlePage: "Ajouter un un poste",
+            updatePostTitlePage: "Modifier un poste",
+
+            titleForm: "Formulaire d'ajout d'un poste",
+
+            inputs: [
+                // ---- Inputs classiques ----
+                {
+                    label: "Titre",
+                    placeholder: "Entrez un titre...",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    textarea:false,
+                    alias: "title"
+                },
+                
+                // ---- Select Inputs ----
+                {
+                    label: "Entreprise",
+                    placeholder: "Sélectionnez une entreprise...",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    textarea:false,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "EnterpriseId"
+                },  
+                {
+                    label: "Département d'entreprise",
+                    placeholder: "Sélectionnez un département",
+                    requireField: true,
+                    type: "number",
+                    textarea:false,
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "DepartmentPostId"
+                },
+                {
+                    label: "Description",
+                    placeholder: "Veuillez saisir une description",
+                    requireField: true,
+                    textarea:true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "description"
+                },
+            ],
         }
     }
 ];

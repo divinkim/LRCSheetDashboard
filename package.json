@@ -3,9 +3,9 @@
   "version": "1.2.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
-    "start: https": "NODE_ENV=production node server.js",
+    "start: https": "NODE_ENV=production node server.js --turbopack",
     "lint": "next lint"
   },
   "dependencies": {

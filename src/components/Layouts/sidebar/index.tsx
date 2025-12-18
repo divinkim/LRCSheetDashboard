@@ -197,7 +197,7 @@ export function Sidebar() {
         {
           index: 4,
           title: "Liste des collaborateurs au planning",
-          href: "/dashboard/RH/collaboratorsAssociateList",
+          href: "/dashboard/RH/weekDaysPlanningsList",
           icon: faCalendarCheck
         },
       ]
@@ -242,7 +242,7 @@ export function Sidebar() {
         {
           index: 5,
           title: "Type de contrat",
-          href: "/dashboard/ADMIN/typeContrat",
+          href: "/dashboard/ADMIN/contractsList",
           icon: faFileContract
         },
         {
@@ -254,7 +254,7 @@ export function Sidebar() {
         {
           index: 7,
           title: "Poste",
-          href: "/dashboard/ADMIN/poste",
+          href: "/dashboard/ADMIN/addPost",
           icon: faIdBadge
         },
         {

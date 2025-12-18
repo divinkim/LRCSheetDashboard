@@ -30,22 +30,51 @@ type UsersDatas = {
 
 }
 
-export default function UsersList() {
+type WeekDaysPlannings = {
+    WeekDaysId: number,
+    PlanningTypeId: number,
+    PlanningId: number,
+    EnterpriseId: number,
+    Enterprise:{
+        name:string|null,
+        logo:string|null
+    }
+    WeekDays: {
+        name: string,
+    },
+    PlanningType: {
+        title: string,
+    },
+    Planning: {
+        startTime: string,
+        breakingStartTime: string,
+        resumeEndTime: string,
+        endTime: string
+    },
+    UserId: number,
+    User: {
+        firstname: string,
+        lastname: string,
+        photo:string|null,
+    }
+}
+
+export default function WeekDaysPlanningsList() {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);             // page courante
     const limit = 5;                                 // items par page
 
     const [usersList, setUsersList] = useState<UsersDatas[]>([]);
     const [savedUsersList, setSavedUsersList] = useState<UsersDatas[]>([]);
-
+    const [weekDaysPlannings, setWeekDaysPlannings] = useState<WeekDaysPlannings[]>([])
+    const [weekDaysPlanningsSaved, setWeekDaysPlanningsSaved] = useState<WeekDaysPlannings[]>([])
     const getAdminRole = localStorage.getItem("adminRole");
     const [loading, setIsLoading] = useState(false);
-    const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
+    const requireRoles = ['Super-Admin', 'Supervisor-Admin'];
 
     useEffect(() => {
         (() => {
             const authToken = localStorage.getItem("authToken");
-
             if (authToken === null) {
                 window.location.href = "/"
             }
@@ -54,50 +83,39 @@ export default function UsersList() {
 
     useEffect(() => {
         (async () => {
-            let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
+            let EnterpriseId = localStorage.getItem("EnterpriseId");
 
-            const request = await controllers.API.getAll(urlAPI, "getUsers", null);
-            if (parseInt(getEnterpriseIdOfAdmin ?? "") === 1) {
-                setUsersList(request);
-                setSavedUsersList(request)
-            } else {
-                const filterUsersByEnterpriseId = request.filter((user: { EnterpriseId: number }) => user.EnterpriseId === parseInt(getEnterpriseIdOfAdmin ?? ""));
-                setUsersList(filterUsersByEnterpriseId);
-                setSavedUsersList(filterUsersByEnterpriseId);
-            }
-
-        })()
-    }, [getAdminRole]);
+            const request = await controllers.API.getAll(urlAPI, "getAllUsersPlanningsOfWeek", null);
+            const filterWeekDaysPlanningsByEnterpriseId = request.filter((item: { EnterpriseId: number }) => item.EnterpriseId === parseInt(EnterpriseId ?? ""))
+            setWeekDaysPlannings(filterWeekDaysPlanningsByEnterpriseId);
+            setWeekDaysPlanningsSaved(filterWeekDaysPlanningsByEnterpriseId);
+        })();
+    }, []);
 
     // 🔎 Filtrer par recherche
     function onSearch(value: string) {
-        let filtered = usersList.filter(item => item?.lastname?.toLocaleLowerCase()?.includes(value.toLocaleLowerCase()) || item?.firstname?.toLocaleLowerCase()?.includes(value.toLocaleLowerCase()));
-        setSavedUsersList(filtered)
+        let filtered = weekDaysPlannings.filter(item => item?.User.lastname?.toLocaleLowerCase()?.includes(value.toLocaleLowerCase()) || item?.User.firstname?.toLocaleLowerCase()?.includes(value.toLocaleLowerCase()));
+        setWeekDaysPlanningsSaved(filtered)
     }
 
     // 📑 Pagination
     const start = (page - 1) * limit;
     const maxPage = Math.ceil(savedUsersList.length / limit);
 
-    const arrayUsersRefactory = savedUsersList
+    const arrayUsersRefactory = weekDaysPlanningsSaved
 
     return (
         <div>
             <Header />
             <div className="flex justify-center w-full mx-auto">
-                <Sidebar />
-
+                <div className='relative 2xl:right-5'><Sidebar /></div>
                 <main className='m-4 bg-gray-100 text-gray-700 dark:text-gray-300 dark:bg-transparent'>
-                    {
-                        tablesModal.map((e) => (
-                            <div className="flex justify-between items-center">
-                                <h1 className="text-[20px] my-4 font-bold dark:text-gray-300">{e.usersList.pageTitle}  </h1>
-                                <p className='text-blue-700 dark:text-blue-600 hidden xl:block'>{e.usersList.path}</p>
-                            </div>
-                        ))
-                    }
+                    <div className="flex justify-between items-center">
+                        <h1 className="text-[20px] my-4 font-bold dark:text-gray-300">{tablesModal[0].weekDaysPlanningList.pageTitle}  </h1>
+                        <p className='text-blue-700 font-semibold dark:text-blue-600 hidden xl:block'>{tablesModal[0].weekDaysPlanningList.path}</p>
+                    </div>
                     <hr className='bg-gray-400 border-0 h-[1px]' />
-                    <div className="flex flex-col space-y-4 xl:space-y-0  lg:flex-row items-center justify-between">
+                    <div className="flex flex-col space-y-4 xl:space-y-0  2xl:flex-row 2xl:items-center 2xl:justify-between mb-5 2xl:mb-0 justify-start space-x-5">
                         <div className="relative w-[250px]">
                             <input
                                 type="text"
@@ -112,9 +130,10 @@ export default function UsersList() {
                             />
                             <FontAwesomeIcon icon={faSearch} className="absolute text-gray-400 right-3 top-[38px]" />
                         </div>
-                        {
+                        <div className='flex space-x-4'>
+                            {
                             tablesModal.map((e) => (
-                                e.usersList.links.map((item) => (
+                                e.weekDaysPlanningList.links.map((item) => (
                                     <Link href={item.href} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4">
                                         <FontAwesomeIcon icon={item.icon} className="text-white" />
                                         <span className='text-white font-semibold'> {item.title}</span>
@@ -123,6 +142,8 @@ export default function UsersList() {
 
                             ))
                         }
+                        </div>
+                        
                     </div>
 
                     {/* 🧾 Tableau */}
@@ -131,7 +152,7 @@ export default function UsersList() {
                             <tr className="bg-gray-800 dark:bg-transparent ">
                                 {
                                     tablesModal.map((e) => (
-                                        e.usersList.table.titles.map((item) => (
+                                        e.weekDaysPlanningList.table.titles.map((item) => (
                                             <th className="border py-2 xl:px-5 border-gray-400 dark:border-gray-300 text-gray-300  2xl:px-10 px-2 dark:text-gray-300">{item.title}</th>
                                         ))
                                     ))
@@ -140,54 +161,43 @@ export default function UsersList() {
                         </thead>
 
                         <tbody className="w-full">
-
                             {
-
-                                savedUsersList.length > 0 ? savedUsersList.slice(start, start + limit).map((u) => (
+                                weekDaysPlanningsSaved.length > 0 ? weekDaysPlanningsSaved.slice(start, start + limit).map((u) => (
                                     <tr className="">
 
                                         <td className="border p-2 border-gray-400 dark:border-gray-300">
-                                            {u.photo ? <img src={`${urlAPI}/images/${u.photo}`} className="w-[50px] mx-auto h-[50px] object-cover rounded-full" alt="" /> : <p className="text-center text-[40px]">
+                                            {u.User.photo ? <img src={`${urlAPI}/images/${u.User.photo}`} className="w-[50px] mx-auto h-[50px] object-cover rounded-full" alt="" /> : <p className="text-center text-[40px]">
                                                 🧑‍💼
                                             </p>}
                                         </td>
 
-                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{(u?.lastname ?? "")?.length > 7 ? u?.lastname?.slice(0, 6) + "..." : u?.lastname} {(u?.firstname ?? "")?.length > 7 ? u?.firstname?.slice(0, 6) + "..." : u?.firstname}</td>
-
-                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{(u?.phone ?? "")?.length > 7 ? u?.phone?.slice(0, 6) + "..." : u?.phone}</td>
-                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{(u?.email ?? "")?.length > 7 ? u?.email?.slice(0, 6) + "..." : u?.email}</td>
-                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{(u?.gender ?? "")?.length > 7 ? u?.gender?.slice(0, 6) + "..." : u?.gender}</td>
-                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">
-                                            {u.Enterprise?.logo ? <img src={`${urlAPI}/images/${u.Enterprise.logo}`} className="w-[50px] mx-auto h-[50px] object-cover rounded-full" alt="" /> : <p>{u.Enterprise?.name}</p>}
+                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.User.firstname} {u.User.lastname}</td>
+                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.WeekDays.name}</td>
+                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.PlanningType.title}
                                         </td>
-                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.status ? <p className="bg-green-500 rounded-full p-2 text-white">Actif</p> : <p className='bg-red-500 rounded-full p-2 text-white'>Inactif</p>}</td>
-                                        <td className="text-center py-5 font-semibold border-b border-r  space-x-3 flex  h-auto p-2 border-gray-400 dark:border-gray-300">
-                                            <Link onClick={() => {
-                                                if (!requireAdminRoles.includes(getAdminRole ?? "")) {
-                                                    Swal.fire({
-                                                        icon: 'warning',
-                                                        title: "Violation d'accès!",
-                                                        text: "Vous n'avez aucun droit d'effectuer cette action. Contacter votre administrateur de gestion",
-                                                    });
-                                                }
-                                            }} href={requireAdminRoles.includes(getAdminRole ?? "")? `/dashboard/RH/getUserProfil/${u.id}`:""} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
+                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.Planning.startTime?.slice(0,5)}-{u.Planning.breakingStartTime?.slice(0,5)}-{u.Planning.resumeEndTime?.slice(0,5)}-{u.Planning.endTime?.slice(0,5)}
+                                        </td>
+                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.Enterprise.logo ? <img src={`${urlAPI}/images/${u.Enterprise.logo}`} className="w-[50px] mx-auto h-[50px] object-cover rounded-full" alt="" />:u.Enterprise.name }
+                                        </td>
+                                        <td className="text-center py-5 font-semibold border-b border-r  space-x-3 flex justify-center h-auto p-2 border-gray-400 dark:border-gray-300">
+                                            {/* <Link href={`/RH/getUserProfil/${u.id}`} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
                                                 <p className="text-center">👁️</p>
-                                            </Link>
+                                            </Link> */}
                                             <button className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md" onClick={() => {
-                                                if (!requireAdminRoles.includes(getAdminRole ?? "")) {
+                                                if (!requireRoles.includes(getAdminRole ?? "")) {
                                                     return Swal.fire({
                                                         icon: "warning",
                                                         title: "Vioaltion d'accès!",
                                                         text: "Vous n'avez aucun droit d'effectuer cette opération. Veuillez contacter votre administrateur local"
-                                                    });
+                                                    })
                                                 }
                                             }}>
-                                                <Link href={`/dashboard/RH/updateUser/${u.id}`} >
+                                                <Link href={`/dashboard/RH/updateUserInPlanningOfWeek`} >
                                                     <p className="text-center">🖊️</p>
                                                 </Link>
                                             </button>
                                             <button type="button" onClick={() => {
-                                                if (!requireAdminRoles.includes(getAdminRole ?? "")) {
+                                                if (!requireRoles.includes(getAdminRole ?? "")) {
                                                     return Swal.fire({
                                                         icon: "warning",
                                                         title: "Vioaltion d'accès!",
@@ -202,8 +212,8 @@ export default function UsersList() {
                                                     confirmButtonText: "Oui"
                                                 }).then(async (confirmed) => {
                                                     if (confirmed.isConfirmed) {
-                                                        const response = await controllers.API.deleteOne(urlAPI, "deleteUser", u.id, {});
-                                                        controllers.alertMessage(response.status, response.title, response.message, "/pages/dashboard/RH/usersList")
+                                                        const response = await controllers.API.deleteOne(urlAPI, "deleteUser", u.UserId, {});
+                                                        controllers.alertMessage(response.status, response.title, response.message, "/dashboard/dashboard/RH/weekDaysPlanningsList")
                                                     }
                                                 })
                                             }} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">

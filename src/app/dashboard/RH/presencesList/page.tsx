@@ -74,12 +74,12 @@ export default function PresencesList() {
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
 
     const [createdAt, setCreatedAt] = useState<string | null>(null);
-    const [adminRole, setAdminRole] = useState<string | null>(null);
+    const [adminRole, setAdminRole] = useState<string>("");
 
     useEffect(() => {
         if (typeof (window) === "undefined") return
         const role = localStorage.getItem("adminRole");;
-        setAdminRole(role);
+        setAdminRole(role ?? "");
     }, []);
     console.log("Le role de l'admin",adminRole)
     const [addPresenceInputs, setAddPresenceInputs] = useState<AddPresenceProps>({
@@ -455,7 +455,7 @@ export default function PresencesList() {
                     }
                     {
                         tablesModal.map((e) => (
-                            <div className="flex justify-between px-4 items-center">
+                            <div className="flex font-semibold justify-between px-4 items-center">
                                 <h1 className="text-[20px] my-4 font-bold dark:text-gray-300">{e.presencesList.pageTitle}  </h1>
                                 <button className='text-blue-700 dark:text-blue-600 hidden xl:block'>{e.presencesList.path}</button>
                             </div>
@@ -468,7 +468,7 @@ export default function PresencesList() {
                                 <input
                                     type="text"
                                     placeholder="Rechercher un profil..."
-                                    className="border border-gray-400 outline-none dark:border-gray-300 dark:bg-transparent px-3 py-2.5 rounded-xl my-6 w-full"
+                                    className="border border-gray-400 outline-none dark:border-gray-300 dark:bg-transparent px-3 py-2.5 rounded-md my-6 w-full"
                                     value={search}
                                     onChange={(e) => {
                                         setSearch(e.target.value)
@@ -483,10 +483,21 @@ export default function PresencesList() {
                                     tablesModal.map((e) => (
                                         e.presencesList.links.map((item) => (
                                             <Link href={item.href} onClick={() => {
+                                                if(!requireAdminRoles.includes(adminRole ?? "")){
+                                                    Swal.fire({
+                                                        icon:'warning',
+                                                        title:"Violation d'accès!",
+                                                        text:"Vous n'avez aucun droit d'effectuer cette action. Contacter votre administrateur de gestion",
+                                                        showConfirmButton:false,
+                                                    });
+                                                  return setTimeout(()=>{
+                                                        window.location.href="/dashboard/RH/presencesList"
+                                                    },1500)
+                                                }
                                                 if (item.href === "") {
                                                     item.modal === "addPresenceModal" ? setShowAddPresenceModal(!showAddPresenceModal) : setShowUpdatePresenceModal(!showUpdatePresenceModal)
                                                 }
-                                            }} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded">
+                                            }} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4">
                                                 <FontAwesomeIcon icon={item.icon} className="text-white" />
                                                 <span className='text-white font-semibold'> {item.title}</span>
                                             </Link>

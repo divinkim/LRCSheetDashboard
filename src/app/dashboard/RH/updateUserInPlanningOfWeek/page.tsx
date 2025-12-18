@@ -7,6 +7,8 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { controllers, urlAPI } from "@/app/main";
 import { ClipLoader } from "react-spinners";
+import Link from "next/link";
+
 type Users = {
     lastname: string | null,
     firstname: string | null,
@@ -30,7 +32,8 @@ type Plannings = {
 type Datas = {
     usersId: number[],
     weekDaysId: number[],
-    PlanningId: number
+    PlanningId: number,
+    enterprisesId: number[],
 }
 
 export default function UpdateUserInPlanningOfWeek() {
@@ -41,6 +44,7 @@ export default function UpdateUserInPlanningOfWeek() {
     const [datas, setDatas] = useState<Datas>({
         usersId: [],
         weekDaysId: [],
+        enterprisesId: [],
         PlanningId: 0,
     })
 
@@ -64,7 +68,7 @@ export default function UpdateUserInPlanningOfWeek() {
                 setIsLoading(false)
             }, 1000)
         }
-        const response = await controllers.API.UpdateOne(urlAPI, "addUserInPlanningOfWeek", null);
+        const response = await controllers.API.UpdateOne(urlAPI, "updateUsersPlanningsOfWeek", null, datas);
         controllers.alertMessage(response.status, response.title, response.message, response.status ? "/dashboard/RH/updateUserInPlanningOfWeek" : null);
         setIsLoading(false);
     }
@@ -74,18 +78,26 @@ export default function UpdateUserInPlanningOfWeek() {
             <Header />
             <div className="flex">
                 <Sidebar />
-                <div className="mx-4 font-semibold mt-6 mb-4 w-full">
+                <div className="mx-4 font-semibold mt-6 b-4 w-full">
                     <div className="flex mb-5 justify-between items-center">
                         <h1 className="text-[20px] font-bold dark:text-gray-300 text-gray-700">
-                            {addEditUserPlanningOfWeek?.addUserInPlanningOfWeek?.titlePage}
+                            {addEditUserPlanningOfWeek?.updateUserInPlanningOfWeek?.titlePage}
                         </h1>
                         <p className="text-blue-500">
-                            {addEditUserPlanningOfWeek.addUserInPlanningOfWeek?.path}
+                            {addEditUserPlanningOfWeek.updateUserInPlanningOfWeek?.path}
                         </p>
                     </div>
 
                     <hr className='bg-gray-400 border-0 h-[1px]' />
-
+                    <div className="flex justify-end space-x-4 mt-4 item-center">
+                        {
+                            addEditUserPlanningOfWeek.updateUserInPlanningOfWeek.links.map((elm) => (
+                                <Link href={elm.path} className="bg-blue-600 hover:bg-blue-700 ease duration-500 text-white  py-3 px-8">
+                                    {elm.title} <span><FontAwesomeIcon icon={elm.icon} /></span>
+                                </Link>
+                            ))
+                        }
+                    </div>
                     <div className="mt-8 grid  grid-cols-1 gap-4 md:grid-cols-2">
                         <div className="border h-[500px] rounded-xl border-gray-400 p-4">
 
@@ -127,7 +139,8 @@ export default function UpdateUserInPlanningOfWeek() {
                                                 onChange={() => {
                                                     setDatas({
                                                         ...datas,
-                                                        usersId: datas.usersId.includes(user.id) ? datas.usersId.filter(item => item !== user.id) : [...datas.usersId, user.id]
+                                                        usersId: datas.usersId.includes(user.id) ? datas.usersId.filter(item => item !== user.id) : [...datas.usersId, user.id],
+                                                        enterprisesId: datas.enterprisesId.includes(user.EnterpriseId) ? datas.enterprisesId.filter(item => item !== user.EnterpriseId) : [...datas.enterprisesId, user.EnterpriseId]
                                                     })
                                                 }}
                                             />
@@ -136,7 +149,7 @@ export default function UpdateUserInPlanningOfWeek() {
                                 ))}
                             </div>
                             <button onClick={handleSubmit} type="button" className="mt-8 relative right-4 bg-blue-600 ease duration-500 text-white py-3 px-10 hover:bg-blue-700">
-                                <p className={isLoading ? "hidden" : "block"}>Ajouter</p>
+                                <p className={isLoading ? "hidden" : "block"}>Modifier</p>
                                 <p className={isLoading ? 'block' : "hidden"}><ClipLoader size={16} color="#fff" /></p>
                             </button>
                         </div>

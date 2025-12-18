@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import { urlAPI } from "@/app/main";
 import { controllers } from "@/app/main";
 import { cn } from "@/lib/utils";
+import AddUserHookModal from "./hook";
 
 type InputsValue = {
     firstname: string | null,
@@ -34,23 +35,12 @@ type InputsValue = {
     DepartmentPostId: number | null,
     maritalStatus: string | null,
     adminService: string | null,
+    [key: string]: string | number | null,
 }
 
-
 export default function AddUser() {
-    const [getEnterprises, setGetEnterprises] = useState<any[]>([]);
-    const [getDepartmentPosts, setGetDepartmentPosts] = useState<any[]>([]);
-    const [getPosts, setPosts] = useState<any[]>([]);
-    const [getSalary, setSalary] = useState<any[]>([]);
-    const [getContractTypes, setContractTypes] = useState<any[]>([]);
-    const [getContracts, setContracts] = useState<any[]>([]);
-    const [getCountry, setCountry] = useState<any[]>([]);
-    const [getCity, setCity] = useState<any[]>([]);
-    const [getDistrict, setDistrict] = useState<any[]>([]);
-    const [getQuarter, setQuarter] = useState<any[]>([]);
+    const { dynamicArrayDatas, staticArrayData } = AddUserHookModal();
     const [isLoading, setIsLoading] = useState(false);
-    const [getEnterpriseIdOfadmin, setEnterpriseIdOfAdmin] = useState<string | null>(null)
-    const [getAdminRole, setAdminRole] = useState<string | null>(null)
     const [inputs, setInputs] = useState<InputsValue>({
         firstname: null,
         lastname: null,
@@ -75,175 +65,17 @@ export default function AddUser() {
         adminService: null,
     });
 
-    const requireRoles = ['Super-Admin', 'Supervisor-Admin', 'Moderator-Admin'];
-
-    // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
+    //Récupère les données de champs en mémoire
+    
     useEffect(() => {
-        if (typeof (window) === "undefined") return; // important
-        (async () => {
-            const role = localStorage.getItem("adminRole");
-            const getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
-
-            setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
-            setAdminRole(role);
-
-            const getEnterprises = await controllers.API.getAll(urlAPI, "getEnterprises", null);
-
-            if (parseInt(getEnterpriseIdOfAdmin ?? "") !== 1) {
-                const filterEnterpriseByEnterpriseId = getEnterprises.filter(
-                    (enterprise: { id: number }) => enterprise.id === parseInt(getEnterpriseIdOfAdmin ?? "")
-                );
-                setGetEnterprises(filterEnterpriseByEnterpriseId);
-                return;
-            }
-
-            setGetEnterprises(getEnterprises);
-        })();
+        (() => {
+            const inputMemory = localStorage.getItem("inputMemory");
+            const parseInputMemory = JSON.parse(inputMemory ?? "");
+            setInputs(parseInputMemory)
+        })()
     }, []);
 
-    // Récupération des départements d'entreprises
-    useEffect(() => {
-        (async () => {
-            const getDepartmentPosts = await controllers.API.getAll(urlAPI, "getDepartmentPosts", null);
-            if (getAdminRole !== "Super-Admin") {
-                const filteredDepartmentPosts = getDepartmentPosts.filter((department: { EnterpriseId: number }) => department.EnterpriseId === inputs.EnterpriseId);
-                setGetDepartmentPosts(filteredDepartmentPosts)
-            } else {
-                setGetDepartmentPosts(getDepartmentPosts)
-            }
-        })()
-    }, [inputs.EnterpriseId]);
-
-    // // Récupération des postes d'entreprises
-    useEffect(() => {
-        (async () => {
-            const getPosts = await controllers.API.getAll(urlAPI, "getPosts", null);
-            const filteredPosts = getPosts.filter((post: { EnterpriseId: number, DepartmentPostId: number }) => post.DepartmentPostId === inputs.DepartmentPostId && post.EnterpriseId === inputs.EnterpriseId);
-            setPosts(filteredPosts)
-            console.log(filteredPosts);
-        })()
-    }, [inputs.DepartmentPostId, inputs.EnterpriseId]);
-
-    // // Récupération des salaires
-    useEffect(() => {
-        (async () => {
-            const getSalaries = await controllers.API.getAll(urlAPI, "getSalaries", null);
-            const filteredSalries = getSalaries.filter((salary: { EnterpriseId: number, DepartmentId: number, PostId: number }) => salary.PostId === inputs.PostId && salary.EnterpriseId === inputs.EnterpriseId);
-            setSalary(filteredSalries)
-            console.log(filteredSalries);
-        })()
-    }, [inputs.PostId]);
-
-    // Récupération des type de Contrat
-    useEffect(() => {
-        (async () => {
-            const getContractTypes = await controllers.API.getAll(urlAPI, "getContractTypes", null);
-            const filterContractTypes = getContractTypes.filter((contractType: { EnterpriseId: number, ContractTypeId: number }) => contractType.EnterpriseId === inputs.EnterpriseId)
-            setContractTypes(filterContractTypes)
-            console.log(filterContractTypes);
-        })()
-    }, [inputs.EnterpriseId]);
-
-    // // Récupération des Contrat
-    useEffect(() => {
-        (async () => {
-            const getContracts = await controllers.API.getAll(urlAPI, "getContracts", null);
-            const filterContracts = getContracts.filter((contract: { EnterpriseId: number, ContractTypeId: number }) => contract.ContractTypeId === inputs.ContractTypeId && contract.EnterpriseId === inputs.EnterpriseId)
-            setContracts(filterContracts)
-            console.log(filterContracts);
-        })()
-    }, [inputs.ContractTypeId]);
-
-    // // Récupération des type des pays
-    useEffect(() => {
-        (async () => {
-            setTimeout(async () => {
-                const getCountries = await controllers.API.getAll(urlAPI, "getCountries", null);
-                setCountry(getCountries);
-                console.log(getCountries)
-            }, 2000)
-        })();
-    }, []);
-
-    // // Récupération des type des villes en fonction du pays
-    useEffect(() => {
-        (async () => {
-
-            const getCities = await controllers.API.getAll(urlAPI, "getCities", null);
-            const filteredCities = getCities.filter((city: any) => city.CountriesTypeId === inputs.CountryId)
-            setCity(filteredCities)
-        })()
-    }, [inputs.CountryId]);
-
-    // // Récupération des arrondissements en fonction de la ville
-    useEffect(() => {
-        (async () => {
-            const getDistricts = await controllers.API.getAll(urlAPI, "getDistricts", null);
-            const filteredDistricts = getDistricts.filter((district: any) => district.CityId === inputs.CityId)
-            setTimeout(() => {
-                setDistrict(filteredDistricts)
-            }, 2000)
-            console.log(filteredDistricts);
-        })()
-    }, [inputs.CityId]);
-
-    // // Récupération des quartiers en fonction de la ville
-    useEffect(() => {
-        (async () => {
-            const getQuarters = await controllers.API.getAll(urlAPI, "getQuarters", null);
-            const filteredQuarters = getQuarters.filter((quarter: any) => quarter.DistrictId === inputs.DistrictId)
-            setTimeout(() => {
-                setQuarter(filteredQuarters)
-            }, 2000)
-            console.log(filteredQuarters);
-        })()
-    }, [inputs.DistrictId]);
-
-    // const adminRoles = ['Super-Admin', 'Supervisor-Admin'];
-    // const role = localStorage.getItem("adminRole") ?? "";
-
-    let arrayDatas = [
-        {
-            alias: "EnterpriseId",
-            value: getEnterprises.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
-        },
-        {
-            alias: "DepartmentPostId",
-            value: getDepartmentPosts.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
-        },
-        {
-            alias: "PostId",
-            value: getPosts.filter(item => item.id && item.title).map(item => ({ id: item.id, value: item.title }))
-        },
-        {
-            alias: "SalaryId",
-            value: getSalary.filter(item => item.id && item.netSalary).map(item => ({ id: item.id, value: item.netSalary }))
-        },
-        {
-            alias: "ContractTypeId",
-            value: getContractTypes.filter(item => item.id && item.title).map(item => ({ id: item.id, value: item.title }))
-        },
-        {
-            alias: "ContractId",
-            value: getContracts.filter(item => item.id && item.delay).map(item => ({ id: item.id, value: item.delay }))
-        },
-        {
-            alias: "CountryId",
-            value: getCountry.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
-        },
-        {
-            alias: "CityId",
-            value: getCity.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
-        },
-        {
-            alias: "DistrictId",
-            value: getDistrict.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
-        },
-        {
-            alias: "QuarterId",
-            value: getQuarter.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
-        }
-    ];
+    console.log("les données en mémoire", inputs)
 
     const handleSubmit = async (e: FormEvent) => {
         setIsLoading(true);
@@ -266,23 +98,23 @@ export default function AddUser() {
             CityId: inputs.CityId ?? null,
             DistrictId: inputs.DistrictId ?? null,
             QuarterId: inputs.QuarterId ?? null,
-            adminService: inputs.adminService ?? "no data",
-
+            adminService: inputs.adminService ?? "aucune donnée",
         }
 
         console.log(requireFields);
 
         const response = await controllers.API.SendOne(urlAPI, "createUser", null, requireFields);
 
+        if (response.status) localStorage.removeItem("inputMemory")
+
         controllers.alertMessage(
             response.status,
             response.title,
-            requireRoles.includes(requireFields.role ?? "") ? "L'administrateur a bien été enregistré" : response.message,
+            response.message,
             response.status ? "/dashboard/RH/addUser" : null
         );
 
         setIsLoading(false);
-        
     };
 
     return (
@@ -290,8 +122,7 @@ export default function AddUser() {
             <Header />
             <div className="flex">
                 <Sidebar />
-                <div className="mx-4 mt-6 mb-4 w-full">
-                    
+                <div className="mx-4 mt-6 mb-4 w-full font-semibold">
                     {
                         formElements.map((element) => (
                             <div className="text-gray-700 w-full space-y-4 md:space-y-0 items-center">
@@ -303,7 +134,7 @@ export default function AddUser() {
                                 <div className="flex flex-wrap py-4 lg:space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element, index) => (
-                                            <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"}>
+                                            <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4 relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-3 px-4 relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4"}>
                                                 <FontAwesomeIcon icon={element.icon} className="text-white" /> <span className='text-white'>{element.title}</span>
                                             </Link>
                                         ))
@@ -334,104 +165,68 @@ export default function AddUser() {
                                         <div className={cn('w-full mb-4',)}>
                                             <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
                                             {!e.selectedInput ?
-                                                <input onChange={async (v) => {
+                                                <input value={inputs[e.alias] ?? ""} onChange={async (v) => {
+                                                    let field = e.alias;
                                                     for (const [key, _] of Object.entries(inputs)) {
-                                                        if (key === e.alias) {
+                                                        if (key === field) {
                                                             if (e.type === "file") {
                                                                 const files = v.target.files?.[0];
                                                                 const response = await controllers.API.SendOne(urlAPI, "sendFiles", null, { files });
-                                                                console.log("L efichier image", response)
                                                                 if (response.status) {
                                                                     setInputs({
                                                                         ...inputs,
-                                                                        [e.alias]: response.filename
+                                                                        [field]: response.filename
                                                                     })
                                                                 }
                                                             }
                                                             setInputs({
                                                                 ...inputs,
-                                                                [e.alias]: v.target.value
-                                                            })
+                                                                [key]: v.target.value
+                                                            });
+                                                            localStorage.setItem("inputMemory", JSON.stringify({ ...inputs, [key]:v.target.value }))
                                                         }
                                                     }
+
 
                                                 }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 f dark:text-gray-300 text-gray-700" />
                                                 :
-                                                <select onChange={(v) => {
+                                                <select value={inputs[e.alias] ?? ""} onChange={(v) => {
+                                                    let field = e.alias;
                                                     for (const [key, _] of Object.entries(inputs)) {
-                                                        if (key === e.alias) {
+                                                        if (key === field) {
                                                             setInputs({
                                                                 ...inputs,
-                                                                [e.alias]: e.type === "number" ? parseInt(v.target.value) : v.target.value
+                                                                [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
                                                             })
+                                                            localStorage.setItem("inputMemory", JSON.stringify({
+                                                                ...inputs,
+                                                                [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
+                                                            }))
                                                         }
                                                     }
-
+                                                  
                                                 }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
                                                     <option value="" selected disabled>
                                                         {e.placeholder}
                                                     </option>
                                                     {
-                                                        e.dynamicOptions?.status ? arrayDatas
+                                                        e.dynamicOptions?.status ? dynamicArrayDatas
                                                             .find(item => item.alias === e.alias)
-                                                            ?.value
+                                                            ?.arrayData
                                                             ?.map(option => (
-                                                                <option value={option.id}>
-                                                                    {option.value}
+                                                                <option value={option.value}>
+                                                                    {option.title}
                                                                 </option>
                                                             )) :
-                                                            <div>
-                                                                {/* Genre */}
-                                                                <div className={e.alias === "gender" ? "block" : "hidden"}>
-                                                                    <option value="Homme">
-                                                                        Homme
-                                                                    </option>
-                                                                    <option value="Femme">
-                                                                        Femme
-                                                                    </option>
-                                                                    <option value="Aucun">
-                                                                        Aucun
-                                                                    </option>
-                                                                </div>
-                                                                {/* Rôle */}
-                                                                <div className={e.alias === "role" ? "block" : "hidden"}>
-                                                                    <option value="Super-Admin" className={requireRoles.includes(getAdminRole ?? "") ? "hidden" : "block"}>
-                                                                        Super administrateur
-                                                                    </option>
-                                                                    <option value="Supervisor-Admin" className={getAdminRole === "Supervisor-Admin" ? "hidden" : "block"}>
-                                                                        Administrateur de supervision
-                                                                    </option>
-                                                                    <option value="Controller-Admin" className={getAdminRole === "Controller-Admin" ? "hidden" : "block"}>
-                                                                        Administrateur de contrôle
-                                                                    </option>
-                                                                    <option value="User-Cient">
-                                                                        Utiisateur client
-                                                                    </option>
-                                                                </div>
-                                                                {/* Admin Service */}
-                                                                <div className={e.alias === "adminService" && inputs.role === "Controller-Admin" ? "block" : "hidden"}>
-                                                                    <option value="RH">
-                                                                        Ressources humaines
-                                                                    </option>
-                                                                    <option value="COMPTA">
-                                                                        Comptabilité
-                                                                    </option>
-                                                                    <option value="ADMINISTRATION">
-                                                                        Administration
-                                                                    </option>
-                                                                    <option value="HOME">
-                                                                        Accueil
-                                                                    </option>
-                                                                </div>
-                                                            </div>
+                                                            staticArrayData.find(item => item.alias === e.alias)?.arrayData.map(option => (
+                                                                <option value={option.value}>
+                                                                    {option.title}
+                                                                </option>
+                                                            ))
                                                     }
                                                 </select>
-
                                             }
-
                                         </div>
-
-
                                     ))
                                 ))
                             }

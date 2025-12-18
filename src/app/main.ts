@@ -201,13 +201,6 @@ export class Api {
 
             if (isPresentFile) {
                 for (const [key, value] of Object.entries(data)) {
-                    if (value === null || value === undefined || value === "") {
-                        return {
-                            status: false,
-                            title: "Champs invalides",
-                            message: "Veuillez saisir tous les champs obligatoires"
-                        };
-                    }
                     if (value instanceof File || value instanceof Blob) {
                         formData.append(key, value);
                     } else if (typeof value === "object") {
@@ -219,16 +212,6 @@ export class Api {
 
                 body = formData;
             } else {
-                console.log("Pas de fichier envoyé")
-                for (const [_, value] of Object.entries(data)) {
-                    if (value === undefined || value === "") {
-                        return {
-                            status: false,
-                            title: "Champs invalides",
-                            message: "Veuillez saisir tous les champs obligatoires"
-                        }
-                    }
-                }
                 headers['Content-Type'] = "application/json";
                 body = JSON.stringify(data);
             }

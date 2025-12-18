@@ -11,40 +11,16 @@ import Link from "next/link";
 import { tablesModal } from "@/components/Tables/tablesModal";
 import Swal from "sweetalert2";
 import TablesPage from "@/app/tables/page";
-
-type EnterpriseProps = {
-    id: number,
-    name: string | null,
-    description: string | null,
-    logo: string | null,
-    activityDomain: string | null,
-    phone: string | null,
-    toleranceTime: string | null,
-    pourcentageOfHourlyDeduction: string | null,
-    email: string | null,
-    address: string | null,
-    website: string | null,
-    latitude: string | null,
-    longitude: string | null,
-    CityId: number,
-    CountryId: number,
-    legalForm: string | null,
-    rccm: string | null,
-    nui: string | null,
-    subscriptionType: string | null,
-    subscriptionStatus: string | null,
-    [key: string]: string | number | null | undefined,
-}
+import { EnterprisesListHookModal } from "./hook";
 
 export default function UsersList() {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);             // page courante
     const limit = 5;                                 // items par page
-    const [enterprises, setEnterprises] = useState<EnterpriseProps[]>([]);
-    const [enterprisesListSaved, setEnterprisesListSaved] = useState<EnterpriseProps[]>([])
-    const [getAdminRole, setAdminRole] = useState<string|null>()
+    const [getAdminRole, setAdminRole] = useState<string | null>()
     const [loading, setIsLoading] = useState(false);
     const requireRoles = ['Super-Admin', 'Supervisor-Admin'];
+    const { enterprises, onSearch } = EnterprisesListHookModal()
 
     useEffect(() => {
         (() => {
@@ -58,20 +34,6 @@ export default function UsersList() {
             setAdminRole(getAdminRole);
         })()
     }, []);
-
-    useEffect(() => {
-        (async () => {
-            const getAllEnterprises = await controllers.API.getAll(urlAPI, "getEnterprises", null);
-            setEnterprisesListSaved(getAllEnterprises);
-            setEnterprises(getAllEnterprises);
-        })()
-    }, []);
-
-    // 🔎 Filtrer par recherche
-    function onSearch(value: string) {
-        let filteredEntreprises = enterprisesListSaved.filter(item => item?.name?.toLocaleLowerCase()?.includes(value.toLocaleLowerCase()));
-        setEnterprises(filteredEntreprises);
-    }
 
     // 📑 Pagination
     const start = (page - 1) * limit;
@@ -168,7 +130,7 @@ export default function UsersList() {
                                             </p>
                                         </td>
                                         <td className="text-center py-5 font-semibold border-b border-r  space-x-3 flex  h-auto p-2 border-gray-400 dark:border-gray-300">
-                                            <Link href={`../RH/getUserProfil/${enterprise.id}`} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
+                                            <Link href={`/dashboard/OTHERS/getEnterpriseProfil/${enterprise.id}`} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
                                                 <p className="text-center">👁️</p>
                                             </Link>
                                             <button className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md" onClick={() => {

@@ -408,9 +408,9 @@ export const formElements = [
 
                 }
             ],
-        }, addOrUpdateEnterprise: {
+        },
+        addOrUpdateEnterprise: {
             navigationLinks: [
-
                 {
                     title: "Liste des entreprises",
                     href: "/dashboard/OTHERS/enterprisesList",

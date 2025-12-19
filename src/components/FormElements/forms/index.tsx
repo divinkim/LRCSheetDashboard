@@ -806,7 +806,6 @@ export const formElements = [
                     dynamicOptions: {
                         status: true
                     },
-                    dynamicElementIndex: 1,
                     alias: "EnterpriseId"
                 },
                 {
@@ -817,7 +816,6 @@ export const formElements = [
                     type: "number",
                     textarea: false,
                     selectedInput: true,
-                    dynamicElementIndex: 2,
                     dynamicOptions: {
                         status: true
                     },

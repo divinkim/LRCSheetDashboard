@@ -104,9 +104,11 @@ export default function AddOrUpdatePostHookModal() {
         },
     ]
 
-    function sendEnterpriseId(EnterpriseId: number) {
-        setEnterpriseId(EnterpriseId)
+    function sendNumberValue(numberValue: number, alias: string) {
+        if (alias === "EnterpriseId") {
+            setEnterpriseId(numberValue) 
+        }
     }
 
-    return { dynamicArrayDatas, staticArrayData,  sendEnterpriseId}
+    return { dynamicArrayDatas, staticArrayData,  sendNumberValue}
 }

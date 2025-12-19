@@ -9,6 +9,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react"
 import { ClipLoader } from "react-spinners";
 import AddContractHookModal from "./hook";
+import { parse } from "path";
 
 type ContratValues = {
     startDate: number | null,
@@ -18,7 +19,16 @@ type ContratValues = {
     EnterpriseId: number | null
     ContractType: string | null,
     Enterprise: string | null,
+    [key: string]: string | number | null
 
+} 
+
+type dynamicArrayData = {
+    alias: string,
+    arrayData:{
+        value:any,
+        title: string
+    }
 }
 
 export default function AddContract() {
@@ -34,6 +44,19 @@ export default function AddContract() {
         ContractType: null,
         Enterprise: null,
     })
+
+    const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([])
+
+    //Récupérer les données des champs en mémoire
+    useEffect(() => {
+        (() => {
+            const inputMemory = localStorage.getItem("inputMemory")
+            inputMemory ? setInputsValues(JSON.parse(inputMemory ?? "")) : setInputsValues({...inputsValues})
+            
+
+        })()
+    },[])
+
 
 
     const handleSubmit = async (e: FormEvent) => {
@@ -125,30 +148,53 @@ export default function AddContract() {
                                                     {item.label}</label>
                                                 {
                                                     !item.selectedInput ?
-                                                        <input onChange={async (u) => {
-                                                            let field = item.alias
-                                                            for (const [key, _] of Object.entries(inputsValues)) {
-                                                                if (key === field) {
-                                                                    setInputsValues({
+                                                        <input value={inputsValues[item.alias] ?? ""} onChange={async (u) => {
+
+                                                            const field = item.alias
+                                                            let fieldValue
+
+                                                            if(item.type === "files"){
+
+                                                                const files = u.target.files?.[0]
+                                                                const methodName = "sendFiles"
+                                                                
+                                                                const response = await controllers.API.SendOne(urlAPI, methodName,null)
+                                                                if(response.status){
+                                                                    fieldValue = {
                                                                         ...inputsValues,
-                                                                        [item.alias]: u.target.value
-                                                                    })
+                                                                        [field]: response.filename
+
+                                                                    }
+
+                                                                    setInputsValues(fieldValue)
+                                                                    localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
                                                                 }
+                                                                return
+
                                                             }
+                                                            fieldValue = {
+                                                                ...inputsValues,
+                                                                [field]: u.target.value
+                                                            }
+                                                            setInputsValues(fieldValue)
+                                                            localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
+                                                            
 
                                                         }} type={item.type} maxLength={item.type === "tel" ? 9 : undefined} placeholder={item.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border
                                                      border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
 
                                                         :
-                                                        <select onChange={async (u) => {
-                                                            for (const [key, _] of Object.entries(inputsValues)) {
-                                                                if (key === item.alias) {
-                                                                    setInputsValues({
-                                                                        ...inputsValues,
-                                                                        [item.alias]: item.type === "number" ? parseInt(u.target.value) : u.target.value
-                                                                    })
-                                                                }
+                                                        <select value={inputsValues[item.alias] ?? ""} onChange={async (u) => {
+                                                            
+                                                            const field = item.alias
+                                                            const fieldValue = {
+                                                                ...inputsValues,
+                                                                [field]: item.type === "number" ? parseInt(u.target.value) : u.target.value
                                                             }
+
+                                                            setInputsValues(fieldValue)
+                                                           localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
+                                                           
                                                         }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent 
                                                        border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700" >
 

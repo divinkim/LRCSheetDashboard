@@ -11,12 +11,27 @@ type DynamicArrayData = {
     }[],
 }
 
+type InputsValue = {
+    EnterpriseId: number | null,
+    DepartmentPostId: number | null,
+    title: string | null,
+    description: string | null,
+    [key: string]: string | number | null
+}
+
 export default function AddOrUpdatePostHookModal() {
     const [enterprises, setEnterprises] = useState<any[]>([]);
     const [getDepartmentPosts, setGetDepartmentPosts] = useState<any[]>([]);
-    const [EnterpriseId, setEnterpriseId] = useState(0)
-    const [getEnterpriseIdOfadmin, setEnterpriseIdOfAdmin] = useState<string | null>(null)
-    const [getAdminRole, setAdminRole] = useState<string | null>(null)
+    const [EnterpriseId, setEnterpriseId] = useState(0);
+    const [getEnterpriseIdOfadmin, setEnterpriseIdOfAdmin] = useState<string | null>(null);
+    const [getAdminRole, setAdminRole] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [inputs, setInputs] = useState<InputsValue>({
+        EnterpriseId: null,
+        DepartmentPostId: null,
+        title: null,
+        description: null,
+    });
 
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
@@ -52,7 +67,7 @@ export default function AddOrUpdatePostHookModal() {
                 setGetDepartmentPosts(getDepartmentPosts)
             }
         })()
-    }, [EnterpriseId]);
+    }, [inputs.EnterpriseId]);
 
     // const adminRoles = ['Super-Admin', 'Supervisor-Admin'];
     // const role = localStorage.getItem("adminRole") ?? "";
@@ -104,11 +119,33 @@ export default function AddOrUpdatePostHookModal() {
         },
     ]
 
-    function sendNumberValue(numberValue: number, alias: string) {
-        if (alias === "EnterpriseId") {
-            setEnterpriseId(numberValue) 
-        }
-    }
+    const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<DynamicArrayData[]>([]);
+    //Récupère les données de champs en mémoire
+    useEffect(() => {
+        (() => {
+            const inputMemory = localStorage.getItem("inputMemoryAddPost");
+            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });
+            setDynamicArrayDatasCloned(dynamicArrayDatas);
+        })();
+    }, [dynamicArrayDatas]);
 
-    return { dynamicArrayDatas, staticArrayData,  sendNumberValue}
+    const handleSubmit = async () => {
+        setIsLoading(true);
+
+        const response = await controllers.API.SendOne(urlAPI, "createPoste", null, inputs);
+
+        if (response.status) localStorage.removeItem("inputMemory")
+
+        controllers.alertMessage(
+            response.status,
+            response.title,
+            response.message,
+            response.status ? "/dashboard/ADMIN/addPost" : null
+        );
+
+        setIsLoading(false);
+    };
+
+
+    return { dynamicArrayDatas, staticArrayData, inputs, setInputs, isLoading, handleSubmit, dynamicArrayDatasCloned }
 }

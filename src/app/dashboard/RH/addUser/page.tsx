@@ -3,119 +3,16 @@ import { Header } from "@/components/Layouts/header";
 import { Sidebar } from "@/components/Layouts/sidebar";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { ClipLoader } from "react-spinners";
 import { formElements } from "@/components/FormElements/forms";
-import { FormEvent, useEffect, useState } from "react";
-import Swal from "sweetalert2";
+
 import { urlAPI } from "@/app/main";
 import { controllers } from "@/app/main";
 import { cn } from "@/lib/utils";
 import AddUserHookModal from "./hook";
 
-type InputsValue = {
-    firstname: string | null,
-    lastname: string | null,
-    birthDate: string | null,
-    gender: string | null,
-    email: string | null,
-    password: string | null,
-    phone: string | null,
-    EnterpriseId: number | null,
-    PostId: number | null,
-    SalaryId: number | null,
-    ContractTypeId: number | null,
-    ContractId: number | null,
-    CountryId: number | null,
-    CityId: number | null,
-    DistrictId: number | null,
-    QuarterId: number | null,
-    photo: string | null,
-    role: string | null,
-    DepartmentPostId: number | null,
-    maritalStatus: string | null,
-    adminService: string | null,
-    [key: string]: string | number | null,
-}
-
 export default function AddUser() {
-    const { dynamicArrayDatas, staticArrayData } = AddUserHookModal();
-    const [isLoading, setIsLoading] = useState(false);
-    const [inputs, setInputs] = useState<InputsValue>({
-        firstname: null,
-        lastname: null,
-        birthDate: null,
-        gender: null,
-        email: null,
-        password: null,
-        phone: null,
-        EnterpriseId: null,
-        PostId: null,
-        SalaryId: null,
-        ContractTypeId: null,
-        ContractId: null,
-        CountryId: null,
-        CityId: null,
-        DistrictId: null,
-        QuarterId: null,
-        photo: null,
-        role: null,
-        DepartmentPostId: null,
-        maritalStatus: null,
-        adminService: null,
-    });
-
-    //Récupère les données de champs en mémoire
-    
-    useEffect(() => {
-        (() => {
-            const inputMemory = localStorage.getItem("inputMemory");
-            const parseInputMemory = JSON.parse(inputMemory ?? "");
-            setInputs(parseInputMemory)
-        })()
-    }, []);
-
-    console.log("les données en mémoire", inputs)
-
-    const handleSubmit = async (e: FormEvent) => {
-        setIsLoading(true);
-        const requireFields = {
-            firstname: inputs.firstname,
-            lastname: inputs.lastname,
-            gender: inputs.gender,
-            password: inputs.password,
-            EnterpriseId: inputs.EnterpriseId,
-            email: inputs.email,
-            role: inputs.role ?? null,
-            phone: inputs.phone ? `+242${inputs.phone}` : undefined,
-            DepartmentPostId: inputs.DepartmentPostId ?? null,
-            PostId: inputs.PostId ?? null,
-            ContractTypeId: inputs.ContractTypeId ?? null,
-            ContractId: inputs.ContractId ?? null,
-            marialStatus: inputs.maritalStatus ?? null,
-            SalaryId: inputs.SalaryId ?? null,
-            CountryId: inputs.CountryId ?? null,
-            CityId: inputs.CityId ?? null,
-            DistrictId: inputs.DistrictId ?? null,
-            QuarterId: inputs.QuarterId ?? null,
-            adminService: inputs.adminService ?? "aucune donnée",
-        }
-
-        console.log(requireFields);
-
-        const response = await controllers.API.SendOne(urlAPI, "createUser", null, requireFields);
-
-        if (response.status) localStorage.removeItem("inputMemory")
-
-        controllers.alertMessage(
-            response.status,
-            response.title,
-            response.message,
-            response.status ? "/dashboard/RH/addUser" : null
-        );
-
-        setIsLoading(false);
-    };
+    const { dynamicArrayDatas, staticArrayData, inputs, setInputs, isLoading, handleSubmit } = AddUserHookModal();
 
     return (
         <main className="bg-gray-100 dark:bg-transparent">
@@ -183,7 +80,7 @@ export default function AddUser() {
                                                                 ...inputs,
                                                                 [key]: v.target.value
                                                             });
-                                                            localStorage.setItem("inputMemory", JSON.stringify({ ...inputs, [key]:v.target.value }))
+                                                            localStorage.setItem("inputMemory", JSON.stringify({ ...inputs, [key]: v.target.value }))
                                                         }
                                                     }
 
@@ -204,7 +101,7 @@ export default function AddUser() {
                                                             }))
                                                         }
                                                     }
-                                                  
+
                                                 }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
                                                     <option value="" selected disabled>
                                                         {e.placeholder}
@@ -234,7 +131,7 @@ export default function AddUser() {
                         </div>
                         <div className="flex w-full justify-end ">
                             <button type="button" onClick={(e) => {
-                                handleSubmit(e)
+                                handleSubmit()
                             }} className="bg-blue-600 my-2 hover:bg-blue-700 relative rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
                                 <p className={isLoading ? "hidden" : "block"}> Exécuter</p>
                                 <p className={isLoading ? "block" : "hidden"}><ClipLoader color="#fff" size={16} /></p>

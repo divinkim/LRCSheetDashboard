@@ -115,7 +115,7 @@ export default function UsersList() {
                         {
                             tablesModal.map((e) => (
                                 e.usersList.links.map((item) => (
-                                    <Link href={item.href} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4">
+                                    <Link href={item.href} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4">
                                         <FontAwesomeIcon icon={item.icon} className="text-white" />
                                         <span className='text-white font-semibold'> {item.title}</span>
                                     </Link>

@@ -3,69 +3,15 @@ import { Header } from "@/components/Layouts/header";
 import { Sidebar } from "@/components/Layouts/sidebar";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { ClipLoader } from "react-spinners";
 import { formElements } from "@/components/FormElements/forms";
-import { FormEvent, useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import { urlAPI } from "@/app/main";
 import { controllers } from "@/app/main";
 import { cn } from "@/lib/utils";
 import AddOrUpdatePostHookModal from "./hook";
 
-type InputsValue = {
-    EnterpriseId: number | null,
-    DepartmentPostId: number | null,
-    title: string | null,
-    description: string | null,
-    [key: string]: string | number | null
-}
-
-type DynamicArrayData = {
-    alias: string,
-    arrayData: {
-        value: any,
-        title: string,
-    }[],
-}
-
 export default function AddPost() {
-    const { dynamicArrayDatas, staticArrayData, sendNumberValue } = AddOrUpdatePostHookModal();
-    const [isLoading, setIsLoading] = useState(false);
-    const [inputs, setInputs] = useState<InputsValue>({
-        EnterpriseId: null,
-        DepartmentPostId: null,
-        title: null,
-        description: null,
-    });
-
-
-    const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<DynamicArrayData[]>([]);
-    //Récupère les données de champs en mémoire
-    useEffect(() => {
-        (() => {
-            const inputMemory = localStorage.getItem("inputMemory");
-            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });
-            setDynamicArrayDatasCloned(dynamicArrayDatas);
-        })();
-    }, [dynamicArrayDatas]);
-
-    const handleSubmit = async (e: FormEvent) => {
-        setIsLoading(true);
-
-        const response = await controllers.API.SendOne(urlAPI, "createPoste", null, inputs);
-
-        if (response.status) localStorage.removeItem("inputMemory")
-
-        controllers.alertMessage(
-            response.status,
-            response.title,
-            response.message,
-            response.status ? "/dashboard/ADMIN/addPost" : null
-        );
-
-        setIsLoading(false);
-    };
+    const { dynamicArrayDatasCloned, staticArrayData, inputs, setInputs, handleSubmit, isLoading } = AddOrUpdatePostHookModal();
 
     return (
         <main className="bg-gray-100 dark:bg-transparent">
@@ -147,7 +93,7 @@ export default function AddPost() {
 
                                                         setInputs(fieldValue);
 
-                                                        localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
+                                                        localStorage.setItem("inputMemoryAddPost", JSON.stringify(fieldValue))
                                                     }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 h-[100px] bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 dark:text-gray-300 text-gray-700"></textarea>
                                                     :
                                                     <select value={inputs[e.alias] ?? ""} onChange={(v) => {
@@ -158,9 +104,8 @@ export default function AddPost() {
                                                             [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
                                                         };
 
-                                                        if (e.type === "number") sendNumberValue(parseInt(v.target.value), e.alias);
-
-                                                        localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
+                                                        setInputs(fieldValue);
+                                                        localStorage.setItem("inputMemoryAddPost", JSON.stringify(fieldValue));
                                                     }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
                                                         <option value="" selected disabled>
                                                             {e.placeholder}
@@ -190,7 +135,7 @@ export default function AddPost() {
                         </div>
                         <div className="flex w-full justify-end ">
                             <button type="button" onClick={(e) => {
-                                handleSubmit(e)
+                                handleSubmit()
                             }} className="bg-blue-600 my-2 hover:bg-blue-700 relative rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
                                 <p className={isLoading ? "hidden" : "block"}> Exécuter</p>
                                 <p className={isLoading ? "block" : "hidden"}><ClipLoader color="#fff" size={16} /></p>

@@ -1,7 +1,6 @@
-'use client';
-import { urlAPI } from "@/app/main";
-import { controllers } from "@/app/main";
-import { FormEvent, useEffect, useState } from "react";
+"use client";
+import { useState, useEffect } from "react";
+import { controllers, urlAPI } from "@/app/main";
 
 type InputsValue = {
     firstname: string | null,
@@ -25,10 +24,11 @@ type InputsValue = {
     DepartmentPostId: number | null,
     maritalStatus: string | null,
     adminService: string | null,
-    [key: string]: string | number | null,
+    status: any,
+    [key: string]: string | number | null | undefined,
 }
 
-export default function AddUserHookModal() {
+export function UpdateUserHookModal() {
     const [getEnterprises, setGetEnterprises] = useState<any[]>([]);
     const [getDepartmentPosts, setGetDepartmentPosts] = useState<any[]>([]);
     const [getPosts, setPosts] = useState<any[]>([]);
@@ -39,7 +39,7 @@ export default function AddUserHookModal() {
     const [getCity, setCity] = useState<any[]>([]);
     const [getDistrict, setDistrict] = useState<any[]>([]);
     const [getQuarter, setQuarter] = useState<any[]>([]);
-
+    const [isLoading, setIsLoading] = useState(false);
     const [getEnterpriseIdOfadmin, setEnterpriseIdOfAdmin] = useState<string | null>(null)
     const [getAdminRole, setAdminRole] = useState<string | null>(null)
     const [inputs, setInputs] = useState<InputsValue>({
@@ -64,46 +64,81 @@ export default function AddUserHookModal() {
         DepartmentPostId: null,
         maritalStatus: null,
         adminService: null,
+        status: ""
     });
 
-    const [isLoading, setIsLoading] = useState(false);
-
-
-    //Récupère les données de champs en mémoire
-
-    useEffect(() => {
-        (() => {
-            const inputMemory = localStorage.getItem("inputMemory");
-            const parseInputMemory = JSON.parse(inputMemory ?? "");
-            setInputs(parseInputMemory)
-        })()
-    }, []);
-
-    console.log("les données en mémoire", inputs)
+    const requireRoles = ['Super-Admin', 'Supervisor-Admin', 'Moderator-Admin'];
 
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
-        if (typeof (window) === "undefined") return; // important
         (async () => {
+            const authToken = localStorage.getItem("authToken");
             const role = localStorage.getItem("adminRole");
-            const getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
+            let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
 
             setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
-            setAdminRole(role);
+            setAdminRole(role)
+
+            // if (authToken === null) {
+            //     return window.location.href = "/"
+            // } else if (!requireRoles.includes(role ?? "")) {
+            //     Swal.fire({
+            //         icon: "warning",
+            //         title: "Violation d'accès !",
+            //         text: "Vous n'êtes pas autorisé à accéder à cette page. Veuillez vous rapprocher de votre administreur pour plus d'infos !",
+            //     });
+            //     setTimeout(() => {
+            //         window.location.href = "/Dashboard"
+
+            //     }, 2000);
+            // }
 
             const getEnterprises = await controllers.API.getAll(urlAPI, "getEnterprises", null);
 
             if (parseInt(getEnterpriseIdOfAdmin ?? "") !== 1) {
-                const filterEnterpriseByEnterpriseId = getEnterprises.filter(
-                    (enterprise: { id: number }) => enterprise.id === parseInt(getEnterpriseIdOfAdmin ?? "")
-                );
-                setGetEnterprises(filterEnterpriseByEnterpriseId);
-                return;
-            }
 
+                const filterEnterpriseByEnterpriseId = getEnterprises.filter((enterprise: { id: number }) => enterprise.id === parseInt(getEnterpriseIdOfAdmin ?? ""));
+                setGetEnterprises(filterEnterpriseByEnterpriseId);
+                return
+            }
             setGetEnterprises(getEnterprises);
-        })();
+            console.log(getEnterprises);
+        })()
     }, []);
+
+    //Récupération des données de l'utilisateur en fonction de l'id sur le navigateur
+
+    useEffect(() => {
+        (async () => {
+            const getUserId = window.location.href.split('/').pop();
+            const getUser = await controllers.API.getOne(urlAPI, "getUser", parseInt(getUserId ?? ""));
+            console.log("l'utilisateur", getUser);
+            setInputs({
+                firstname: getUser.firstname ?? null,
+                lastname: getUser.lastname ?? null,
+                birthDate: new Date(getUser.birthDate)?.toISOString()?.split("T")[0] ?? null,
+                gender: getUser.gender ?? null,
+                email: getUser.email ?? null,
+                password: getUser.password ?? null,
+                phone: getUser.phone ?? null,
+                EnterpriseId: getUser.EnterpriseId ?? null,
+                PostId: getUser.PostId ?? null,
+                SalaryId: getUser.SalaryId ?? null,
+                ContractTypeId: getUser.ContractTypeId ?? null,
+                ContractId: getUser.ContractId ?? null,
+                CountryId: getUser.CountryId ?? null,
+                CityId: getUser.CityId ?? null,
+                DistrictId: getUser.DistrictId ?? null,
+                QuarterId: getUser.QuarterId ?? null,
+                photo: getUser.photo ?? null,
+                role: getUser.role ?? null,
+                DepartmentPostId: getUser.DepartmentPostId ?? null,
+                maritalStatus: getUser.marialStatus ?? null,
+                adminService: getUser.adminService ?? null,
+                status: getUser.status ? "Actif" : "Inactif"
+            })
+        })()
+    }, [getAdminRole])
 
     // Récupération des départements d'entreprises
     useEffect(() => {
@@ -203,21 +238,18 @@ export default function AddUserHookModal() {
         })()
     }, [inputs.DistrictId]);
 
-    // const adminRoles = ['Super-Admin', 'Supervisor-Admin'];
-    // const role = localStorage.getItem("adminRole") ?? "";
-
-    let dynamicArrayDatas = [
+    const dynamicOptions = [
         {
             alias: "EnterpriseId",
             arrayData: getEnterprises.filter(item => item.id && item.name).map(item => ({ value: item.id, title: item.name }))
         },
         {
-            alias: "DepartmentPostId",
+            alias: "departmentPostId",
             arrayData: getDepartmentPosts.filter(item => item.id && item.name).map(item => ({ value: item.id, title: item.name }))
         },
         {
             alias: "PostId",
-            arrayData: getPosts.filter(item => item.id && item.title).map(item => ({ value: item.id, title: item.name }))
+            arrayData: getPosts.filter(item => item.id && item.title).map(item => ({ value: item.id, title: item.title }))
         },
         {
             alias: "SalaryId",
@@ -249,50 +281,33 @@ export default function AddUserHookModal() {
         }
     ];
 
-    let staticArrayData = [
+    const staticsOptions = [
         {
             alias: "gender",
-            arrayData: [
-                { title: "Homme", value: "Homme" },
-                {
-                    title: "Femme",
-                    value: "Femme"
-                },
-                {
-                    title: "Aucun",
-                    value: "Aucun"
-                }
-            ]
-
+            arrayData: [{ title: "Homme", value: "Homme" }, { title: "Femme", value: "Femme" }, { title: "Aucun", value: "Aucun" }]
         },
-
+        {
+            alias: "status",
+            arrayData: [{ title: "Actif", value: "Actif" }, { title: "Inactif", value: "Inactif" }]
+        },
         {
             alias: "role",
-            arrayData: [
-                {
-                    title: "Super administrateur",
-                    value: "Super-Admin"
-                },
-                {
-                    title: "Administrateur de gestion",
-                    value: "Supervisor-Admin"
-                },
-                {
-                    title: "Administrateur de contrôle",
-                    value: "Controllor-Admin"
-                }
-            ]
+            arrayData: [{ title: "Super-Admin", value: "Super-Admin" }, { title: "Controller-Admin", value: "Administrateur de contôle" }, { title: "Supervisor-Admin", value: "Administrateur de supervision" }, { title: "Client-User", value: "Utilisateur client" }]
         },
     ]
 
     const handleSubmit = async () => {
         setIsLoading(true);
+        const userId = window.location.href?.split('/').pop();
+
         const requireFields = {
             firstname: inputs.firstname,
             lastname: inputs.lastname,
             gender: inputs.gender,
             password: inputs.password,
             EnterpriseId: inputs.EnterpriseId,
+            birthDate: new Date(inputs.birthDate ?? "").toISOString(),
+            address: inputs.address,
             email: inputs.email,
             role: inputs.role ?? null,
             phone: inputs.phone ? `+242${inputs.phone}` : undefined,
@@ -306,24 +321,22 @@ export default function AddUserHookModal() {
             CityId: inputs.CityId ?? null,
             DistrictId: inputs.DistrictId ?? null,
             QuarterId: inputs.QuarterId ?? null,
-            adminService: inputs.adminService ?? "aucune donnée",
+            adminService: inputs.adminService ?? null,
+            status: inputs.status === "Actif" ? true : false
         }
 
         console.log(requireFields);
-
-        const response = await controllers.API.SendOne(urlAPI, "createUser", null, requireFields);
-
-        if (response.status) localStorage.removeItem("inputMemory")
+        const response = await controllers.API.UpdateOne(urlAPI, "updateUser", userId, requireFields);
 
         controllers.alertMessage(
             response.status,
             response.title,
-            response.message,
-            response.status ? "/dashboard/RH/addUser" : null
+            requireRoles.includes(requireFields.role ?? "") ? "L'administrateur a bien été enregistré" : response.message,
+            response.status ? "/pages/dashboard/RH/updateUser/" + userId : null
         );
 
         setIsLoading(false);
     };
 
-    return { dynamicArrayDatas, staticArrayData, handleSubmit, inputs, setInputs, isLoading }
+    return { dynamicOptions, staticsOptions, setInputs, inputs, handleSubmit, isLoading, setIsLoading }
 }

@@ -373,47 +373,13 @@ export const formElements = [
             ],
 
 
-            titleDept: "Formulaire d'enregistrement d'un département",
+            
 
-            inputDept: [
-                {
-                    label: "Nom",
-                    placeholder: "Saisissez un nom",
-                    requireField: true,
-                    type: "text",
-                    selectedInput: false,
-                    alias: "name"
-
-                },
-
-                {
-                    label: "Description",
-                    placeholder: "Saisissez une description",
-                    requireField: false,
-                    type: "text",
-                    selectedInput: false,
-                    alias: "name"
-
-                },
-
-                {
-                    label: "Entreprise",
-                    placeholder: "Saisissez une entreprise",
-                    requireField: true,
-                    type: "text",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: false
-                    },
-                    alias: "EnterpriseId"
-
-                }
-            ],
+           
         },
         
         addOrUpdateEnterprise: {
             navigationLinks: [
-
                 {
                     title: "Liste des entreprises",
                     href: "/dashboard/OTHERS/enterprisesList",
@@ -624,7 +590,7 @@ export const formElements = [
             ],
 
             tilteContract: "Formulaire de création de contrat",
-            titleForm: "Ajouter un contrat",
+            titleFormContract: "Ajouter un contrat",
 
             inputContrat: [
                 {
@@ -693,6 +659,64 @@ export const formElements = [
                 },
 
             ],
+        },
+
+        //Formulaire département
+        addDepartmentUser : {
+
+            navigationDeptLinks: [
+                {
+                    title: "Ajouter un département",
+                    href: "/dashboard/ADMIN/addDepartment",
+                    icon: faBuilding
+                },
+                {
+                    title: "Liste de départements",
+                    href: "/dashboard/ADMIN/departmentsList",
+                    icon: faBuilding
+                },
+            ], 
+
+            titleDept: "Formulaire d'enregistrement d'un département",
+            titleformDept: "Ajouter un département",
+
+             inputDept: [
+                {
+                    label: "Nom",
+                    placeholder: "Saisissez un nom",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "name"
+
+                },
+
+                {
+                    label: "Description",
+                    placeholder: "Saisissez une description",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "name"
+
+                },
+
+                {
+                    label: "Entreprise",
+                    placeholder: "Saisissez une entreprise",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: false
+                    },
+                    alias: "EnterpriseId"
+
+                }
+            ],
+
+
+
         },
 
 

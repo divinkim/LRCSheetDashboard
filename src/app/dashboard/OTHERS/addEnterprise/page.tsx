@@ -39,25 +39,25 @@ type EnterpriseProps = {
 
 export default function AddEnterprise() {
     const [inputs, setInputs] = useState<EnterpriseProps>({
-        name: null,
-        description: null,
-        logo: null,
-        activityDomain: null,
-        phone: null,
-        toleranceTime: "null",
-        pourcentageOfHourlyDeduction: "null",
-        email: null,
-        address: null,
-        website: "null",
-        latitude: null,
-        longitude: null,
+        name: "",
+        description: "",
+        logo: "",
+        activityDomain: "",
+        phone: "",
+        toleranceTime: "",
+        pourcentageOfHourlyDeduction: "",
+        email: "",
+        address: "",
+        website: "",
+        latitude: "",
+        longitude: "",
         CityId: 0,
         CountryId: 0,
-        legalForm: "null",
-        rccm: "null",
-        nui: "null",
-        subscriptionType: "null",
-        subscriptionStatus: "null"
+        legalForm: "",
+        rccm: "",
+        nui: "",
+        subscriptionType: "",
+        subscriptionStatus: ""
     });
     const [isLoading, setIsLoading] = useState(false);
     const { dynamicDatasArray, staticDatasArray, getNumberValue } = EnterpriseHookModal();
@@ -73,10 +73,31 @@ export default function AddEnterprise() {
     const handleSubmit = async (e: FormEvent) => {
         setIsLoading(true);
 
+        const requireField = {
+            name: inputs.name,
+            description: inputs.description,
+            activityDomain: inputs.activityDomain,
+            address: inputs.address,
+            logo: inputs.logo,
+            legalForm: inputs.legalForm,
+            email: inputs.name,
+            CountryId: inputs.CountryId,
+            CityId: inputs.CityId
+        }
+
+        for (const field of Object.entries(requireField)) {
+            if (!field) {
+                return setTimeout(() => {
+                    controllers.alertMessage(false, "Champs invalides!", "Veuillez remplir tous les champs obligatoitres.", null);
+                    setIsLoading(false);
+                }, 1500)
+            }
+        }
+
         const response = await controllers.API.SendOne(urlAPI, "createEnterprise", null, inputs);
 
         if (response.status) localStorage.removeItem("inputMemory");
-            
+
         controllers.alertMessage(
             response.status,
             response.title,
@@ -111,8 +132,7 @@ export default function AddEnterprise() {
                                     }
                                 </div>
                             </div>
-                        ))
-                    }
+                        ))}
 
                     <div className='dark:border mt-8 w-full h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none p-4'>
                         {

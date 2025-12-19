@@ -23,7 +23,10 @@ import {
   faMoneyCheckDollar,
   faReceipt,
   faBalanceScale,
-  faCalendarPlus
+  faCalendarPlus,
+  faGlobe,
+  faCity,
+  faHouseChimney
 } from "@fortawesome/free-solid-svg-icons";
 import { title } from "process";
 import { icon } from "@fortawesome/fontawesome-svg-core";
@@ -358,9 +361,39 @@ export function Sidebar() {
         },
       ]
     },
-    // Onglet Autres
     {
       index: 13,
+      title: "🌍 Localités",
+      ItemLists: [
+        {
+          index: 0,
+          title: "Pays enregistrés",
+          href: "/dashboard/LOCALITY/countriesList",
+          icon: faGlobe
+        },
+        {
+          index: 1,
+          title: "Villes enregistrées",
+          href: "/dashboard/LOCALITY/citiesList",
+          icon: faCity
+        },
+        {
+          index: 2,
+          title: "Arrondissements enregistrées",
+          href: "/dashboard/LOCALITY/districtsList",
+          icon: faBuildingColumns
+        },
+        {
+          index: 3,
+          title: "Quartiers enregistrées",
+          href: "/dashboard/LOCALITY/quartersList",
+          icon:faHouseChimney
+        },
+      ]
+    },
+    // Onglet Autres
+    {
+      index: 14,
       title: "🧿 Autres",
       ItemLists: [
         {

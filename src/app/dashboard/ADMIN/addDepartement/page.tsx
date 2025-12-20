@@ -82,7 +82,6 @@ export default function AddDepartment(){
        
     }
    
-
     return (
         <main className="bg-ray-100 dark:bg-transparent">
             <Header />

@@ -786,7 +786,7 @@ export const formElements = [
             navigationLinks: [
                 {
                     title: "Liste des Postes",
-                    href: "/dashboard/ADMIN/potsList",
+                    href: "/dashboard/ADMIN/potesList",
                     icon: faIdBadge
                 },
                 {

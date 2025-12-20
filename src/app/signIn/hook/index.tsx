@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import Link from 'next/link';
-import { controllers, urlAPI} from '../main';
+import { controllers, urlAPI } from '../../main';
 import { ClipLoader } from 'react-spinners';
 import { messaging } from "@/firebase/firebaseConfig";
 import { getToken, onMessage } from "firebase/messaging";
@@ -12,7 +12,7 @@ type SignInput = {
     password: string | null
 }
 
-export function SingInHook() {
+export function SignInHook() {
     useEffect(() => {
         (async () => {
 
@@ -88,5 +88,5 @@ export function SingInHook() {
         }, 1000)
     }
 
-    return {signInData, setSignInData, showPassword, setShowPassword, loadingHandleSignIn}
+    return { signInData, setSignInData, showPassword, setShowPassword, loadingHandleSignIn, handleSingnIn }
 }

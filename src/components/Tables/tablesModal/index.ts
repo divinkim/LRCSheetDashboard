@@ -1,4 +1,4 @@
- import { faCalendarPlus, faPen, faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import { faCalendarPlus, faPen, faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 export const tablesModal = [
     {
@@ -98,12 +98,32 @@ export const tablesModal = [
             ],
             table: {
                 titles: [
-                  { title: "Profils", alias: "" },
+                    { title: "Profils", alias: "" },
                     { title: "Noms & prénoms", alias: "" },
                     { title: "Jours", alias: "" },
-                    { title: "Types de planning"},
+                    { title: "Types de planning" },
                     { title: "Plannings horaires", alias: "" },
-                    { title: "Entreprises"},
+                    { title: "Entreprises" },
+                    { title: "Actions", alias: "" },
+                ]
+            }
+        },
+        postsList: {
+            pageTitle: "Liste des postes enregistrés",
+            path: "Dashboard/ADMININISTRATION/Liste des poqtes",
+            links: [
+                {
+                    title: "Ajouter un poste",
+                    href: "/dashboard/ADMIN/addPost",
+                    icon: faCalendarPlus
+                },
+            ],
+            table: {
+                titles: [
+                    { title: "Titres", alias: "" },
+                    { title: "description", alias: "" },
+                    { title: "Entreprises", alias: "" },
+                    { title: "Départements" },
                     { title: "Actions", alias: "" },
                 ]
             }

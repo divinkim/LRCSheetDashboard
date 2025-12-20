@@ -263,7 +263,7 @@ export function Sidebar() {
         {
           index: 8,
           title: "Liste de poste",
-          href: "/dashboard/ADMIN/listPost",
+          href: "/dashboard/ADMIN/postesList",
           icon: faSuitcaseRolling
         },
         {

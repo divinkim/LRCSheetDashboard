@@ -2,17 +2,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faEnvelope, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
-// import { controllers, urlAPI } from "../scripts/index"
-// import { ClipLoader } from 'react-spinners';
-// import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
-// import { Loader } from '../../layout/loader';
 import Link from 'next/link';
 import { controllers, urlAPI } from './main';
 import { ClipLoader } from 'react-spinners';
 import { messaging } from "@/firebase/firebaseConfig";
 import { getToken, onMessage } from "firebase/messaging";
 import { useEffect } from "react";
+
 
 type SignInput = {
     email: string | null,

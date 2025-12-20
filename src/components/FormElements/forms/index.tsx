@@ -45,6 +45,7 @@ export const formElements = [
                     icon: faMapPin
                 }
             ],
+
             navigateLinks: [
                 {
                     title: "Liste des contrats",
@@ -56,7 +57,7 @@ export const formElements = [
             addUserTitleForm: "Formulaire d'enregistrement d'un collaborateur",
             updateUserTitleForm: "Formulaire de modification d'un utilisateur",
 
-            tilteContract: "Formulaire de création de contrat",
+            
             titleTypeContract: "Formulaire de création d'un type de contract",
 
             inputTypeConract: [
@@ -372,43 +373,11 @@ export const formElements = [
             ],
 
 
-            titleDept: "Formulaire d'enregistrement d'un département",
+            
 
-            inputDept: [
-                {
-                    label: "Nom",
-                    placeholder: "Saisissez un nom",
-                    requireField: true,
-                    type: "text",
-                    selectedInput: false,
-                    alias: "name"
-
-                },
-
-                {
-                    label: "Description",
-                    placeholder: "Saisissez une description",
-                    requireField: false,
-                    type: "text",
-                    selectedInput: false,
-                    alias: "name"
-
-                },
-
-                {
-                    label: "Entreprise",
-                    placeholder: "Saisissez une entreprise",
-                    requireField: true,
-                    type: "text",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: false
-                    },
-                    alias: "EnterpriseId"
-
-                }
-            ],
+           
         },
+        
         addOrUpdateEnterprise: {
             navigationLinks: [
                 {
@@ -601,64 +570,27 @@ export const formElements = [
                 },
             ],
         },
-        addOrUpdateSalary: {
-            navigationLinks: [
+
+        //Formulaire du contrat
+        addContractUser: {
+            navigationsLinks: [
+
                 {
-                    title: "Liste des salaires",
-                    href: "/dashboard/RH/usersList",
-                    icon: faUsers
+                    title: "Ajouter un contrat",
+                    href: "/dashboard/ADMIN/addContrat"
+
                 },
+
+                {
+                    title: "Liste des contrats",
+                    href: "/dashboard/ADMIN/contractsList",
+                    icon: faFileContract
+                }
+
             ],
 
-            addSalaryTitleForm: "Ajouter un salaire",
-            updateUserTitleForm: "Formulaire de modification d'un utilisateur",
-
-            titleForm: "Formulaire d'ajout d'un salaire",
-
-            inputs: [
-                // ---- Inputs classiques ----
-                {
-                    label: "Salaire brute",
-                    placeholder: "Entrez un montant ex:100000...",
-                    requireField: false,
-                    type: "text",
-                    selectedInput: false,
-                    alias: "grossSalary"
-                },
-                {
-                    label: "Salaire journalier",
-                    placeholder: "Entrez un montant ex:100000...",
-                    requireField: false,
-                    type: "text",
-                    selectedInput: false,
-                    alias: "dailySalary"
-                },
-                // ---- Select Inputs ----
-                {
-                    label: "Entreprise",
-                    placeholder: "Sélectionnez une entreprise...",
-                    requireField: true,
-                    type: "number",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true
-                    },
-                    alias: "EnterpriseId"
-                },
-
-
-                {
-                    label: "Poste",
-                    placeholder: "Sélectionnez un poste...",
-                    requireField: false,
-                    type: "number",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true
-                    },
-                    alias: "PostId"
-                },
-            ],
+            tilteContract: "Formulaire de création de contrat",
+            titleFormContract: "Ajouter un contrat",
 
             inputContrat: [
                 {
@@ -726,8 +658,130 @@ export const formElements = [
 
                 },
 
-            ]
+            ],
         },
+
+        //Formulaire département
+        addDepartmentUser : {
+
+            navigationDeptLinks: [
+                {
+                    title: "Ajouter un département",
+                    href: "/dashboard/ADMIN/addDepartment",
+                    icon: faBuilding
+                },
+                {
+                    title: "Liste de départements",
+                    href: "/dashboard/ADMIN/departmentsList",
+                    icon: faBuilding
+                },
+            ], 
+
+            titleDept: "Formulaire d'enregistrement d'un département",
+            titleformDept: "Ajouter un département",
+
+             inputDept: [
+                {
+                    label: "Nom",
+                    placeholder: "Saisissez un nom",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "name"
+
+                },
+
+                {
+                    label: "Description",
+                    placeholder: "Saisissez une description",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "name"
+
+                },
+
+                {
+                    label: "Entreprise",
+                    placeholder: "Saisissez une entreprise",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: false
+                    },
+                    alias: "EnterpriseId"
+
+                }
+            ],
+
+
+
+        },
+
+
+        addOrUpdateSalary: {
+            navigationLinks: [
+                {
+                    title: "Liste des salaires",
+                    href: "/dashboard/RH/usersList",
+                    icon: faUsers
+                },
+            ],
+
+            addSalaryTitleForm: "Ajouter un salaire",
+            updateUserTitleForm: "Formulaire de modification d'un utilisateur",
+
+            titleForm: "Formulaire d'ajout d'un salaire",
+
+            inputs: [
+                // ---- Inputs classiques ----
+                {
+                    label: "Salaire brute",
+                    placeholder: "Entrez un montant ex:100000...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "grossSalary"
+                },
+                {
+                    label: "Salaire journalier",
+                    placeholder: "Entrez un montant ex:100000...",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "dailySalary"
+                },
+                // ---- Select Inputs ----
+                {
+                    label: "Entreprise",
+                    placeholder: "Sélectionnez une entreprise...",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "EnterpriseId"
+                },
+
+
+                {
+                    label: "Poste",
+                    placeholder: "Sélectionnez un poste...",
+                    requireField: false,
+                    type: "number",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "PostId"
+                },
+            ],
+
+            
+        },
+
         addOrEditPost: {
             navigationLinks: [
                 {

@@ -9,6 +9,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react"
 import { ClipLoader } from "react-spinners";
 import AddContractHookModal from "./hook";
+import { parse } from "path";
 
 type ContratValues = {
     startDate: number | null,
@@ -18,8 +19,16 @@ type ContratValues = {
     EnterpriseId: number | null
     ContractType: string | null,
     Enterprise: string | null,
-    
+    [key: string]: string | number | null
 
+} 
+
+type dynamicArrayData = {
+    alias: string,
+    arrayData:{
+        value:any,
+        title: string
+    }[]
 }
 
 export default function AddContract() {
@@ -36,10 +45,18 @@ export default function AddContract() {
         Enterprise: null,
     })
 
-   
+    const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([])
 
+    //Récupérer les données des champs en mémoire
+    useEffect(() => {
+        (() => {
+            const inputMemory = localStorage.getItem("inputMemory")
+            inputMemory ? setInputsValues(JSON.parse(inputMemory ?? "")) : setInputsValues({...inputsValues})
+            setDynamicArrayDatasCloned(dynamicArrayData)
+            
+        })()
+    },[])
 
-    
 
 
     const handleSubmit = async (e: FormEvent) => {
@@ -85,18 +102,25 @@ export default function AddContract() {
 
                 <div className="mx-4 mt-6 mb-4 w-full" >
                     {
-                        formElements.map((e, index) => (
+                        formElements.map((e) => (
 
-                            <div key={index} className="flex flex-wrap text-gray-700 w-full space-y-4 md:space-y-0 items-center justify-between" >
-                                <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">
-                                    Ajouter un contrat
+                            <div className="text-gray-700 space-y-4 md:space-y-0 w-full items-center" >
+                                <div className="flex justify-between flex-wrap">
+                                    <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">
+                                    {e.addContractUser.tilteContract}
                                 </h1>
+                                <p className="text-blue-700 dark:text-blue-600" >
+                                    Dashboard/ADMIN/Ajouter un départemnt
+                                </p>
 
-                                <div className="flex flex-wrap space-x-4 space-y-4 items-center ">
-                                    {e.addOrUpdateUser.navigateLinks.map((item, index) => (
+                                </div>
+                                
+                                <hr className="bg-gray-400 h-[1px] boder-0 " />
+                                <div className="flex flex-wrap py-4 lg:space-x-4 space-y-4 items-center">
+                                    {e.addContractUser.navigationsLinks.map((item, index) => (
                                         <Link key={index} href={item.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" :
                                             index === 5 ? "bg-blue-800 2xl:right-5 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"} >
-                                            <FontAwesomeIcon icon={item.icon} className="text-white" />
+                                               {/**  <FontAwesomeIcon icon={item.icon} /> */}
                                             <span className='text-white'>{item.title}</span>
                                         </Link>
                                     ))}
@@ -112,7 +136,7 @@ export default function AddContract() {
                         {
                             formElements.map((e, index) => (
                                 <div key={index} className="flex flex-wrap space-y-4 justify-between mb-2 items-center dark:text-gray-300 text-gray-700">
-                                    <h2 className="font-bold">{e.addOrUpdateUser.tilteContract}</h2>
+                                    <h2 className="font-bold">{e.addContractUser.titleFormContract} </h2>
                                     <p className="font-semibold"> <span className="text-red-600">*</span> Champs obligatoires</p>
                                 </div>
 
@@ -123,7 +147,7 @@ export default function AddContract() {
                         <div className='grid grid-cols-1 mt-4 md:grid-cols-2 gap-4 w-full '>
                             {
                                 formElements.map((e, i) => (
-                                    e.addOrUpdateUser.inputContrat.map((item, index) => (
+                                    e.addContractUser.inputContrat.map((item, index) => (
                                         <div key={index} className="flex flex-col w-full ">
                                             <div className=''>
                                                 <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700">
@@ -131,29 +155,53 @@ export default function AddContract() {
                                                     {item.label}</label>
                                                 {
                                                     !item.selectedInput ?
-                                                        <input onChange={async (u) => {
-                                                            for (const [key, _] of Object.entries(inputsValues)) {
-                                                                if (key === item.alias) {
-                                                                    setInputsValues({
+                                                        <input value={inputsValues[item.alias] ?? ""} onChange={async (u) => {
+
+                                                            const field = item.alias
+                                                            let fieldValue
+
+                                                            if(item.type === "files"){
+
+                                                                const files = u.target.files?.[0]
+                                                                const methodName = "sendFiles"
+                                                                
+                                                                const response = await controllers.API.SendOne(urlAPI, methodName,null, {files})
+                                                                if(response.status){
+                                                                    fieldValue = {
                                                                         ...inputsValues,
-                                                                        [item.alias]: u.target.value
-                                                                    })
+                                                                        [field]: response.filename
+
+                                                                    }
+
+                                                                    setInputsValues(fieldValue)
+                                                                    localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
                                                                 }
+                                                                return
+
                                                             }
+                                                            fieldValue = {
+                                                                ...inputsValues,
+                                                                [field]: u.target.value
+                                                            }
+                                                            setInputsValues(fieldValue)
+                                                            localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
+                                                            
 
                                                         }} type={item.type} maxLength={item.type === "tel" ? 9 : undefined} placeholder={item.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border
                                                      border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
 
                                                         :
-                                                        <select onChange={async (u) => {
-                                                            for (const [key, _] of Object.entries(inputsValues)) {
-                                                                if (key === item.alias) {
-                                                                    setInputsValues({
-                                                                        ...inputsValues,
-                                                                        [item.alias]: item.type === "number" ? parseInt(u.target.value) : u.target.value
-                                                                    })
-                                                                }
+                                                        <select value={inputsValues[item.alias] ?? ""} onChange={async (u) => {
+                                                            
+                                                            const field = item.alias
+                                                            const fieldValue = {
+                                                                ...inputsValues,
+                                                                [field]: item.type === "number" ? parseInt(u.target.value) : u.target.value
                                                             }
+
+                                                            setInputsValues(fieldValue)
+                                                           localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
+                                                           
                                                         }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent 
                                                        border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700" >
 
@@ -164,9 +212,9 @@ export default function AddContract() {
                                                             {
 
                                                                 item.dynamicOptions?.status ? dynamicArrayData
-                                                                    .find(items => items.alias === item.alias)?.value.map(option => (
-                                                                        <option value={option.id}>
-                                                                            {option.value}
+                                                                    .find(items => items.alias === item.alias)?.arrayData.map(option => (
+                                                                        <option value={option.value}>
+                                                                            {option.title}
                                                                         </option>
                                                                     )) :
                                                                     (

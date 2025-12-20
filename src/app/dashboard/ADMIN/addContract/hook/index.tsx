@@ -14,6 +14,15 @@ type ContratValues = {
 
 }
 
+type dynamicArrayData = {
+    alias: string,
+    arrayData:{
+        value:any,
+        title: string
+    }[]
+}
+
+
 export default function AddContractHookModal(){
     const [getEnterprise, setGetEnterprise] = useState<any[]>([])
         const [getContract, setGetContract] = useState<any[]>([])
@@ -90,36 +99,20 @@ export default function AddContractHookModal(){
 
 
 
-     let dynamicArrayData= [
+     let dynamicArrayData: dynamicArrayData[] = [
 
         {
             alias: "ContractTypeId",
-            value: getContractType.filter(item => item.id && item.title).map(item => (
-                { id: item.id, value: item.title }))
+            arrayData: getContractType.filter(item => item.id && item.title).map(item => (
+                { value: item.id, title: item.title }))
         },
 
         {
             alias: "EnterpriseId",
-            value: getEnterprise.filter(item => item.id && item.name).map(item => (
-                { id: item.id, value: item.name })),
+            arrayData: getEnterprise.filter(item => item.id && item.name).map(item => (
+                { value: item.id, title: item.name })),
         },
 
-        {
-            alias: "delay",
-            value: [
-                {
-                    id: "3 mois", value: "3 mois"
-                },
-
-                {
-                    id: "6 mois", value: "6 mois"
-                },
-
-                {
-                    id: "1 année", value: "1 année"
-                },
-            ]
-        },
 
     ];
 

@@ -58,6 +58,7 @@ export default function AddUser() {
                         <div className='grid grid-cols-1 mt-4 gap-x-4 md:grid-cols-2 xl:grid-cols-3 font-semibold w-full'>
                             {
                                 formElements.map((element) => (
+                                    
                                     element.addOrUpdateUser.inputs.map((e, index) => (
                                         <div className={cn('w-full mb-4',)}>
                                             <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>

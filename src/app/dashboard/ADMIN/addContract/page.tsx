@@ -14,8 +14,8 @@ import { parse } from "path";
 
 export default function AddContract() {
 
-    const {staticArrayData, isLoading, handleSubmit, inputsValues, setInputsValues, dynamicArrayDatasCloned} = AddContractHookModal()
-    
+    const {staticArrayData, isLoading, handleSubmit, inputsValues, 
+    setInputsValues, dynamicArrayDatasCloned} = AddContractHookModal()
 
 
     return (
@@ -33,7 +33,7 @@ export default function AddContract() {
                                 <div className="flex justify-between flex-wrap">
                                     <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">
                                     {e.addContractUser.tilteContract}
-                                </h1>
+                                   </h1>
                                 <p className="text-blue-700 dark:text-blue-600" >
                                     Dashboard/ADMIN/Ajouter un départemnt
                                 </p>

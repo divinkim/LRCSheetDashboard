@@ -8,34 +8,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { controllers } from "@/app/main"
 import { urlAPI } from "@/app/main";
 import {FormEvent ,useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
 import AddDepartmentHookUser from "./hook/page";
-
-
-type input = {
-    name: string | null,
-    description: string | null,
-    enterpriseId: number | null,
-    enterprise: string | null,
-    [key: string]: string | number | null
-
-};
-
-type dynamicArrayData = {
-    alias: string,
-    arrayData:{
-        value:any,
-        title: string
-    }[]
-}
-
+import { parse } from "path";
 
 
 export default function AddDepartment(){
 
    
-    const {DynamicArrayDatas, isLoading, dynamicArrayDatasCloned, inputs, setInputs, handleSubmit} = AddDepartmentHookUser()
+    const {isLoading, dynamicArrayDatasCloned, inputs, setInputs, handleSubmit} = AddDepartmentHookUser()
 
-   
    
 
     return (
@@ -101,7 +83,7 @@ export default function AddDepartment(){
                                                          {e.label}
                                                      </label>
                                                      {
-                                                        !e.selectedInput ? 
+                                                        !e.selectedInput && !e.textarea ? 
                                                         <input value={inputs[e.alias] ?? ""} onChange={ async (v) => {
                                                             const field = e.alias
                                                             let fieldValue
@@ -134,16 +116,33 @@ export default function AddDepartment(){
                                                         type={e.type} placeholder={e.placeholder} />
 
                                                         :
+                                                        !e.textarea && !e.selectedInput ?
+                                                        <textarea placeholder={e.placeholder ?? ""} value={inputs[e.alias] ?? ""} onChange={(u) => {
+                                                            const field= e.alias
+                                                            const fieldValue= {...inputs, [field] : u.target.value}
+                                                            setInputs(fieldValue)
+
+                                                            localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
+
+                                                        }}
+                                                        className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 h-[100px] 
+                                                        bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300
+                                                        dark:text-gray-300 text-gray-700">
+
+                                                        </textarea>
+
+                                                        :
 
                                                         <select value={inputs[e.alias] ?? ""} onChange={(u) => {
                                                             const field = e.alias
-                                                            let fieldValue
-                                                            fieldValue = {
+
+                                                           const fieldValue = {
                                                                 ...inputs,
-                                                                [field]: u.target.value
+                                                                [field]: e.type === "number" ? parseInt(u.target.value) : u.target.value
                                                             }
                                                             
                                                          setInputs(fieldValue)
+                                                         localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
 
                                                         }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent 
                                                             border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700" >
@@ -152,7 +151,7 @@ export default function AddDepartment(){
                                                              </option>
                                                              {
                                                                 e.dynamicOptions?.status && (
-                                                                DynamicArrayDatas.find(item => item.alias === e.alias)?.
+                                                                dynamicArrayDatasCloned.find(item => item.alias === e.alias)?.
                                                                 arrayData.map(option => (
                                                                     <option value={option.value}>
                                                                         {option.title}
@@ -171,17 +170,19 @@ export default function AddDepartment(){
 
                                 <div className="flex w-full justify-end ">
                                     <button type="button" onClick={() => {
+
                                        handleSubmit()
+
                                        }} className="bg-blue-600 my-2 hover:bg-blue-700 relative 
                                           rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
-                                            <p>Exécuter</p>
+                                            <p className={isLoading ? "hidden" : "block"} >Exécuter</p>
+                                            <p className={isLoading ? "hidden" : "block"} ><ClipLoader color="#fff" size={16} /></p>
                                     </button>
                                </div>
 
                             </div>
                         </div>
-
-            </div>
+                    </div>
             
         </main>
     )

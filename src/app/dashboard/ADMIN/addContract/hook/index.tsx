@@ -26,94 +26,31 @@ type dynamicArrayData = {
 
 export default function AddContractHookModal(){
     const [getEnterprise, setGetEnterprise] = useState<any[]>([])
-        const [getContract, setGetContract] = useState<any[]>([])
-        const [getContractType, setGetContractType] = useState<any[]>([])
-        const [getEnterpriseIdOfAdmin, setGetEnterpriseIdOfAdmin] = useState<string | null>(null)
-        const [getAdminRole, setGetAdminRole] = useState<string | null>(null)
-        const [inputsValues, setInputsValues] = useState<ContratValues>({
-          startDate: null,
-          endDate: null,
-          delay: null,
-          ContractTypeId: null,
-          EnterpriseId: null,
-          ContractType: null,
-          Enterprise: null,
-        })
+    const [getContract, setGetContract] = useState<any[]>([])
+    const [getContractType, setGetContractType] = useState<any[]>([])
+    const [getEnterpriseIdOfAdmin, setGetEnterpriseIdOfAdmin] = useState<string | null>(null)
+    const [getAdminRole, setGetAdminRole] = useState<string | null>(null)
+    const [inputsValues, setInputsValues] = useState<ContratValues>({
+      startDate: null,
+      endDate: null,
+      delay: null,
+      ContractTypeId: null,
+      EnterpriseId: null,
+      ContractType: null,
+      Enterprise: null,
+     })
 
         const [isLoading, setIsLoading] = useState(false);
-        const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([])
-        
-            //Récupérer les données des champs en mémoire
-            useEffect(() => {
-                (() => {
-                    const inputMemory = localStorage.getItem("inputMemory")
-                    inputMemory ? setInputsValues(JSON.parse(inputMemory ?? "")) : setInputsValues({...inputsValues})
-                    setDynamicArrayDatasCloned(dynamicArrayData)
-                    
-                })()
-            },[])
-        
-        
-        
-            const handleSubmit = async () => {
-                setIsLoading(true);
-        
-                const requireField = {
-                    startDate: inputsValues.startDate,
-                    endDate: inputsValues.endDate,
-                    delay: inputsValues.delay,
-                    ContractType: inputsValues.ContractType,
-                    Enterprise: inputsValues.Enterprise,
-                    ContractTypeId: inputsValues.ContractTypeId ?? null,
-                    EnterpriseId: inputsValues.EnterpriseId ?? null
-        
-                }
-        
-                console.log("les données:", requireField)
-        
-                const methodName = "createContract"
-        
-                const response = await controllers.API.SendOne(urlAPI, methodName, null, requireField)
-        
-                controllers.alertMessage(
-                    response.status,
-                    response.title,
-                    response.message,
-                    response.status ? "/dashboard/ADMIN/addContract" : null
-                )
-        
-        
-                setIsLoading(false);
-            }
-        
-        
 
-
-         //Récupérer la liste des contrats
+         //Récupérer les entreprises
             useEffect(() => {
                 (async () => {
-        
-                    const methodName = "getContracts"
-                    const getContract = await controllers.API.getAll(urlAPI, methodName, null)
-                    const filteredContrat = getContract.filter(
-                        (item: { ContractTypeId: number, EnterpriseId: number }) =>
-                            item.ContractTypeId === inputsValues.ContractTypeId && item.EnterpriseId === inputsValues.EnterpriseId)
-                    setGetContract(filteredContrat)
-                    console.log("La liste des contrats:", filteredContrat)
-        
-                })()
-            }, [inputsValues.ContractTypeId])
-        
-            //Récupérer les entreprises
-            useEffect(() => {
-                (async () => {
+
                     if (typeof (window) === undefined) return;
-                    const authToken = localStorage.getItem("authToken")
-                    const role = localStorage.getItem("role")
+                   // const authToken = localStorage.getItem("authToken")
+                    const role = localStorage.getItem("adminRole")
                     let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId")
         
-                    setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
-                    setGetAdminRole(role)
         
                     const methodName = "getEnterprises"
                     const getEnterprise = await controllers.API.getAll(urlAPI, methodName, null)
@@ -125,12 +62,34 @@ export default function AddContractHookModal(){
                         return;
         
                     }
+
                     setGetEnterprise(getEnterprise)
-                    console.log("l'id de l'entreprise:", getEnterprise)
+                    setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
+                    setGetAdminRole(role)
+                   // console.log("l'id de l'entreprise:", getEnterprise)
         
                 })()
             }, [])
+
+
+            //Récupérer la liste des contrats
+            useEffect(() => {
+                (async () => {
         
+                    const methodName = "getContracts"
+                    const getContract = await controllers.API.getAll(urlAPI, methodName, null)
+                    const filteredContrat = getContract.filter((item: { ContractTypeId: number, EnterpriseId: number }) => 
+                        item.ContractTypeId === inputsValues.ContractTypeId &&
+                        item.EnterpriseId === inputsValues.EnterpriseId
+                    )
+
+                    setGetContract(filteredContrat)
+                    console.log("La liste des contrats:", filteredContrat)
+        
+                })()
+            }, [inputsValues.ContractTypeId])
+        
+           
             //Récupérer le type de contrat
             useEffect(() => {
                 (async () => {
@@ -139,14 +98,17 @@ export default function AddContractHookModal(){
                     const getContractType = await controllers.API.getAll(urlAPI, methodName, null)
                     const filteredContratType = getContractType.filter(
                         (item: { ContractTypeId: number, EnterpriseId: number }) =>
-                            item.EnterpriseId === inputsValues.EnterpriseId)
+                         item.EnterpriseId === inputsValues.EnterpriseId
+                    )
+
                     setGetContractType(filteredContratType)
                     console.log("La liste des contrats:", filteredContratType)
         
                 })()
             }, [inputsValues.EnterpriseId])
 
-
+       
+     const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([])
 
      let dynamicArrayData: dynamicArrayData[] = [
 
@@ -184,7 +146,56 @@ export default function AddContractHookModal(){
             ]
         }
     ]
+        
+        
+            //Récupérer les données des champs en mémoire
+            useEffect(() => {
+                (() => {
+                    const inputMemory = localStorage.getItem("inputMemory")
+                    inputMemory ? setInputsValues(JSON.parse(inputMemory ?? "")) : setInputsValues({...inputsValues})
+                    setDynamicArrayDatasCloned(dynamicArrayData)
+                    
+                })()
+            },[dynamicArrayData])
+        
+        
+        
+            const handleSubmit = async () => {
+                setIsLoading(true);
 
+                {/** 
+                const requireField = {
+                    startDate: inputsValues.startDate,
+                    endDate: inputsValues.endDate,
+                    delay: inputsValues.delay,
+                    ContractType: inputsValues.ContractType,
+                    Enterprise: inputsValues.Enterprise,
+                    ContractTypeId: inputsValues.ContractTypeId ?? null,
+                    EnterpriseId: inputsValues.EnterpriseId ?? null
+        
+                }
+        
+                console.log("les données:", requireField)
+                */}
+        
+                const methodName = "createContract"
+                const response = await controllers.API.SendOne(urlAPI, methodName, null, inputsValues)
+
+                if(response.status)
+                localStorage.removeItem("inputMemory")
+        
+                controllers.alertMessage(
+                    response.status,
+                    response.title,
+                    response.message,
+                    response.status ? "/dashboard/ADMIN/addContract" : null
+                )
+        
+        
+                setIsLoading(false);
+            }
+        
+     
     return {dynamicArrayData, staticArrayData, handleSubmit, isLoading, dynamicArrayDatasCloned, inputsValues, setInputsValues}
         
     

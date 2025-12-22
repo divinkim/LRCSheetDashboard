@@ -690,6 +690,7 @@ export const formElements = [
                     placeholder: "Saisissez une description",
                     requireField: false,
                     type: "text",
+                    textarea: true,
                     selectedInput: false,
                     alias: "name"
 
@@ -700,6 +701,7 @@ export const formElements = [
                     placeholder: "Saisissez une entreprise",
                     requireField: true,
                     type: "text",
+                    textarea: true,
                     selectedInput: true,
                     dynamicOptions: {
                         status: false

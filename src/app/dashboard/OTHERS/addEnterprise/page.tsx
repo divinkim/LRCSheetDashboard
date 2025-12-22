@@ -4,109 +4,16 @@ import { Sidebar } from "@/components/Layouts/sidebar";
 import { controllers } from "@/app/main";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { ClipLoader } from "react-spinners";
 import { formElements } from "@/components/FormElements/forms";
-import { FormEvent, useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import { urlAPI } from "@/app/main";
 import { cn } from "@/lib/utils";
 
 import { EnterpriseHookModal } from "./hook";
 
-type EnterpriseProps = {
-    name: string | null,
-    description: string | null,
-    logo: string | null,
-    activityDomain: string | null,
-    phone: string | null,
-    toleranceTime: string | null,
-    pourcentageOfHourlyDeduction: string | null,
-    email: string | null,
-    address: string | null,
-    website: string | null,
-    latitude: string | null,
-    longitude: string | null,
-    CityId: number,
-    CountryId: number,
-    legalForm: string | null,
-    rccm: string | null,
-    nui: string | null,
-    subscriptionType: string | null,
-    subscriptionStatus: string | null,
-    [key: string]: string | null | number
-}
-
 export default function AddEnterprise() {
-    const [inputs, setInputs] = useState<EnterpriseProps>({
-        name: "",
-        description: "",
-        logo: "",
-        activityDomain: "",
-        phone: "",
-        toleranceTime: "",
-        pourcentageOfHourlyDeduction: "",
-        email: "",
-        address: "",
-        website: "",
-        latitude: "",
-        longitude: "",
-        CityId: 0,
-        CountryId: 0,
-        legalForm: "",
-        rccm: "",
-        nui: "",
-        subscriptionType: "",
-        subscriptionStatus: ""
-    });
-    const [isLoading, setIsLoading] = useState(false);
-    const { dynamicDatasArray, staticDatasArray, getNumberValue } = EnterpriseHookModal();
 
-    //Récupération des données en mémoire du localStorage
-    useEffect(() => {
-        (() => {
-            const inputMemory = localStorage.getItem("inputMemory");
-            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });
-        })();
-    }, [dynamicDatasArray]);
-
-    const handleSubmit = async (e: FormEvent) => {
-        setIsLoading(true);
-
-        const requireField = {
-            name: inputs.name,
-            description: inputs.description,
-            activityDomain: inputs.activityDomain,
-            address: inputs.address,
-            logo: inputs.logo,
-            legalForm: inputs.legalForm,
-            email: inputs.name,
-            CountryId: inputs.CountryId,
-            CityId: inputs.CityId
-        }
-
-        for (const field of Object.entries(requireField)) {
-            if (!field) {
-                return setTimeout(() => {
-                    controllers.alertMessage(false, "Champs invalides!", "Veuillez remplir tous les champs obligatoitres.", null);
-                    setIsLoading(false);
-                }, 1500)
-            }
-        }
-
-        const response = await controllers.API.SendOne(urlAPI, "createEnterprise", null, inputs);
-
-        if (response.status) localStorage.removeItem("inputMemory");
-
-        controllers.alertMessage(
-            response.status,
-            response.title,
-            response.message,
-            response.status ? "/dashboard/OTHERS/addEnterprise" : null
-        );
-
-        setIsLoading(false);
-    };
+    const { dynamicDatasArray, staticDatasArray, handleSubmit, setInputs, inputs, isLoading } = EnterpriseHookModal();
 
     return (
         <main className="bg-gray-100 dark:bg-transparent">
@@ -170,7 +77,7 @@ export default function AddEnterprise() {
                                                         }
                                                         fieldValue = { ...inputs, [field]: v.target.value }
                                                         setInputs(fieldValue);
-                                                        localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
+                                                        localStorage.setItem("addEnterpriseFormDataStored", JSON.stringify(fieldValue))
                                                     }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
                                                     <div className={e.alias === "logo" && inputs.logo ? "h-[200px]" : "hidden"}>
                                                         <img src={`${urlAPI}/images/${inputs.logo}`} className='h-[200px] w-full object-cover' alt="" />
@@ -185,9 +92,6 @@ export default function AddEnterprise() {
                                                             ...inputs,
                                                             [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
                                                         }
-
-                                                        if (e.type === "number")
-                                                            getNumberValue(parseInt(v.target.value), e.alias);
 
                                                         setInputs(fieldValue)
 

@@ -4,157 +4,22 @@ import { Sidebar } from "@/components/Layouts/sidebar";
 import { controllers } from "@/app/main";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+
 import { ClipLoader } from "react-spinners";
 import { formElements } from "@/components/FormElements/forms";
-import { FormEvent, useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import { urlAPI } from "@/app/main";
 import { cn } from "@/lib/utils";
-
-type EnterpriseProps = {
-    name: string | null,
-    description: string | null,
-    logo: string | null,
-    activityDomain: string | null,
-    phone: string | null,
-    // toleranceTime: string | null,
-    // pourcentageOfHourlyDeduction: string | null,
-    email: string | null,
-    address: string | null,
-    website: string | null,
-    latitude: string | null,
-    longitude: string | null,
-    CityId: number,
-    CountryId: number,
-    legalForm: string | null,
-    rccm: string | null,
-    nui: string | null,
-    subscriptionType: string | null,
-    subscriptionStatus: string | null,
-    [key: string]: string | number | null | undefined,
-}
+import { UpdateEnterpriseHook } from "../hook";
 
 export default function UpdateEnterprise() {
-    const [inputs, setInputs] = useState<EnterpriseProps>({
-        name: null,
-        description: null,
-        logo: null,
-        activityDomain: null,
-        phone: null,
-        // toleranceTime: null,
-        // pourcentageOfHourlyDeduction: null,
-        email: null,
-        address: null,
-        website: null,
-        latitude: null,
-        longitude: null,
-        CityId: 0,
-        CountryId: 0,
-        legalForm: null,
-        rccm: null,
-        nui: null,
-        subscriptionType: null,
-        subscriptionStatus: null
-    });
-    const [isLoading, setIsLoading] = useState(false);
-    const [countries, setCountries] = useState<any[]>([]);
-    const [cities, setCities] = useState<any[]>([]);
-
-    useEffect(() => {
-        (async () => {
-            const getEnterpriseId = window.location.href.split('/').pop();
-            const getEnterprise = await controllers.API.getOne(urlAPI, "getEnterprise", parseInt(getEnterpriseId ?? ""));
-
-            setInputs({
-                name: getEnterprise?.name ?? inputs.name,
-                description: getEnterprise?.description ?? inputs.description,
-                logo: getEnterprise?.logo ?? inputs.logo,
-                activityDomain: getEnterprise?.activityDomain ?? inputs.activityDomain,
-                phone: getEnterprise?.phone?.length === 13 ? getEnterprise?.phone : inputs.phone,
-                // toleranceTime: getEnterprise?.toleranceTime ?? null,
-                // pourcentageOfHourlyDeduction: getEnterprise?.pourcentageOfHourlyDeduction ?? null,
-                email: getEnterprise?.email ?? inputs.email,
-                address: getEnterprise?.address ?? inputs.address,
-                website: getEnterprise?.website ?? inputs.website,
-                latitude: getEnterprise?.latitude ?? inputs.latitude,
-                longitude: getEnterprise?.longitude ?? inputs.longitude,
-
-                CityId: getEnterprise?.CityId ?? inputs.CityId,
-                CountryId: getEnterprise?.CountryId ?? inputs.CountryId,
-
-                legalForm: getEnterprise?.legalForm ?? inputs.legalForm,
-                rccm: getEnterprise?.rccm ?? inputs.rccm,
-                nui: getEnterprise?.nui ?? inputs.nui,
-                subscriptionType: getEnterprise?.subscriptionType ?? inputs.subscriptionType,
-                subscriptionStatus: getEnterprise?.subscriptionStatus ?? inputs.subscriptionStatus,
-            });
-
-        })()
-    }, [])
-
-    useEffect(() => {
-        (async () => {
-            const getCountries = await controllers.API.getAll(urlAPI, "getCountries", null);
-            setCountries(getCountries)
-        })();
-    }, []);
-
-    useEffect(() => {
-        (async () => {
-            const getCities = await controllers.API.getAll(urlAPI, "getCities", null);
-            if (getCities?.length > 0) {
-                const filteredCities = getCities.filter((item: { CountriesTypeId: number }) => item.CountriesTypeId === inputs.CountryId);
-                setCities(filteredCities);
-                console.log(filteredCities)
-            }
-        })();
-    }, [inputs.CountryId]);
-
-    const handleSubmit = async (e: FormEvent) => {
-        setIsLoading(true);
-        const getEnterpriseId = window.location.href.split('/').pop();
-        const response = await controllers.API.UpdateOne(urlAPI, "updateEnterprise", getEnterpriseId, inputs);
-
-        controllers.alertMessage(
-            response.status,
-            response.title,
-            response.message,
-            response.status ? `/dashboard/OTHERS/updateEnterprise/${getEnterpriseId}` : null
-        );
-
-        setIsLoading(false);
-    };
-
-    const arrayOptions = [
-        {
-            alias: "CountryId",
-            value: countries.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
-        },
-        {
-            alias: "CityId",
-            value: cities.filter(item => item.id && item.name).map(item => ({ id: item.id, value: item.name }))
-        },
-        {
-            alias: "subscriptionType",
-            value: [{ id: 0, value: "starter" }, { id: 1, value: "pro" }, { id: 2, value: "premium" }]
-        },
-        {
-            alias: "subscriptionStatus",
-            value: [{ id: 0, value: "expired" }, { id: 1, value: "onGoing" }]
-        },
-        {
-            alias: "legalForm",
-            value: [{ id: 0, value: "SARL" }, { id: 1, value: "SA" }, { id: 1, value: "SARLU" }, { id: 1, value: "ORGANISATION" }]
-        },
-    ]
+    const { dynamicOptions, staticOptions, inputs, setInputs, isLoading, handleSubmit } = UpdateEnterpriseHook()
 
     return (
         <main className="bg-gray-100 dark:bg-transparent">
             <Header />
             <div className="flex">
                 <Sidebar />
-                <div className="mx-4 mt-6 mb-4 w-full">
+                <div className="mx-4 mt-6 mb-4 font-semibold w-full">
                     {
                         formElements.map((element) => (
                             <div className="text-gray-700 w-full space-y-4 md:space-y-0 items-center">
@@ -166,7 +31,7 @@ export default function UpdateEnterprise() {
                                 <div className="flex flex-wrap py-4 lg:space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateEnterprise.navigationLinks.map((element, index) => (
-                                            <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"}>
+                                            <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4  relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-3 px-4  relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4 "}>
                                                 <FontAwesomeIcon icon={element.icon} className="text-white" /> <span className='text-white'>{element.title}</span>
                                             </Link>
                                         ))
@@ -238,13 +103,21 @@ export default function UpdateEnterprise() {
                                                             {e.placeholder}
                                                         </option>
                                                         {
-                                                            arrayOptions.find(item => item.alias === e.alias)
-                                                                ?.value
+                                                            e.dynamicOptions?.status ? dynamicOptions.find(item => item.alias === e.alias)
+                                                                ?.arrayData
                                                                 ?.map(option => (
-                                                                    <option value={e.type === "number" ? option.id : option.value}>
-                                                                        {option.value === "expired" ? "expiré" : option.value === "onGoing" ? "en cours" : option.value}
+                                                                    <option value={option.value}>
+                                                                        {option.title}
                                                                     </option>
                                                                 ))
+                                                                :
+                                                                staticOptions.find(item => item.alias === e.alias)
+                                                                    ?.arrayData
+                                                                    ?.map(option => (
+                                                                        <option value={option.value}>
+                                                                            {option.title}
+                                                                        </option>
+                                                                    ))
                                                         }
                                                     </select>
 
@@ -258,7 +131,7 @@ export default function UpdateEnterprise() {
                         </div>
                         <div className="flex w-full justify-end ">
                             <button type="button" onClick={(e) => {
-                                handleSubmit(e)
+                                handleSubmit()
                             }} className="bg-blue-600 my-2 hover:bg-blue-700 relative xl:right-5 rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
                                 <p className={isLoading ? "hidden" : "block"}> Exécuter</p>
                                 <p className={isLoading ? "block" : "hidden"}><ClipLoader color="#fff" size={16} /></p>

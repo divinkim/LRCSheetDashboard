@@ -2,117 +2,23 @@
 import { Header } from "@/components/Layouts/header";
 import { Sidebar } from "@/components/Layouts/sidebar";
 import { ClipLoader } from "react-spinners";
-import { useEffect, useState } from "react";
 import { formElements } from "@/components/FormElements/forms";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Swal from "sweetalert2";
 import { controllers } from "@/app/main";
 import { cn } from "@/lib/utils";
 import { urlAPI } from "@/app/main";
-
-type Salary = {
-    grossSalary: string | null,
-    dailySalary: string | null,
-    EnterpriseId: number,
-    PostId: number,
-}
+import { AddSalaryHookModal } from "./hook";
 
 export default function AddSalary() {
-    const [isLoading, setIsLoading] = useState(false);
-    const [inputs, setInputs] = useState<Salary>({
-        grossSalary: null,
-        dailySalary: null,
-        EnterpriseId: 0,
-        PostId: 0,
-    });
-
-    const [getEnterprises, setGetEnterprises] = useState<any[]>([]);
-    const [getEnterpriseIdOfadmin, setEnterpriseIdOfAdmin] = useState<string | null>(null);
-    const [getAdminRole, setAdminRole] = useState<string | null>(null);
-    const [posts, setPosts] = useState([]);
-
-    useEffect(() => {
-        (async () => {
-            const authToken = localStorage.getItem("authToken");
-            const role = localStorage.getItem("adminRole");
-            let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
-
-            setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
-            setAdminRole(role)
-
-            // if (authToken === null) {
-            //     return window.location.href = "/"
-            // } else if (!requireRoles.includes(role ?? "")) {
-            //     Swal.fire({
-            //         icon: "warning",
-            //         title: "Violation d'accès !",
-            //         text: "Vous n'êtes pas autorisé à accéder à cette page. Veuillez vous rapprocher de votre administreur pour plus d'infos !",
-            //     });
-            //     setTimeout(() => {
-            //         window.location.href = "/Dashboard"
-
-            //     }, 2000);
-            // }
-
-            const getEnterprises = await controllers.API.getAll(urlAPI, "getEnterprises", null);
-
-            if (parseInt(getEnterpriseIdOfAdmin ?? "") !== 1) {
-
-                const filterEnterpriseByEnterpriseId = getEnterprises.filter((enterprise: { id: number }) => enterprise.id === parseInt(getEnterpriseIdOfAdmin ?? ""));
-                setGetEnterprises(filterEnterpriseByEnterpriseId);
-                return
-            }
-            setGetEnterprises(getEnterprises);
-            console.log(getEnterprises);
-        })()
-    }, []);
-
-    useEffect(() => {
-        (async () => {
-            const getPosts = await controllers.API.getAll(urlAPI, "getPosts", null);
-            const filteredPosts = getPosts.filter((post: { EnterpriseId: number }) => post.EnterpriseId === inputs.EnterpriseId);
-            setPosts(filteredPosts)
-            console.log(filteredPosts);
-        })()
-    }, [inputs.EnterpriseId]);
-
-    const dynamicOptions = [
-        {
-            alias: "EnterpriseId",
-            arrayMaped: getEnterprises.filter((enterprise: { id: number, name: string }) => enterprise.id?.toString() && enterprise.name).map((enterprise: { id: number, name: string }) => ({ value: enterprise.id?.toString(), title: enterprise.name }))
-        },
-        {
-            alias: "PostId",
-            arrayMaped: posts.filter((post: { id: number, title: string }) => post.id?.toString() && post.title).map((post: { id: number, title: string }) => ({ value: post.id?.toString(), title: post.title }))
-        }
-    ]
-
-
-    const handleSubmit = async () => {
-        setIsLoading(true);
-        const data = {
-            ...inputs,
-            netSalary:inputs.grossSalary
-        }
-       
-        const response = await controllers.API.SendOne(urlAPI, "addSalary", null, data);
-        controllers.alertMessage(
-            response.status,
-            response.title,
-            response.message,
-            response.status ? "/dashboard/COMPTA/addSalary" : null
-        );
-
-        setIsLoading(false);
-    };
+    const { isLoading, inputs, dynamicOptions, setInputs, handleSubmit } = AddSalaryHookModal();
 
     return (
         <main className="bg-gray-100 dark:bg-transparent">
             <Header />
             <div className="flex">
                 <Sidebar />
-                <div className="mx-4 mt-6 mb-4 w-full">
+                <div className="mx-4 mt-6 mb-4 font-semibold w-full">
                     {
                         formElements.map((element) => (
                             <div className="text-gray-700 w-full space-y-4 md:space-y-0 items-center">
@@ -124,7 +30,7 @@ export default function AddSalary() {
                                 <div className="flex flex-wrap py-4 lg:space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateSalary.navigationLinks.map((element, index) => (
-                                            <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded"}>
+                                            <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4 relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-3 px-4 relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4"}>
                                                 <FontAwesomeIcon icon={element.icon} className="text-white" /> <span className='text-white'>{element.title}</span>
                                             </Link>
                                         ))

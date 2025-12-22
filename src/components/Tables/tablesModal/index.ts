@@ -127,6 +127,26 @@ export const tablesModal = [
                     { title: "Actions", alias: "" },
                 ]
             }
+        },
+        salariesList: {
+            pageTitle: "Liste des salaires enregistrés",
+            path: "Dashboard/ADMININISTRATION/Liste des salaires",
+            links: [
+                {
+                    title: "Ajouter un salaire",
+                    href: "/dashboard/COMPTA/addSalary",
+                    icon: faCalendarPlus
+                },
+            ],
+            table: {
+                titles: [
+                    { title: "Salaire de base", alias: "" },
+                    { title: "Salaire journaliers", alias: "" },
+                    { title: "Entreprises", alias: "" },
+                    { title: "Postes" },
+                    { title: "Actions", alias: "" },
+                ]
+            }
         }
     }
 ]

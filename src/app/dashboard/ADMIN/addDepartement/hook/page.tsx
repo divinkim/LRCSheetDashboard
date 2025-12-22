@@ -85,9 +85,9 @@ type dynamicArrayData = {
         useEffect(() =>{
             (async () => {
     
-                const authToken = await localStorage.getItem("authToken")
-                const role = await localStorage.getItem("role")
-                const getEnterpriseIdOfAdmin = await localStorage.getItem("EnterpriseId")
+                const authToken = localStorage.getItem("authToken")
+                const role = localStorage.getItem("role")
+                const getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId")
     
                 setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
                 setGetAdminRole(role)

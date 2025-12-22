@@ -156,8 +156,6 @@ export default function AddPresenceModal() {
                                 }
                             </div>
                         </div>
-
-
                     </div>
                     <button onClick={handleAddPresence} className="bg-blue-700 ease hover:bg-blue-800 duration-500 text-white px-5 py-2 rounded mt-6" type="button">
                         <p className={isLoading ? "hidden" : "font-semibold"}> + Ajouter</p>

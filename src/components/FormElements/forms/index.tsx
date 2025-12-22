@@ -5,7 +5,8 @@ import {
     faBuilding,
     faMoneyBillWave,
     faMapMarkedAlt,
-    faMapPin, faFileContract, faSuitcaseRolling, faIdBadge
+    faMapPin, faFileContract, faSuitcaseRolling, faIdBadge,
+    faMoneyCheckAlt
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { title } from "process";
@@ -368,14 +369,7 @@ export const formElements = [
                     },
                     alias: "EnterpriseId"
 
-                },
-
-            ],
-
-
-            
-
-           
+                }, ],
         },
         
         addOrUpdateEnterprise: {
@@ -719,18 +713,17 @@ export const formElements = [
 
         },
 
-
         addOrUpdateSalary: {
             navigationLinks: [
                 {
                     title: "Liste des salaires",
-                    href: "/dashboard/RH/usersList",
-                    icon: faUsers
+                    href: "/dashboard/COMPTA/salariesList",
+                    icon: faMoneyCheckAlt
                 },
             ],
 
             addSalaryTitleForm: "Ajouter un salaire",
-            updateUserTitleForm: "Formulaire de modification d'un utilisateur",
+            updateUserTitleForm: "Formulaire de modification d'un salaire",
 
             titleForm: "Formulaire d'ajout d'un salaire",
 
@@ -739,7 +732,7 @@ export const formElements = [
                 {
                     label: "Salaire brute",
                     placeholder: "Entrez un montant ex:100000...",
-                    requireField: false,
+                    requireField: true,
                     type: "text",
                     selectedInput: false,
                     alias: "grossSalary"
@@ -747,7 +740,7 @@ export const formElements = [
                 {
                     label: "Salaire journalier",
                     placeholder: "Entrez un montant ex:100000...",
-                    requireField: false,
+                    requireField: true,
                     type: "text",
                     selectedInput: false,
                     alias: "dailySalary"
@@ -764,12 +757,10 @@ export const formElements = [
                     },
                     alias: "EnterpriseId"
                 },
-
-
                 {
                     label: "Poste",
                     placeholder: "Sélectionnez un poste...",
-                    requireField: false,
+                    requireField: true,
                     type: "number",
                     selectedInput: true,
                     dynamicOptions: {
@@ -777,9 +768,7 @@ export const formElements = [
                     },
                     alias: "PostId"
                 },
-            ],
-
-            
+            ],   
         },
 
         addOrEditPost: {

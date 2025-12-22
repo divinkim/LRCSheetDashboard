@@ -8,32 +8,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { controllers } from "@/app/main"
 import { urlAPI } from "@/app/main";
 import {FormEvent ,useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
 import AddDepartmentHookUser from "./hook/page";
-
-
-type input = {
-    name: string | null,
-    description: string | null,
-    enterpriseId: number | null,
-    enterprise: string | null,
-    [key: string]: string | number | null
-
-};
-
-type dynamicArrayData = {
-    alias: string,
-    arrayData:{
-        value:any,
-        title: string
-    }[]
-}
-
 
 
 export default function AddDepartment(){
 
    
-    const {DynamicArrayDatas, isLoading, dynamicArrayDatasCloned, inputs, setInputs, handleSubmit} = AddDepartmentHookUser()
+    const {isLoading, dynamicArrayDatasCloned, inputs, setInputs, handleSubmit} = AddDepartmentHookUser()
 
    
    
@@ -152,7 +134,7 @@ export default function AddDepartment(){
                                                              </option>
                                                              {
                                                                 e.dynamicOptions?.status && (
-                                                                DynamicArrayDatas.find(item => item.alias === e.alias)?.
+                                                                dynamicArrayDatasCloned.find(item => item.alias === e.alias)?.
                                                                 arrayData.map(option => (
                                                                     <option value={option.value}>
                                                                         {option.title}
@@ -174,7 +156,8 @@ export default function AddDepartment(){
                                        handleSubmit()
                                        }} className="bg-blue-600 my-2 hover:bg-blue-700 relative 
                                           rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
-                                            <p>Exécuter</p>
+                                            <p className={isLoading ? "hidden" : "block"} >Exécuter</p>
+                                            <p className={isLoading ? "hidden" : "block"} ><ClipLoader color="#fff" size={16} /></p>
                                     </button>
                                </div>
 

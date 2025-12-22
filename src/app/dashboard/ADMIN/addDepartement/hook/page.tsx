@@ -18,6 +18,7 @@ type input = {
 
 };
 
+
 type dynamicArrayData = {
     alias: string,
     arrayData:{
@@ -33,7 +34,6 @@ type dynamicArrayData = {
     const [getEnterpriseIdOfAdmin, setGetEnterpriseIdOfAdmin] = useState<string | null>(null)
     const [getAdminRole, setGetAdminRole] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([])
      const [inputs, setInputs] = useState<input>({
       name: null,
       description:  null,
@@ -42,58 +42,18 @@ type dynamicArrayData = {
 
     })
 
-    useEffect(() => {
-        (() => {
-            const inputMemory = localStorage.getItem("inputMemory")
-            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({...inputs})
-            setDynamicArrayDatasCloned(DynamicArrayDatas)
 
-        })()
-    },[])
-
-    
-
-    const handleSubmit = async () => {
-        setIsLoading(true)
-
-        const datas = {
-            name : inputs.name,
-            description: inputs.description,
-            enterpriseId: inputs.enterpriseId,
-            enterprise: inputs.enterprise
-        }
-
-        console.log("les données:", datas)
-
-        const methodName = "creatDepartmentPost"
-        const response = await controllers.API.SendOne(urlAPI, methodName, null)
-        
-       controllers.alertMessage(
-        response.status,
-        response.title,
-        response.message,
-        response.status ? "/dashboard/ADMIN/addDepartment" : null
-       )
-
-       setIsLoading(false)
-       
-    }
-    
-    
-
-    //Récupération des entreprise
+    //Récupération des entreprises
         useEffect(() =>{
             (async () => {
+                if(typeof (window) === "undefined") return;
     
-                const authToken = await localStorage.getItem("authToken")
-                const role = await localStorage.getItem("role")
+              //  const authToken = await localStorage.getItem("authToken")
+                const role = await localStorage.getItem("adminRole")
                 const getEnterpriseIdOfAdmin = await localStorage.getItem("EnterpriseId")
+                
     
-                setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
-                setGetAdminRole(role)
-    
-                const methodName = "getDepartmentPosts"
-    
+                const methodName = "getEnterprises"
                 const getEnterprise = await controllers.API.getAll(urlAPI, methodName, null)
     
                 if(parseInt(getEnterpriseIdOfAdmin ?? "") !== 1){
@@ -104,8 +64,11 @@ type dynamicArrayData = {
                     return;
     
                 }
+
                 setGetEnterpriseId(getEnterpriseId)
-                console.log("l'id de l'entreprise", getEnterpriseId)
+                setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
+                setGetAdminRole(role)
+              //  console.log("l'id de l'entreprise", getEnterpriseId)
                    
                     
             })()
@@ -119,6 +82,53 @@ type dynamicArrayData = {
                 ))
             }
         ]
+
+         const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([])
+
+         //Récupère les données de champs en mémoire
+         useEffect(() => {
+         (() => {
+            const inputMemory = localStorage.getItem("inputMemory")
+            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({...inputs})
+            setDynamicArrayDatasCloned(DynamicArrayDatas)
+
+        })()
+    },[DynamicArrayDatas])
+
+    
+
+    const handleSubmit = async () => {
+        setIsLoading(true)
+
+        {/** 
+        const datas = {
+            name : inputs.name,
+            description: inputs.description,
+            enterpriseId: inputs.enterpriseId,
+            enterprise: inputs.enterprise
+        }
+
+        console.log("les données:", datas)
+
+        */}
+
+        const methodName = "creatDepartmentPost"
+        const response = await controllers.API.SendOne(urlAPI, methodName, null, inputs)
+
+        if(response.status) 
+        localStorage.removeItem("inputMemory")
+        
+       controllers.alertMessage(
+        response.status,
+        response.title,
+        response.message,
+        response.status ? "/dashboard/ADMIN/addDepartment" : null
+       )
+
+       setIsLoading(false)
+       
+    }
+
         
         return {DynamicArrayDatas, isLoading, dynamicArrayDatasCloned, handleSubmit, inputs, setInputs};
     }

@@ -9,6 +9,15 @@ import { controllers } from "@/app/main"
 import { urlAPI } from "@/app/main";
 import {FormEvent ,useEffect, useState } from "react";
 
+type input = {
+    name: string | null,
+    description: string | null,
+    enterpriseId: number | null,
+    enterprise: string | null,
+    [key: string]: string | number | null
+
+};
+
 type dynamicArrayData = {
     alias: string,
     arrayData:{
@@ -23,6 +32,54 @@ type dynamicArrayData = {
     const [getEnterpriseId, setGetEnterpriseId] = useState<any[]>([])
     const [getEnterpriseIdOfAdmin, setGetEnterpriseIdOfAdmin] = useState<string | null>(null)
     const [getAdminRole, setGetAdminRole] = useState<string | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([])
+     const [inputs, setInputs] = useState<input>({
+      name: null,
+      description:  null,
+      enterpriseId: null,
+      enterprise: null,
+
+    })
+
+    useEffect(() => {
+        (() => {
+            const inputMemory = localStorage.getItem("inputMemory")
+            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({...inputs})
+            setDynamicArrayDatasCloned(DynamicArrayDatas)
+
+        })()
+    },[])
+
+    
+
+    const handleSubmit = async () => {
+        setIsLoading(true)
+
+        const datas = {
+            name : inputs.name,
+            description: inputs.description,
+            enterpriseId: inputs.enterpriseId,
+            enterprise: inputs.enterprise
+        }
+
+        console.log("les données:", datas)
+
+        const methodName = "creatDepartmentPost"
+        const response = await controllers.API.SendOne(urlAPI, methodName, null)
+        
+       controllers.alertMessage(
+        response.status,
+        response.title,
+        response.message,
+        response.status ? "/dashboard/ADMIN/addDepartment" : null
+       )
+
+       setIsLoading(false)
+       
+    }
+    
+    
 
     //Récupération des entreprise
         useEffect(() =>{
@@ -63,5 +120,5 @@ type dynamicArrayData = {
             }
         ]
         
-        return {DynamicArrayDatas};
+        return {DynamicArrayDatas, isLoading, dynamicArrayDatasCloned, handleSubmit, inputs, setInputs};
     }

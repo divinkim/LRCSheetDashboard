@@ -33,55 +33,11 @@ type dynamicArrayData = {
 export default function AddDepartment(){
 
    
-    const [isLoading, setIsLoading] = useState(false)
-    const {DynamicArrayDatas} = AddDepartmentHookUser()
-    const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([])
+    const {DynamicArrayDatas, isLoading, dynamicArrayDatasCloned, inputs, setInputs, handleSubmit} = AddDepartmentHookUser()
 
-    const [inputs, setInputs] = useState<input>({
-      name: null,
-      description:  null,
-      enterpriseId: null,
-      enterprise: null,
-
-    })
-
-    useEffect(() => {
-        (() => {
-            const inputMemory = localStorage.getItem("inputMemory")
-            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({...inputs})
-            setDynamicArrayDatasCloned(DynamicArrayDatas)
-
-        })()
-    },[])
-
-    
-
-    const handleSubmit = async (e: FormEvent) => {
-        setIsLoading(true)
-
-        const datas = {
-            name : inputs.name,
-            description: inputs.description,
-            enterpriseId: inputs.enterpriseId,
-            enterprise: inputs.enterprise
-        }
-
-        console.log("les données:", datas)
-
-        const methodName = "creatDepartmentPost"
-        const response = await controllers.API.SendOne(urlAPI, methodName, null)
-        
-       controllers.alertMessage(
-        response.status,
-        response.title,
-        response.message,
-        response.status ? "/dashboard/ADMIN/addDepartment" : null
-       )
-
-       setIsLoading(false)
-       
-    }
    
+   
+
     return (
         <main className="bg-ray-100 dark:bg-transparent">
             <Header />
@@ -214,8 +170,8 @@ export default function AddDepartment(){
                                 </div>
 
                                 <div className="flex w-full justify-end ">
-                                    <button type="button" onClick={(e) => {
-                                       handleSubmit(e)
+                                    <button type="button" onClick={() => {
+                                       handleSubmit()
                                        }} className="bg-blue-600 my-2 hover:bg-blue-700 relative 
                                           rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
                                             <p>Exécuter</p>

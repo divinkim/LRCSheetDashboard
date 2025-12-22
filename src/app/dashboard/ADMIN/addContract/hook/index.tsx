@@ -11,6 +11,7 @@ type ContratValues = {
     EnterpriseId: number | null
     ContractType: string | null,
     Enterprise: string | null,
+    [key: string]: string | number | null
 
 }
 
@@ -38,6 +39,54 @@ export default function AddContractHookModal(){
           ContractType: null,
           Enterprise: null,
         })
+
+        const [isLoading, setIsLoading] = useState(false);
+        const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([])
+        
+            //Récupérer les données des champs en mémoire
+            useEffect(() => {
+                (() => {
+                    const inputMemory = localStorage.getItem("inputMemory")
+                    inputMemory ? setInputsValues(JSON.parse(inputMemory ?? "")) : setInputsValues({...inputsValues})
+                    setDynamicArrayDatasCloned(dynamicArrayData)
+                    
+                })()
+            },[])
+        
+        
+        
+            const handleSubmit = async () => {
+                setIsLoading(true);
+        
+                const requireField = {
+                    startDate: inputsValues.startDate,
+                    endDate: inputsValues.endDate,
+                    delay: inputsValues.delay,
+                    ContractType: inputsValues.ContractType,
+                    Enterprise: inputsValues.Enterprise,
+                    ContractTypeId: inputsValues.ContractTypeId ?? null,
+                    EnterpriseId: inputsValues.EnterpriseId ?? null
+        
+                }
+        
+                console.log("les données:", requireField)
+        
+                const methodName = "createContract"
+        
+                const response = await controllers.API.SendOne(urlAPI, methodName, null, requireField)
+        
+                controllers.alertMessage(
+                    response.status,
+                    response.title,
+                    response.message,
+                    response.status ? "/dashboard/ADMIN/addContract" : null
+                )
+        
+        
+                setIsLoading(false);
+            }
+        
+        
 
 
          //Récupérer la liste des contrats
@@ -136,7 +185,7 @@ export default function AddContractHookModal(){
         }
     ]
 
-    return {dynamicArrayData, staticArrayData}
+    return {dynamicArrayData, staticArrayData, handleSubmit, isLoading, dynamicArrayDatasCloned, inputsValues, setInputsValues}
         
     
 }

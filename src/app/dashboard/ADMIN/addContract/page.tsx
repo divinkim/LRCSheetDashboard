@@ -11,86 +11,11 @@ import { ClipLoader } from "react-spinners";
 import AddContractHookModal from "./hook";
 import { parse } from "path";
 
-type ContratValues = {
-    startDate: number | null,
-    endDate: number | null,
-    delay: number | null,
-    ContractTypeId: number | null,
-    EnterpriseId: number | null
-    ContractType: string | null,
-    Enterprise: string | null,
-    [key: string]: string | number | null
-
-} 
-
-type dynamicArrayData = {
-    alias: string,
-    arrayData:{
-        value:any,
-        title: string
-    }[]
-}
 
 export default function AddContract() {
 
-    const {dynamicArrayData, staticArrayData} = AddContractHookModal()
-    const [isLoading, setIsLoading] = useState(false);
-    const [inputsValues, setInputsValues] = useState<ContratValues>({
-        startDate: null,
-        endDate: null,
-        delay: null,
-        ContractTypeId: null,
-        EnterpriseId: null,
-        ContractType: null,
-        Enterprise: null,
-    })
-
-    const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([])
-
-    //Récupérer les données des champs en mémoire
-    useEffect(() => {
-        (() => {
-            const inputMemory = localStorage.getItem("inputMemory")
-            inputMemory ? setInputsValues(JSON.parse(inputMemory ?? "")) : setInputsValues({...inputsValues})
-            setDynamicArrayDatasCloned(dynamicArrayData)
-            
-        })()
-    },[])
-
-
-
-    const handleSubmit = async (e: FormEvent) => {
-        setIsLoading(true);
-
-        const requireField = {
-            startDate: inputsValues.startDate,
-            endDate: inputsValues.endDate,
-            delay: inputsValues.delay,
-            ContractType: inputsValues.ContractType,
-            Enterprise: inputsValues.Enterprise,
-            ContractTypeId: inputsValues.ContractTypeId ?? null,
-            EnterpriseId: inputsValues.EnterpriseId ?? null
-
-        }
-
-        console.log("les données:", requireField)
-
-        const methodName = "createContract"
-
-        const response = await controllers.API.SendOne(urlAPI, methodName, null, requireField)
-
-        controllers.alertMessage(
-            response.status,
-            response.title,
-            response.message,
-            response.status ? "/dashboard/ADMIN/addContract" : null
-        )
-
-
-        setIsLoading(false);
-    }
-
-
+    const {staticArrayData, isLoading, handleSubmit, inputsValues, setInputsValues, dynamicArrayDatasCloned} = AddContractHookModal()
+    
 
 
     return (
@@ -211,7 +136,7 @@ export default function AddContract() {
 
                                                             {
 
-                                                                item.dynamicOptions?.status ? dynamicArrayData
+                                                                item.dynamicOptions?.status ? dynamicArrayDatasCloned
                                                                     .find(items => items.alias === item.alias)?.arrayData.map(option => (
                                                                         <option value={option.value}>
                                                                             {option.title}
@@ -245,8 +170,8 @@ export default function AddContract() {
 
                         {/** bouton exécuté */}
                         <div className="flex justify-end w-full mt-2">
-                            <button type="button" onClick={(e) => {
-                                handleSubmit(e)
+                            <button type="button" onClick={() => {
+                                handleSubmit()
                             }}
                                 className="bg-blue-600 my-2 hover:bg-blue-700 relative xl:right-5 rounded-md font-semibold ease 
                               duration-500 text-white py-2.5 px-8">

@@ -10,6 +10,7 @@ import { urlAPI } from "@/app/main";
 import {FormEvent ,useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import AddDepartmentHookUser from "./hook/page";
+import { parse } from "path";
 
 
 export default function AddDepartment(){
@@ -17,7 +18,6 @@ export default function AddDepartment(){
    
     const {isLoading, dynamicArrayDatasCloned, inputs, setInputs, handleSubmit} = AddDepartmentHookUser()
 
-   
    
 
     return (
@@ -83,7 +83,7 @@ export default function AddDepartment(){
                                                          {e.label}
                                                      </label>
                                                      {
-                                                        !e.selectedInput ? 
+                                                        !e.selectedInput && !e.textarea ? 
                                                         <input value={inputs[e.alias] ?? ""} onChange={ async (v) => {
                                                             const field = e.alias
                                                             let fieldValue
@@ -116,16 +116,33 @@ export default function AddDepartment(){
                                                         type={e.type} placeholder={e.placeholder} />
 
                                                         :
+                                                        !e.textarea && !e.selectedInput ?
+                                                        <textarea placeholder={e.placeholder ?? ""} value={inputs[e.alias] ?? ""} onChange={(u) => {
+                                                            const field= e.alias
+                                                            const fieldValue= {...inputs, [field] : u.target.value}
+                                                            setInputs(fieldValue)
+
+                                                            localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
+
+                                                        }}
+                                                        className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 h-[100px] 
+                                                        bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300
+                                                        dark:text-gray-300 text-gray-700">
+
+                                                        </textarea>
+
+                                                        :
 
                                                         <select value={inputs[e.alias] ?? ""} onChange={(u) => {
                                                             const field = e.alias
-                                                            let fieldValue
-                                                            fieldValue = {
+
+                                                           const fieldValue = {
                                                                 ...inputs,
-                                                                [field]: u.target.value
+                                                                [field]: e.type === "number" ? parseInt(u.target.value) : u.target.value
                                                             }
                                                             
                                                          setInputs(fieldValue)
+                                                         localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
 
                                                         }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent 
                                                             border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700" >
@@ -153,7 +170,9 @@ export default function AddDepartment(){
 
                                 <div className="flex w-full justify-end ">
                                     <button type="button" onClick={() => {
+
                                        handleSubmit()
+
                                        }} className="bg-blue-600 my-2 hover:bg-blue-700 relative 
                                           rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
                                             <p className={isLoading ? "hidden" : "block"} >Exécuter</p>
@@ -163,8 +182,7 @@ export default function AddDepartment(){
 
                             </div>
                         </div>
-
-            </div>
+                    </div>
             
         </main>
     )

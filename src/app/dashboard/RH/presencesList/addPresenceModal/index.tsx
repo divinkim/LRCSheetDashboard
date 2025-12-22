@@ -148,8 +148,8 @@ export default function AddPresenceModal() {
                                         <div className="flex flex-row space-y-4 mb-4 dark:text-gray-300 items-center space-x-3">
                                             {user?.User?.photo ? <img src={`${urlAPI}/images/${user?.User?.photo}`} className="w-10 h-10 object-cover rounded-full" alt="" /> : <p className="text-[40px]"> 👮</p>}
                                             <p>{user?.User?.firstname?.slice(0, 5) + "..."} {user?.User?.lastname}</p>
-                                            <input checked={inputs.usersIds.includes(user.UserId)} onChange={() => {
-                                                onSelect(user.UserId, user.EnterpriseId, user.SalaryId)
+                                            <input checked={inputs.usersIds.includes(user?.UserId)} onChange={() => {
+                                                onSelect(user?.UserId, user?.EnterpriseId, user?.SalaryId)
                                             }} className="dark:bg-transparent" type="checkbox" value={user?.UserId ?? ""} />
                                         </div>
                                     ))

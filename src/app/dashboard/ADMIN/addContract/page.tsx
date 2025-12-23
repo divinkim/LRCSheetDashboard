@@ -116,7 +116,7 @@ export default function AddContract() {
                                                      border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
 
                                                         :
-                                                        <select value={inputsValues[item.alias] ?? ""} onChange={async (u) => {
+                                                        <select value={inputsValues[item.alias] ?? ""} onChange={ (u) => {
                                                             
                                                             const field = item.alias
                                                             const fieldValue = {

@@ -7,7 +7,7 @@ import Link from "next/link"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { controllers } from "@/app/main"
 import { urlAPI } from "@/app/main";
-import {FormEvent ,useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 type input = {
     name: string | null,
@@ -21,81 +21,73 @@ type input = {
 
 type dynamicArrayData = {
     alias: string,
-    arrayData:{
-        value:any,
+    arrayData: {
+        value: any,
         title: string
     }[]
 }
 
+export default function AddDepartmentHookUser() {
 
- export default function AddDepartmentHookUser(){
-
-    const [getEnterpriseId, setGetEnterpriseId] = useState<any[]>([])
-    const [getEnterpriseIdOfAdmin, setGetEnterpriseIdOfAdmin] = useState<string | null>(null)
-    const [getAdminRole, setGetAdminRole] = useState<string | null>(null)
-    const [isLoading, setIsLoading] = useState(false)
-     const [inputs, setInputs] = useState<input>({
-      name: null,
-      description:  null,
-      enterpriseId: null,
-      enterprise: null,
+    const [getEnterprises, setGetEnterprises] = useState<any[]>([])
+    const [getEnterpriseIdOfAdmin, setGetEnterpriseIdOfAdmin] = useState<string | null>(null);
+    const [getAdminRole, setGetAdminRole] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([]);
+    const [inputs, setInputs] = useState<input>({
+        name: null,
+        description: null,
+        enterpriseId: null,
+        enterprise: null,
 
     })
 
-
     //Récupération des entreprises
-        useEffect(() =>{
-            (async () => {
-                if(typeof (window) === "undefined") return;
-    
-              //  const authToken = await localStorage.getItem("authToken")
-                const role = localStorage.getItem("adminRole")
-                const getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId")
-                
-    
-                const methodName = "getEnterprises"
-                const getEnterprise = await controllers.API.getAll(urlAPI, methodName, null)
-    
-                if(parseInt(getEnterpriseIdOfAdmin ?? "") !== 1){
-                
-                    const filteredIdOfAdmin = getEnterprise.filter((item : {id: number}) => item.id === parseInt(getEnterpriseIdOfAdmin ?? "" ))
-    
-                    setGetEnterpriseId(filteredIdOfAdmin)
-                    return;
-    
-                }
+    useEffect(() => {
+        (async () => {
+            if (typeof (window) === "undefined") return;
+            //  const authToken = await localStorage.getItem("authToken")
+            const role = localStorage.getItem("adminRole")
+            const getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId")
 
-                setGetEnterpriseId(getEnterpriseId)
-                setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
-                setGetAdminRole(role)
-              //  console.log("l'id de l'entreprise", getEnterpriseId)
-                   
-                    
-            })()
-        }, [] )
-    
-        let DynamicArrayDatas: dynamicArrayData[] =[
-            {
-                alias: "EnterpriseId",
-                arrayData: getEnterpriseId.filter(item => item.id === item.name).map(item => (
-                    {value: item.id, title: item.name}
-                ))
+            const methodName = "getEnterprises"
+            const getEnterprises = await controllers.API.getAll(urlAPI, methodName, null)
+
+            if (parseInt(getEnterpriseIdOfAdmin ?? "") !== 1) {
+
+                const filterEnterpriseByAdminEnterpriseId = getEnterprises.filter((item: { id: number }) => item.id === parseInt(getEnterpriseIdOfAdmin ?? ""))
+
+                setGetEnterprises(filterEnterpriseByAdminEnterpriseId)
+                return;
             }
-        ]
 
-         const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([])
+            setGetEnterprises(getEnterprises)
+            setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
+            setGetAdminRole(role)
+            //  console.log("l'id de l'entreprise", getEnterpriseId)
+        })()
+    }, [])
 
-         //Récupère les données de champs en mémoire
-         useEffect(() => {
-         (() => {
+    let DynamicArrayDatas: dynamicArrayData[] = [
+        {
+            alias: "EnterpriseId",
+            arrayData: getEnterprises.filter(item => item.id === item.name).map(item => (
+                { value: item.id, title: item.name }
+            ))
+        }
+    ]
+
+    //Récupère les données de champs en mémoire
+    useEffect(() => {
+        (() => {
             const inputMemory = localStorage.getItem("inputMemory")
-            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({...inputs})
+            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs })
             setDynamicArrayDatasCloned(DynamicArrayDatas)
 
         })()
-    },[DynamicArrayDatas])
+    }, [])
 
-    
+
 
     const handleSubmit = async () => {
         setIsLoading(true)
@@ -115,20 +107,20 @@ type dynamicArrayData = {
         const methodName = "creatDepartmentPost"
         const response = await controllers.API.SendOne(urlAPI, methodName, null, inputs)
 
-        if(response.status) 
-        localStorage.removeItem("inputMemory")
-        
-       controllers.alertMessage(
-        response.status,
-        response.title,
-        response.message,
-        response.status ? "/dashboard/ADMIN/addDepartment" : null
-       )
+        if (response.status)
+            localStorage.removeItem("inputMemory")
 
-       setIsLoading(false)
-       
+        controllers.alertMessage(
+            response.status,
+            response.title,
+            response.message,
+            response.status ? "/dashboard/ADMIN/addDepartment" : null
+        )
+
+        setIsLoading(false)
+
     }
 
-        
-        return {DynamicArrayDatas, isLoading, dynamicArrayDatasCloned, handleSubmit, inputs, setInputs};
-    }
+
+    return { DynamicArrayDatas, isLoading, dynamicArrayDatasCloned, handleSubmit, inputs, setInputs };
+}

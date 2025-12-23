@@ -30,6 +30,7 @@ export default function AddOrEditUserPlanningOfWeek() {
     const [plannings, setPlannings] = useState<Plannings[]>([]);
     const [enterpriseId, setEnterpriseId] = useState<string | null>(null);
     useEffect(() => {
+        if (typeof (window) === "undefined") return;
         (async () => {
             let getEnterpriseId = localStorage.getItem("EnterpriseId");
 

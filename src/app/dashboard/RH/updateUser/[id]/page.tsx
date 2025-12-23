@@ -30,7 +30,7 @@ export default function UpdateUser() {
                                     <p className="text-blue-700 dark:text-blue-600">Dashboard/RH/Modifier un collaborateur</p>
                                 </div>
                                 <hr className="bg-gray-400 h-[1px] border-0" />
-                                <div className="flex flex-wrap p-4 font-normal space-x-4 space-y-4 items-center">
+                                <div className="flex flex-wrap py-4 font-normal space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element, index) => (
                                             <Link href={element.href} className={index === 0 ? "bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 font-semibold px-4 relative top-2.5" : index === 5 ? "bg-blue-800 2xl:right-4 hover:bg-blue-900 ease duration-500 py-3 font-semibold px-4 relative 2xl:top-2.5 " : "bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 font-semibold px-4"}>
@@ -67,7 +67,7 @@ export default function UpdateUser() {
 
                                                 <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
                                                 {!e.selectedInput ?
-                                                    <input value={e.type !== "file" && e.type !== "password" ? (inputs[e.alias] ?? "") : ""} onChange={async (v) => {
+                                                    <input value={e.type !== "file" ? inputs[e.alias] ?? "" : ""} onChange={async (v) => {
                                                         for (const [key, _] of Object.entries(inputs)) {
                                                             if (key === e.alias) {
                                                                 if (e.type === "file") {

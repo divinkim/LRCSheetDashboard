@@ -39,23 +39,21 @@ export default function UsersList() {
     const [savedUsersList, setSavedUsersList] = useState<UsersDatas[]>([]);
     const [getAdminRole, setAdminRole] = useState("");
 
-    
+
     const [loading, setIsLoading] = useState(false);
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
 
     useEffect(() => {
-        (() => {
+        if (typeof (window) === "undefined") return;
+        (async () => {
             const getAdminRole = window?.localStorage.getItem("adminRole");
             setAdminRole(getAdminRole ?? "");
+
             const authToken = window?.localStorage.getItem("authToken");
             if (authToken === null) {
                 window.location.href = "/"
             }
-        })()
-    }, []);
 
-    useEffect(() => {
-        (async () => {
             let getEnterpriseIdOfAdmin = window?.localStorage.getItem("EnterpriseId");
 
             const request = await controllers.API.getAll(urlAPI, "getUsers", null);
@@ -89,7 +87,7 @@ export default function UsersList() {
             <div className="flex justify-center w-full mx-auto">
                 <Sidebar />
 
-                <main className='m-4 bg-gray-100 text-gray-700 dark:text-gray-300 dark:bg-transparent'>
+                <main className='m-4 bg-gray-100 w-full text-gray-700 dark:text-gray-300 dark:bg-transparent'>
                     {
                         tablesModal.map((e) => (
                             <div className="flex justify-between items-center">
@@ -172,7 +170,7 @@ export default function UsersList() {
                                                         text: "Vous n'avez aucun droit d'effectuer cette action. Contacter votre administrateur de gestion",
                                                     });
                                                 }
-                                            }} href={requireAdminRoles.includes(getAdminRole ?? "")? `/dashboard/RH/getUserProfil/${u.id}`:""} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
+                                            }} href={requireAdminRoles.includes(getAdminRole ?? "") ? `/dashboard/RH/getUserProfil/${u.id}` : ""} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
                                                 <p className="text-center">👁️</p>
                                             </Link>
                                             <button className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md" onClick={() => {

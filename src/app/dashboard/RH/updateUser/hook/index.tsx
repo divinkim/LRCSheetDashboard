@@ -71,6 +71,7 @@ export function UpdateUserHookModal() {
 
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
+        if (typeof (window) === "undefined") return;
         (async () => {
             const authToken = window?.localStorage.getItem("authToken");
             const role = window?.localStorage.getItem("adminRole");

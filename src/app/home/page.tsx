@@ -37,6 +37,7 @@ export default function HomePage({ searchParams }: PropsType) {
     const [adminRole, setAdminRole] = useState<string | null>(null)
 
     useEffect(() => {
+        if (typeof (window) === "undefined") return;
         (() => {
             const EnterpriseId = localStorage.getItem("EnterpriseId");
             const adminRole = localStorage.getItem("adminRole");

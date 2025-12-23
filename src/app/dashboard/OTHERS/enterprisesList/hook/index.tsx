@@ -42,7 +42,7 @@ export function EnterprisesListHookModal() {
     const limit = 5;
     const requireRoles = ['Super-Admin', 'Supervisor-Admin'];
     const [getAdminRole, setAdminRole] = useState<string | null>();
-    const [page, setPage] = useState(1);  
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         (async () => {
@@ -52,8 +52,8 @@ export function EnterprisesListHookModal() {
     }, []);
 
     useEffect(() => {
+        if (typeof (window) === "undefined") return;
         (() => {
-            if (typeof (window) === "undefined") return;
             const authToken = window?.localStorage.getItem("authToken");
             const getAdminRole = window?.localStorage.getItem("adminRole");
 
@@ -62,7 +62,7 @@ export function EnterprisesListHookModal() {
             }
             setAdminRole(getAdminRole);
         })()
-    }, []);
+    }, [enterprises]);
 
     // 📑 Pagination
     const start = (page - 1) * limit;
@@ -79,7 +79,7 @@ export function EnterprisesListHookModal() {
         onSearch(searchData);
     }, [searchData])
 
-    return {  enterprises, onSearch, 
-      
+    return {
+        enterprises, onSearch,
     }
 }

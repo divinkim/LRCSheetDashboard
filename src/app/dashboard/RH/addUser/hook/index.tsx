@@ -68,23 +68,13 @@ export default function AddUserHookModal() {
 
     const [isLoading, setIsLoading] = useState(false);
 
-
-    //Récupère les données de champs en mémoire
-
-    useEffect(() => {
-        (() => {
-            const inputMemory = window?.localStorage.getItem("inputMemoryOfAddUserPage");
-            const parseInputMemory = JSON.parse(inputMemory ?? "");
-            setInputs(parseInputMemory)
-        })()
-    }, []);
-
-    console.log("les données en mémoire", inputs)
-
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
-        if (typeof (window) === "undefined") return; // important
+        if (typeof (window) === "undefined") return;
         (async () => {
+            const inputMemory = window?.localStorage.getItem("inputMemoryOfAddUserPage");
+            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });
+
             const role = window?.localStorage.getItem("adminRole");
             const getEnterpriseIdOfAdmin = window?.localStorage.getItem("EnterpriseId");
 

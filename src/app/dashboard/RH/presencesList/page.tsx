@@ -64,7 +64,7 @@ export default function PresencesList() {
             <Header />
             <div className="flex">
                 <Sidebar />
-                <main className=' bg-gray-100 dark:bg-transparent text-gray-700 dark:text-gray-300'>
+                <main className=' bg-gray-100 dark:bg-transparent w-full text-gray-700 dark:text-gray-300'>
                     {/*Modal d'ajout de présence */}
                     <div className="relative">
                         {

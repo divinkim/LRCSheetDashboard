@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { controllers, urlAPI } from "@/app/main";
 
 type PostsList = {
-    id:number,
+    id: number,
     title: string | null,
     description: string | null,
     Enterprise: {
@@ -38,6 +38,7 @@ export function PostsListHook() {
     }, []);
 
     useEffect(() => {
+        if (typeof (window) === "undefined") return;
         (async () => {
             let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
 
@@ -67,5 +68,5 @@ export function PostsListHook() {
 
     const arrayUsersRefactory = postsListCloned;
 
-    return { postsListCloned, start, maxPage, onSearch, requireAdminRoles, getAdminRole, limit, setPage, page};
+    return { postsListCloned, start, maxPage, onSearch, requireAdminRoles, getAdminRole, limit, setPage, page };
 }

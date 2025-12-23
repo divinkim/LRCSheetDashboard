@@ -61,6 +61,7 @@ export function EnterpriseHookModal() {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        if (typeof (window) === "undefined") return;
         (() => {
             const inputMemory = window?.localStorage.getItem("inputMemoryAddEnterprisePage");
             inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });

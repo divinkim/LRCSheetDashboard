@@ -73,19 +73,18 @@ export default function WeekDaysPlanningsList() {
     const [loading, setIsLoading] = useState(false);
     const requireRoles = ['Super-Admin', 'Supervisor-Admin'];
 
+
     useEffect(() => {
-        (() => {
+        if (typeof (window) === "undefined") return;
+        (async () => {
             const getAdminRole = window?.localStorage.getItem("adminRole");
-            setAdminRole(getAdminRole)
+            setAdminRole(getAdminRole);
+
             const authToken = window?.localStorage.getItem("authToken");
             if (authToken === null) {
                 window.location.href = "/"
             }
-        })()
-    }, []);
 
-    useEffect(() => {
-        (async () => {
             let EnterpriseId = window?.localStorage.getItem("EnterpriseId");
 
             const request = await controllers.API.getAll(urlAPI, "getAllUsersPlanningsOfWeek", null);

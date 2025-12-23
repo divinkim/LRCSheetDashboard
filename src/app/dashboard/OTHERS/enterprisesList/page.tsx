@@ -23,8 +23,8 @@ export default function UsersList() {
     const { enterprises, onSearch } = EnterprisesListHookModal()
 
     useEffect(() => {
+        if (typeof (window) === "undefined") return;
         (() => {
-            if (typeof (window) === "undefined") return;
             const authToken = window?.localStorage.getItem("authToken");
             const getAdminRole = window?.localStorage.getItem("adminRole");
 

@@ -33,9 +33,19 @@ export default function AddOrUpdatePostHookModal() {
         description: null,
     });
 
+    //Récupère les données de champs en mémoire
+    useEffect(() => {
+        if (typeof (window) === "undefined") return;
+        (() => {
+            const inputMemory = window?.localStorage.getItem("inputMemoryAddPost");
+            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });
+            setDynamicArrayDatasCloned(dynamicArrayDatas);
+        })();
+    }, []);
+
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
-        if (typeof (window) === "undefined") return; // important
+        if (typeof (window) === "undefined") return;
         (async () => {
             const role = window?.localStorage.getItem("adminRole");
             const getEnterpriseIdOfAdmin = window?.localStorage.getItem("EnterpriseId");
@@ -120,14 +130,6 @@ export default function AddOrUpdatePostHookModal() {
     ]
 
     const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<DynamicArrayData[]>([]);
-    //Récupère les données de champs en mémoire
-    useEffect(() => {
-        (() => {
-            const inputMemory = window?.localStorage.getItem("inputMemoryAddPost");
-            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });
-            setDynamicArrayDatasCloned(dynamicArrayDatas);
-        })();
-    }, [dynamicArrayDatas]);
 
     const handleSubmit = async () => {
         setIsLoading(true);
@@ -145,7 +147,6 @@ export default function AddOrUpdatePostHookModal() {
 
         setIsLoading(false);
     };
-
 
     return { dynamicArrayDatas, staticArrayData, inputs, setInputs, isLoading, handleSubmit, dynamicArrayDatasCloned }
 }

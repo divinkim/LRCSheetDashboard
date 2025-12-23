@@ -196,7 +196,5 @@ export default function AddContractHookModal(){
             }
         
      
-    return {dynamicArrayData, staticArrayData, handleSubmit, isLoading, dynamicArrayDatasCloned, inputsValues, setInputsValues}
-        
-    
+    return {dynamicArrayData, staticArrayData, handleSubmit, isLoading, dynamicArrayDatasCloned, inputsValues, setInputsValues}  
 }

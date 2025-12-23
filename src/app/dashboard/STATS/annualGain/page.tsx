@@ -49,6 +49,8 @@ export default function DashboardPage() {
     ];
 
     useEffect(() => {
+        if (typeof (window) === "undefined") return;
+        
         (async () => {
             const EnterpriseId = window?.localStorage.getItem("EnterpriseId");
             const adminRole = window?.localStorage.getItem("adminRole");

@@ -58,34 +58,30 @@ export default function AddUser() {
                         <div className='grid grid-cols-1 mt-4 gap-x-4 md:grid-cols-2 xl:grid-cols-3 font-semibold w-full'>
                             {
                                 formElements.map((element) => (
-                                    
+
                                     element.addOrUpdateUser.inputs.map((e, index) => (
                                         <div className={cn('w-full mb-4',)}>
                                             <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
                                             {!e.selectedInput ?
                                                 <input value={inputs[e.alias] ?? ""} onChange={async (v) => {
                                                     let field = e.alias;
-                                                    for (const [key, _] of Object.entries(inputs)) {
-                                                        if (key === field) {
-                                                            if (e.type === "file") {
-                                                                const files = v.target.files?.[0];
-                                                                const response = await controllers.API.SendOne(urlAPI, "sendFiles", null, { files });
-                                                                if (response.status) {
-                                                                    setInputs({
-                                                                        ...inputs,
-                                                                        [field]: response.filename
-                                                                    })
-                                                                }
-                                                            }
+
+                                                    if (e.type === "file") {
+                                                        const files = v.target.files?.[0];
+                                                        const response = await controllers.API.SendOne(urlAPI, "sendFiles", null, { files });
+                                                        if (response.status) {
                                                             setInputs({
                                                                 ...inputs,
-                                                                [key]: v.target.value
-                                                            });
-                                                            window?.localStorage.setItem("inputMemoryOfAddUserPage", JSON.stringify({ ...inputs, [key]: v.target.value }))
+                                                                [field]: response.filename
+                                                            })
                                                         }
                                                     }
-
-
+                                                    setInputs({
+                                                        ...inputs,
+                                                        [field]: v.target.value
+                                                    });
+                                                    window?.localStorage.setItem("inputMemoryOfAddUserPage", JSON.stringify({ ...inputs, [field]: v.target.value }));
+                                                    
                                                 }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 f dark:text-gray-300 text-gray-700" />
                                                 :
                                                 <select value={inputs[e.alias] ?? ""} onChange={(v) => {

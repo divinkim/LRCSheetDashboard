@@ -12,6 +12,7 @@ type PostsList = {
     DepartmentPost: {
         name: string
     },
+    
 }
 
 export function PostsListHook() {

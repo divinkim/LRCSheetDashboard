@@ -10,7 +10,8 @@ export const tablesModal = [
                     title: "Ajouter un collaborateur",
                     href: "../RH/addUser",
                     icon: faUserPlus
-                }
+                },
+
             ],
             table: {
                 titles: [
@@ -128,6 +129,31 @@ export const tablesModal = [
                 ]
             }
         },
+
+        departementLis : {
+            pageTitle: "Listes des départments  enregistrés",
+            path: "Dashboard/ADMININISTRATION/Liste des départements",
+            links: [
+                {
+                    title: "Ajouter un département",
+                    href: "/dashboard/ADMIN/addDepartment",
+                    icon: faCalendarPlus
+                    
+                }
+            ],
+
+            table: {
+                titles: [
+                    {title:"Noms", alias:""},
+                    {title:"Description", alias:""},
+                    {title:"Entreprises", alias:""},
+                    {title:"Actions", alias:""}
+                ]
+            }
+
+        },
+
+
         salariesList: {
             pageTitle: "Liste des salaires enregistrés",
             path: "Dashboard/ADMININISTRATION/Liste des salaires",

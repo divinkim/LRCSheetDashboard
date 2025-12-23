@@ -71,13 +71,13 @@ export default function AddEnterprise() {
 
                                                             if (response.status) {
                                                                 setInputs(fieldValue);
-                                                                localStorage.setItem("inputMemory", JSON.stringify(fieldValue))
+                                                                window?.localStorage.setItem("inputMemoryAddEnterprisePage", JSON.stringify(fieldValue))
                                                             }
                                                             return
                                                         }
                                                         fieldValue = { ...inputs, [field]: v.target.value }
                                                         setInputs(fieldValue);
-                                                        localStorage.setItem("addEnterpriseFormDataStored", JSON.stringify(fieldValue))
+                                                        window?.localStorage.setItem("addEnterpriseFormDataStored", JSON.stringify(fieldValue))
                                                     }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700" />
                                                     <div className={e.alias === "logo" && inputs.logo ? "h-[200px]" : "hidden"}>
                                                         <img src={`${urlAPI}/images/${inputs.logo}`} className='h-[200px] w-full object-cover' alt="" />
@@ -95,7 +95,7 @@ export default function AddEnterprise() {
 
                                                         setInputs(fieldValue)
 
-                                                        localStorage.setItem("inputMemory", JSON.stringify(fieldValue));
+                                                        window?.localStorage.setItem("inputMemoryAddEnterprisePage", JSON.stringify(fieldValue));
                                                     }} name="" id="" className="w-full mt-1 cursor-pointer outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 font-normal dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
                                                         <option value="" selected disabled>
                                                             {e.placeholder}

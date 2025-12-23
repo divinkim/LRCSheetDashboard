@@ -50,8 +50,8 @@ export default function DashboardPage() {
 
     useEffect(() => {
         (async () => {
-            const EnterpriseId = localStorage.getItem("EnterpriseId");
-            const adminRole = localStorage.getItem("adminRole");
+            const EnterpriseId = window?.localStorage.getItem("EnterpriseId");
+            const adminRole = window?.localStorage.getItem("adminRole");
 
             const attendances = await controllers.API.getAll(urlAPI, "getAllAttendances", null);
             const filtered = parseInt(EnterpriseId ?? "") !== 1

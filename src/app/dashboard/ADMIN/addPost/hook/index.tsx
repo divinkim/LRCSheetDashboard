@@ -37,8 +37,8 @@ export default function AddOrUpdatePostHookModal() {
     useEffect(() => {
         if (typeof (window) === "undefined") return; // important
         (async () => {
-            const role = localStorage.getItem("adminRole");
-            const getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
+            const role = window?.localStorage.getItem("adminRole");
+            const getEnterpriseIdOfAdmin = window?.localStorage.getItem("EnterpriseId");
 
             const enterprises = await controllers.API.getAll(urlAPI, "getEnterprises", null);
 
@@ -70,7 +70,7 @@ export default function AddOrUpdatePostHookModal() {
     }, [inputs.EnterpriseId]);
 
     // const adminRoles = ['Super-Admin', 'Supervisor-Admin'];
-    // const role = localStorage.getItem("adminRole") ?? "";
+    // const role = window?.localStorage.getItem("adminRole") ?? "";
 
     let dynamicArrayDatas: DynamicArrayData[] = [
         {
@@ -123,7 +123,7 @@ export default function AddOrUpdatePostHookModal() {
     //Récupère les données de champs en mémoire
     useEffect(() => {
         (() => {
-            const inputMemory = localStorage.getItem("inputMemoryAddPost");
+            const inputMemory = window?.localStorage.getItem("inputMemoryAddPost");
             inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });
             setDynamicArrayDatasCloned(dynamicArrayDatas);
         })();
@@ -134,7 +134,7 @@ export default function AddOrUpdatePostHookModal() {
 
         const response = await controllers.API.SendOne(urlAPI, "createPoste", null, inputs);
 
-        if (response.status) localStorage.removeItem("inputMemory")
+        if (response.status) window?.localStorage.removeItem("inputMemory")
 
         controllers.alertMessage(
             response.status,

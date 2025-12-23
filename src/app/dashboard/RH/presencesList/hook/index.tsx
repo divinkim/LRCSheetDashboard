@@ -54,7 +54,7 @@ export function PresencesListHookModal() {
 
     useEffect(() => {
         if (typeof (window) === "undefined") return
-        const role = localStorage.getItem("adminRole");;
+        const role = window?.localStorage.getItem("adminRole");;
         setAdminRole(role ?? "");
     }, []);
 

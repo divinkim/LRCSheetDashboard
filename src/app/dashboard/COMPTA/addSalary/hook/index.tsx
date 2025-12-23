@@ -27,9 +27,9 @@ export function AddSalaryHookModal() {
 
     useEffect(() => {
         (async () => {
-            const authToken = localStorage.getItem("authToken");
-            const role = localStorage.getItem("adminRole");
-            let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
+            const authToken = window?.localStorage.getItem("authToken");
+            const role = window?.localStorage.getItem("adminRole");
+            let getEnterpriseIdOfAdmin = window?.localStorage.getItem("EnterpriseId");
 
             setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
             setAdminRole(role)

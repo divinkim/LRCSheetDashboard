@@ -81,7 +81,7 @@ export default function AddUser() {
                                                                 ...inputs,
                                                                 [key]: v.target.value
                                                             });
-                                                            localStorage.setItem("inputMemory", JSON.stringify({ ...inputs, [key]: v.target.value }))
+                                                            window?.localStorage.setItem("inputMemoryOfAddUserPage", JSON.stringify({ ...inputs, [key]: v.target.value }))
                                                         }
                                                     }
 
@@ -96,7 +96,7 @@ export default function AddUser() {
                                                                 ...inputs,
                                                                 [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
                                                             })
-                                                            localStorage.setItem("inputMemory", JSON.stringify({
+                                                            window?.localStorage.setItem("inputMemoryOfAddUserPage", JSON.stringify({
                                                                 ...inputs,
                                                                 [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
                                                             }))

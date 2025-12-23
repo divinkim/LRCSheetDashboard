@@ -74,14 +74,14 @@ export default function AddPost() {
                                                             }
                                                             setInputs(fieldValue);
 
-                                                            localStorage.setItem("inputMemory", JSON.stringify(fieldValue));
+                                                            window?.localStorage.setItem("inputMemory", JSON.stringify(fieldValue));
                                                         }
                                                         return;
                                                     }
                                                     fieldValue = { ...inputs, [field]: v.target.value }
                                                     setInputs(fieldValue);
 
-                                                    localStorage.setItem("inputMemory", JSON.stringify(fieldValue));
+                                                    window?.localStorage.setItem("inputMemory", JSON.stringify(fieldValue));
 
                                                 }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 f dark:text-gray-300 text-gray-700" />
                                                 :
@@ -93,7 +93,7 @@ export default function AddPost() {
 
                                                         setInputs(fieldValue);
 
-                                                        localStorage.setItem("inputMemoryAddPost", JSON.stringify(fieldValue))
+                                                        window?.localStorage.setItem("inputMemoryAddPost", JSON.stringify(fieldValue))
                                                     }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 h-[100px] bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 dark:text-gray-300 text-gray-700"></textarea>
                                                     :
                                                     <select value={inputs[e.alias] ?? ""} onChange={(v) => {
@@ -105,7 +105,7 @@ export default function AddPost() {
                                                         };
 
                                                         setInputs(fieldValue);
-                                                        localStorage.setItem("inputMemoryAddPost", JSON.stringify(fieldValue));
+                                                        window?.localStorage.setItem("inputMemoryAddPost", JSON.stringify(fieldValue));
                                                     }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
                                                         <option value="" selected disabled>
                                                             {e.placeholder}

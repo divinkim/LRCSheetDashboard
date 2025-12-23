@@ -35,9 +35,9 @@ type WeekDaysPlannings = {
     PlanningTypeId: number,
     PlanningId: number,
     EnterpriseId: number,
-    Enterprise:{
-        name:string|null,
-        logo:string|null
+    Enterprise: {
+        name: string | null,
+        logo: string | null
     }
     WeekDays: {
         name: string,
@@ -55,7 +55,7 @@ type WeekDaysPlannings = {
     User: {
         firstname: string,
         lastname: string,
-        photo:string|null,
+        photo: string | null,
     }
 }
 
@@ -68,13 +68,16 @@ export default function WeekDaysPlanningsList() {
     const [savedUsersList, setSavedUsersList] = useState<UsersDatas[]>([]);
     const [weekDaysPlannings, setWeekDaysPlannings] = useState<WeekDaysPlannings[]>([])
     const [weekDaysPlanningsSaved, setWeekDaysPlanningsSaved] = useState<WeekDaysPlannings[]>([])
-    const getAdminRole = localStorage.getItem("adminRole");
+
+    const [getAdminRole, setAdminRole] = useState<string | null>(null);
     const [loading, setIsLoading] = useState(false);
     const requireRoles = ['Super-Admin', 'Supervisor-Admin'];
 
     useEffect(() => {
         (() => {
-            const authToken = localStorage.getItem("authToken");
+            const getAdminRole = window?.localStorage.getItem("adminRole");
+            setAdminRole(getAdminRole)
+            const authToken = window?.localStorage.getItem("authToken");
             if (authToken === null) {
                 window.location.href = "/"
             }
@@ -83,7 +86,7 @@ export default function WeekDaysPlanningsList() {
 
     useEffect(() => {
         (async () => {
-            let EnterpriseId = localStorage.getItem("EnterpriseId");
+            let EnterpriseId = window?.localStorage.getItem("EnterpriseId");
 
             const request = await controllers.API.getAll(urlAPI, "getAllUsersPlanningsOfWeek", null);
             const filterWeekDaysPlanningsByEnterpriseId = request.filter((item: { EnterpriseId: number }) => item.EnterpriseId === parseInt(EnterpriseId ?? ""))
@@ -132,18 +135,18 @@ export default function WeekDaysPlanningsList() {
                         </div>
                         <div className='flex space-x-4'>
                             {
-                            tablesModal.map((e) => (
-                                e.weekDaysPlanningList.links.map((item) => (
-                                    <Link href={item.href} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4">
-                                        <FontAwesomeIcon icon={item.icon} className="text-white" />
-                                        <span className='text-white font-semibold'> {item.title}</span>
-                                    </Link>
-                                ))
+                                tablesModal.map((e) => (
+                                    e.weekDaysPlanningList.links.map((item) => (
+                                        <Link href={item.href} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4">
+                                            <FontAwesomeIcon icon={item.icon} className="text-white" />
+                                            <span className='text-white font-semibold'> {item.title}</span>
+                                        </Link>
+                                    ))
 
-                            ))
-                        }
+                                ))
+                            }
                         </div>
-                        
+
                     </div>
 
                     {/* 🧾 Tableau */}
@@ -175,9 +178,9 @@ export default function WeekDaysPlanningsList() {
                                         <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.WeekDays.name}</td>
                                         <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.PlanningType.title}
                                         </td>
-                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.Planning.startTime?.slice(0,5)}-{u.Planning.breakingStartTime?.slice(0,5)}-{u.Planning.resumeEndTime?.slice(0,5)}-{u.Planning.endTime?.slice(0,5)}
+                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.Planning.startTime?.slice(0, 5)}-{u.Planning.breakingStartTime?.slice(0, 5)}-{u.Planning.resumeEndTime?.slice(0, 5)}-{u.Planning.endTime?.slice(0, 5)}
                                         </td>
-                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.Enterprise.logo ? <img src={`${urlAPI}/images/${u.Enterprise.logo}`} className="w-[50px] mx-auto h-[50px] object-cover rounded-full" alt="" />:u.Enterprise.name }
+                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.Enterprise.logo ? <img src={`${urlAPI}/images/${u.Enterprise.logo}`} className="w-[50px] mx-auto h-[50px] object-cover rounded-full" alt="" /> : u.Enterprise.name}
                                         </td>
                                         <td className="text-center py-5 font-semibold border-b border-r  space-x-3 flex justify-center h-auto p-2 border-gray-400 dark:border-gray-300">
                                             {/* <Link href={`/RH/getUserProfil/${u.id}`} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">

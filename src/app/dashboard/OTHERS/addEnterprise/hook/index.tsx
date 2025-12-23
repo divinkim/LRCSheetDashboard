@@ -62,7 +62,7 @@ export function EnterpriseHookModal() {
 
     useEffect(() => {
         (() => {
-            const inputMemory = localStorage.getItem("addEnterpriseFormDataStored");
+            const inputMemory = window?.localStorage.getItem("inputMemoryAddEnterprisePage");
             inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });
         })();
     }, []);
@@ -93,7 +93,7 @@ export function EnterpriseHookModal() {
 
         const response = await controllers.API.SendOne(urlAPI, "createEnterprise", null, inputs);
 
-        if (response.status) localStorage.removeItem("inputMemory");
+        if (response.status) window?.localStorage.removeItem("inputMemory");
 
         controllers.alertMessage(
             response.status,

@@ -25,8 +25,8 @@ export default function UsersList() {
     useEffect(() => {
         (() => {
             if (typeof (window) === "undefined") return;
-            const authToken = localStorage.getItem("authToken");
-            const getAdminRole = localStorage.getItem("adminRole");
+            const authToken = window?.localStorage.getItem("authToken");
+            const getAdminRole = window?.localStorage.getItem("adminRole");
 
             if (authToken === null) {
                 window.location.href = "/"

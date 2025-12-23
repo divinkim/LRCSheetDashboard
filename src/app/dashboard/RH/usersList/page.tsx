@@ -37,15 +37,17 @@ export default function UsersList() {
 
     const [usersList, setUsersList] = useState<UsersDatas[]>([]);
     const [savedUsersList, setSavedUsersList] = useState<UsersDatas[]>([]);
+    const [getAdminRole, setAdminRole] = useState("");
 
-    const getAdminRole = localStorage.getItem("adminRole");
+    
     const [loading, setIsLoading] = useState(false);
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
 
     useEffect(() => {
         (() => {
-            const authToken = localStorage.getItem("authToken");
-
+            const getAdminRole = window?.localStorage.getItem("adminRole");
+            setAdminRole(getAdminRole ?? "");
+            const authToken = window?.localStorage.getItem("authToken");
             if (authToken === null) {
                 window.location.href = "/"
             }
@@ -54,7 +56,7 @@ export default function UsersList() {
 
     useEffect(() => {
         (async () => {
-            let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
+            let getEnterpriseIdOfAdmin = window?.localStorage.getItem("EnterpriseId");
 
             const request = await controllers.API.getAll(urlAPI, "getUsers", null);
             if (parseInt(getEnterpriseIdOfAdmin ?? "") === 1) {

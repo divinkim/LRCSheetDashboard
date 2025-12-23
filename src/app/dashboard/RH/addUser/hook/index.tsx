@@ -73,7 +73,7 @@ export default function AddUserHookModal() {
 
     useEffect(() => {
         (() => {
-            const inputMemory = localStorage.getItem("inputMemory");
+            const inputMemory = window?.localStorage.getItem("inputMemoryOfAddUserPage");
             const parseInputMemory = JSON.parse(inputMemory ?? "");
             setInputs(parseInputMemory)
         })()
@@ -85,8 +85,8 @@ export default function AddUserHookModal() {
     useEffect(() => {
         if (typeof (window) === "undefined") return; // important
         (async () => {
-            const role = localStorage.getItem("adminRole");
-            const getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
+            const role = window?.localStorage.getItem("adminRole");
+            const getEnterpriseIdOfAdmin = window?.localStorage.getItem("EnterpriseId");
 
             setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
             setAdminRole(role);
@@ -204,7 +204,7 @@ export default function AddUserHookModal() {
     }, [inputs.DistrictId]);
 
     // const adminRoles = ['Super-Admin', 'Supervisor-Admin'];
-    // const role = localStorage.getItem("adminRole") ?? "";
+    // const role = window?.localStorage.getItem("adminRole") ?? "";
 
     let dynamicArrayDatas = [
         {
@@ -313,7 +313,7 @@ export default function AddUserHookModal() {
 
         const response = await controllers.API.SendOne(urlAPI, "createUser", null, requireFields);
 
-        if (response.status) localStorage.removeItem("inputMemory")
+        if (response.status) window?.localStorage.removeItem("inputMemory")
 
         controllers.alertMessage(
             response.status,

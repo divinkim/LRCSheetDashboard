@@ -38,7 +38,7 @@ export default function Repports() {
     useEffect(() => {
         (() => {
             if (typeof (window) === undefined) return;
-            let EnterpriseId = localStorage.getItem("EnterpriseId");
+            let EnterpriseId = window?.localStorage.getItem("EnterpriseId");
             setOriginalRepportsArray(ComponentModal.at(0)?.Repport?.repportsArray ?? []);
             setOriginalRepportsArrayCloned(ComponentModal.at(0)?.Repport?.repportsArray ?? []);
             setEnterpriseId(EnterpriseId)

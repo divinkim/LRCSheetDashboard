@@ -23,13 +23,13 @@ export function PostsListHook() {
     const [salariesList, setSalariesList] = useState<SalariesList[]>([]);
     const [salariesListCloned, setSalariesListCloned] = useState<SalariesList[]>([]);
 
-    const getAdminRole = localStorage.getItem("adminRole");
+    const getAdminRole = window?.localStorage.getItem("adminRole");
     const [loading, setIsLoading] = useState(false);
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
 
     useEffect(() => {
         (() => {
-            const authToken = localStorage.getItem("authToken");
+            const authToken = window?.localStorage.getItem("authToken");
             if (authToken === null) {
                 window.location.href = "/"
             }
@@ -38,7 +38,7 @@ export function PostsListHook() {
 
     useEffect(() => {
         (async () => {
-            let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
+            let getEnterpriseIdOfAdmin = window?.localStorage.getItem("EnterpriseId");
 
             const request = await controllers.API.getAll(urlAPI, "getSalaries", null);
 

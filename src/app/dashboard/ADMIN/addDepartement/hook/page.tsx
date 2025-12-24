@@ -29,98 +29,104 @@ type dynamicArrayData = {
 
 export default function AddDepartmentHookUser() {
 
-    // const [getEnterprises, setGetEnterprises] = useState<any[]>([])
-    // const [getEnterpriseIdOfAdmin, setGetEnterpriseIdOfAdmin] = useState<string | null>(null);
-    // const [getAdminRole, setGetAdminRole] = useState<string | null>(null);
-    // const [isLoading, setIsLoading] = useState(false);
-    // const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([]);
-    // const [inputs, setInputs] = useState<input>({
-    //     name: null,
-    //     description: null,
-    //     enterpriseId: null,
-    //     enterprise: null,
+     const [getEnterprises, setGetEnterprises] = useState<any[]>([])
+     const [getEnterpriseIdOfAdmin, setGetEnterpriseIdOfAdmin] = useState<string | null>(null);
+     const [getAdminRole, setGetAdminRole] = useState<string | null>(null);
+     const [isLoading, setIsLoading] = useState(false);
+     const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<dynamicArrayData[]>([]);
+     const [inputs, setInputs] = useState<input>({
+         name: null,
+         description: null,
+         enterpriseId: null,
+         enterprise: null,
+         
 
-    // })
+
+     })
 
     // //Récupération des entreprises
-    // useEffect(() => {
-    //     (async () => {
-    //         if (typeof (window) === "undefined") return;
-    //         //  const authToken = await localStorage.getItem("authToken")
-    //         const role = localStorage.getItem("adminRole")
-    //         const getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId")
+    useEffect(() => {
+        (async () => {
+            if (typeof (window) === "undefined") return;
+               const authToken = await localStorage.getItem("authToken")
+             const role = localStorage.getItem("adminRole")
+             const getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId")
 
-    //         const methodName = "getEnterprises"
-    //         const getEnterprises = await controllers.API.getAll(urlAPI, methodName, null)
+             const methodName = "getEnterprises"
+             const getEnterprises = await controllers.API.getAll(urlAPI, methodName, null)
 
-    //         if (parseInt(getEnterpriseIdOfAdmin ?? "") !== 1) {
+             if(parseInt(getEnterpriseIdOfAdmin ?? "") !== 1){
 
-    //             const filterEnterpriseByAdminEnterpriseId = getEnterprises.filter((item: { id: number }) => item.id === parseInt(getEnterpriseIdOfAdmin ?? ""))
+                const filterEnterpriseByAdminEnterpriseId = getEnterprises.filter((item: { id: number }) => item.id === parseInt(getEnterpriseIdOfAdmin ?? ""))
 
-    //             setGetEnterprises(filterEnterpriseByAdminEnterpriseId)
-    //             return;
-    //         }
+                 setGetEnterprises(filterEnterpriseByAdminEnterpriseId)
+                 return;
 
-    //         setGetEnterprises(getEnterprises)
-    //         setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
-    //         setGetAdminRole(role)
-    //         //  console.log("l'id de l'entreprise", getEnterpriseId)
-    //     })()
-    // }, [])
+             }
 
-    // let DynamicArrayDatas: dynamicArrayData[] = [
-    //     {
-    //         alias: "EnterpriseId",
-    //         arrayData: getEnterprises.filter(item => item.id === item.name).map(item => (
-    //             { value: item.id, title: item.name }
-    //         ))
-    //     }
-    // ]
+              setGetEnterprises(getEnterprises)
+             setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
+             setGetAdminRole(role)
+             //  console.log("l'id de l'entreprise", getEnterpriseId)
+
+
+        })()
+    },[])
+    
+
+     let DynamicArrayDatas: dynamicArrayData[] = [
+         {
+             alias: "EnterpriseId",
+             arrayData: getEnterprises.filter(item => item.id === item.name).map(item => (
+                 { value: item.id, title: item.name }
+             ))
+         }
+     ]
 
     // //Récupère les données de champs en mémoire
-    // useEffect(() => {
-    //     (() => {
-    //         const inputMemory = localStorage.getItem("inputMemory")
-    //         inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs })
-    //         setDynamicArrayDatasCloned(DynamicArrayDatas)
+     useEffect(() => {
+         (() => {
+             const inputMemory = localStorage.getItem("inputMemory")
+             inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs })
+             setDynamicArrayDatasCloned(DynamicArrayDatas)
 
-    //     })()
-    // }, [])
-
-
-
-    // const handleSubmit = async () => {
-    //     setIsLoading(true)
-
-    //     {/** 
-    //     const datas = {
-    //         name : inputs.name,
-    //         description: inputs.description,
-    //         enterpriseId: inputs.enterpriseId,
-    //         enterprise: inputs.enterprise
-    //     }
-
-    //     console.log("les données:", datas)
-
-    //     */}
-
-    //     const methodName = "creatDepartmentPost"
-    //     const response = await controllers.API.SendOne(urlAPI, methodName, null, inputs)
-
-    //     if (response.status)
-    //         localStorage.removeItem("inputMemory")
-
-    //     controllers.alertMessage(
-    //         response.status,
-    //         response.title,
-    //         response.message,
-    //         response.status ? "/dashboard/ADMIN/addDepartment" : null
-    //     )
-
-    //     setIsLoading(false)
-
-    // }
+         })()
+     }, [])
 
 
-    // return { DynamicArrayDatas, isLoading, dynamicArrayDatasCloned, handleSubmit, inputs, setInputs };
+
+     const handleSubmit = async () => {
+        setIsLoading(true)
+
+         {/** 
+         const datas = {
+             name : inputs.name,
+             description: inputs.description,
+             enterpriseId: inputs.enterpriseId,
+             enterprise: inputs.enterprise
+         }
+
+         console.log("les données:", datas)
+
+         */}
+
+        const methodName = "creatDepartmentPost"
+        const response = await controllers.API.SendOne(urlAPI, methodName, null, inputs)
+
+         if (response.status)
+             localStorage.removeItem("inputMemory")
+
+         controllers.alertMessage(
+             response.status,
+             response.title,
+             response.message,
+             response.status ? "/dashboard/ADMIN/addDepartment" : null
+         )
+
+         setIsLoading(false)
+
+     }
+
+
+     return { DynamicArrayDatas, isLoading, dynamicArrayDatasCloned, handleSubmit, inputs, setInputs };
 }

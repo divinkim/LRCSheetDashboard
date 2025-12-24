@@ -468,7 +468,7 @@ export function Sidebar() {
             <div className="mt-5">
               {
                 ItemAside.map((aside, index) => (
-                  <div className="mb-4">
+                  <div key={index} className="mb-4">
                     <div onClick={() => {
                       setToggleAsideSections(
                         toggleAsideSections.includes(index) ?

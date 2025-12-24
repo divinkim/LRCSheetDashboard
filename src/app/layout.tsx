@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   },
   description:
     "Tableau de bord administrateur",
+  icons: {
+    icon: "/images/logo/logo.png",
+    shortcut: "/images/logo/logo.png",
+  },
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {

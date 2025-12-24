@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faS, faSearch } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import { controllers, urlAPI } from "@/app/main";
 
 export default function DepartmentsList(){
 
@@ -36,7 +37,7 @@ export default function DepartmentsList(){
                                 onSearch(u.target.value)
                                 
                             }} 
-                            className=" w-full text-gray-700 dark:text-gray-300 px-4 py-2 pr-10 border border-gray-300 bg-gray-100 dark:bg-gray-800 focus:outline-none "/>
+                            className=" border  outline-none border-gray-300 dark:bg-transparent px-3 py-2.5 rounded-md my-6 w-full"/>
 
                             <FontAwesomeIcon icon={faSearch} 
                             className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" /> 
@@ -82,7 +83,7 @@ export default function DepartmentsList(){
                                         <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{v.description}</td>
                                         <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{v?.Enterprise.name}</td>
                                         <td className="text-center py-5 font-semibold border-b border-r  space-x-3 flex justify-center h-auto p-2 border-gray-400 dark:border-gray-300">
-                                            <button className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md" 
+                                            <button type="button" className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md" 
                                             onClick={() => {
                                                 if(!requireAdminRoles.includes(getAdminRole ?? "")){
                                                     return Swal.fire({
@@ -92,10 +93,39 @@ export default function DepartmentsList(){
                                                     })
 
                                                 }
-                                            }}>
+                                                Swal.fire({
+                                                    icon: "warning",
+                                                    title: "Voulez-vous supprimer ce poste ?",
+                                                    showCancelButton: true,
+                                                    cancelButtonText: "Annuler",
+                                                    confirmButtonText: "Oui"
+                                                }).then( async (confirmed) => {
+                                                    if(confirmed.isConfirmed){
+                                                        const methodName = "deleteDepartmentPosts"
+                                                        const response = await controllers.API.deleteOne(urlAPI, methodName, v.id, {})
+                                                        controllers.alertMessage(response.status, 
+                                                            response.title, 
+                                                            response.message, 
+                                                            "/pages/dashboard/ADMIN/departmentsList")
+                                                    }
+                                                })
+                                            }} >
 
-                                                <Link href={`/dashboard/ADMIN/updatePost/${v.id}`} >
+                                                <Link href={`/dashboard/ADMIN/updateDepartment/${v.id}`} >
+                                                <p className="text-center">🖊️</p>
                                                 </Link>
+
+                                            </button>
+                                            <button type="button" onClick={() => {
+                                                if(!requireAdminRoles.includes(getAdminRole ?? "")){
+                                                    return Swal.fire({
+                                                       icon: "warning",
+                                                       title: "Vioaltion d'accès!",
+                                                       text: "Vous n'avez aucun droit d'effectuer cette opération. Veuillez contacter votre administrateur local"
+                                                   })
+                                                }
+                                            }} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md" >
+                                                <p className="text-center">🗑️</p>
 
                                             </button>
 
@@ -117,6 +147,20 @@ export default function DepartmentsList(){
 
                         </tbody>
                     </table>
+
+                    <div className="flex items-center justify-center space-x-4 mt-14">
+
+                        <button className="px-4 py-2 bg-green-500 ease duration-500
+                         hover:bg-green-600 text-white font-semibold rounded disabled:opacity-40"
+                         onClick={() => {
+                            setPage(page - 1)
+                         }} disabled={page === 1}>
+                            Suivant
+                        </button>
+                        <span>Page {page} / {maxPage} </span>
+                        Précédent
+
+                    </div>
 
                 </main>
             </div>

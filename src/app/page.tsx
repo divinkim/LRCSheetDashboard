@@ -4,14 +4,25 @@ import { faLock, faEnvelope, faEye, faEyeSlash } from '@fortawesome/free-solid-s
 import Link from 'next/link';
 import { ClipLoader } from 'react-spinners';
 import { SignInHook } from "./signIn/hook/index"
+import Loader from '@/components/loader/loader';
+import { useState, useEffect } from 'react';
 
 export default function SingIn() {
-
     const { signInData, setSignInData, showPassword, setShowPassword, loadingHandleSignIn, handleSingnIn } = SignInHook();
-    
+    const [loader, setLoader] = useState(true);
+
+    useEffect(() => {
+        (() => {
+            setTimeout(() => {
+                setLoader(false);
+            }, 1500)
+        })();
+    }, [])
+
     return (
         <>
-            <div className="bg-[url('/images/background/background.webp')] bg-no-repeat bg-cover bg-center w-screen h-screen items-center flex">
+            <Loader isLoading={loader} />
+            <div className={loader ? "hidden" : "bg-[url('/images/background/background.webp')] bg-no-repeat bg-cover bg-center w-screen h-screen items-center flex"}>
                 <div className="w-[95%] sm:w-1/2 lg:w-[40px]  xl:w-[30%] flex flex-col items-center justify-center h-[65%] mt-3 lg:mt-0 sm:h-1/2 lg:h-[80%] backdrop-blur-2xl bg-black/30 2xl:h-[63%] shadow-sm rounded-[30px] px-4 py-4 2xl:pt-10 mx-auto">
                     <h2 className="text-white  font-extrabold -top-3 sm:-top-0 text-[20px] sm:text-[22px] relative xl:-top-2  2xl:-top-4 lg:-top-1">Se connecter à LRCSheet Admin </h2>
                     <div className='h-24 w-24 xl:top-1 relative'>

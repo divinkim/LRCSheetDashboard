@@ -8,11 +8,20 @@ import { MenuIcon } from "./icons";
 import { Notification } from "./notification";
 import { ThemeToggleSwitch } from "./theme-toggle";
 import { UserInfo } from "./user-info";
+import { useEffect, useState } from "react";
 
 export function Header() {
   const { toggleSidebar, isMobile } = useSidebarContext();
-  const adminRole = localStorage.getItem("adminRole");
+  const [adminRole, setAdminRole] = useState("")
   const requireAdminRoles = ['Super-Admin', 'Controller-Admin', 'Supervisor-Admin'];
+
+  useEffect(() => {
+    if (typeof (window) === "undefined") return;
+    (() => {
+      const adminRole = localStorage.getItem("adminRole");
+      setAdminRole(adminRole ?? "")
+    })()
+  })
 
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between border-b border-stroke bg-white px-4 py-5 shadow-1 dark:border-stroke-dark dark:bg-gray-dark md:px-5 2xl:px-10">

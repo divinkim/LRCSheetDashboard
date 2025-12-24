@@ -130,7 +130,7 @@ export const tablesModal = [
             }
         },
 
-        departementLis : {
+        departementList : {
             pageTitle: "Listes des départments  enregistrés",
             path: "Dashboard/ADMININISTRATION/Liste des départements",
             links: [

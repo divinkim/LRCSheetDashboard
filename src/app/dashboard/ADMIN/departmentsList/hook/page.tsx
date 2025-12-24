@@ -14,6 +14,7 @@ type DepartmentList = {
 
 export function DepartmentsListHook (){
 
+    const [search, setSearch] = useState("");
     const [departmentList, setDepartmentList] = useState<DepartmentList[]>([]) //page actuel
     const [departementListCloned, setDepartmentListCloned] = useState<DepartmentList[]>([]) // liste des pages filtrées (recherche, pagination)
 
@@ -71,6 +72,6 @@ export function DepartmentsListHook (){
     const start = (page - 1) * limit // index de départ pour slice
      const maxPage = Math.ceil(departementListCloned.length / limit)// nombre total de pages
 
-    return {onSearch, departementListCloned, getAdminRole, requireAdminRoles, maxPage, start}
+    return {onSearch, departementListCloned, getAdminRole, requireAdminRoles, maxPage, start, page, setPage, limit}
 
 }

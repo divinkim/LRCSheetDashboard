@@ -3,6 +3,7 @@ import { controllers, urlAPI } from "@/app/main";
 import { useEffect, useState } from "react";
 
 type RepportsValue = {
+    id: number,
     title: string,
     content: string,
     files: string,

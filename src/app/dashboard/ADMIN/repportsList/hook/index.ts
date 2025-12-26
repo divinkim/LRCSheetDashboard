@@ -4,7 +4,6 @@ import { controllers, urlAPI } from "@/app/main";
 import HookComponentModal from "@/components/ComponentModal";
 import { isValidElement, useEffect, useState } from "react";
 
-
 type RepportsValue = {
     id:number,
     title: string,

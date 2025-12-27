@@ -245,7 +245,7 @@ export function Sidebar() {
         {
           index: 5,
           title: "Type de contrat",
-          href: "/dashboard/ADMIN/contractsList",
+          href: "/dashboard/ADMIN/typeContrat",
           icon: faFileContract
         },
         {
@@ -274,8 +274,8 @@ export function Sidebar() {
         },
         {
           index: 10,
-          title: "Liste de département",
-          href: "/dashboard/ADMIN/listDepartement",
+          title: "Liste de départements",
+          href: "/dashboard/ADMIN/departmentsList",
           icon: faSuitcaseRolling
         }
       ]

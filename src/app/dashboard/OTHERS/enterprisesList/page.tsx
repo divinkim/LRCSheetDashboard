@@ -130,7 +130,7 @@ export default function UsersList() {
                                             </p>
                                         </td>
                                         <td className="text-center py-5 font-semibold border-b border-r  space-x-3 flex  h-auto p-2 border-gray-400 dark:border-gray-300">
-                                            <Link href={`/dashboard/OTHERS/getEnterpriseProfil/${enterprise.id}`} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
+                                            <Link href={`/dashboard/OTHERS/getEnterpriseProfile/${enterprise.id}`} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
                                                 <p className="text-center">👁️</p>
                                             </Link>
                                             <button className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md" onClick={() => {

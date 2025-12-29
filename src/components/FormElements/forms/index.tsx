@@ -16,7 +16,7 @@ export const formElements = [
         addOrUpdateUser: {
             navigationLinks: [
                 {
-                    title: "Liste des utilisateurs",
+                    title: "Liste des collaborateurs",
                     href: "/dashboard/RH/usersList",
                     icon: faUsers
                 },
@@ -58,7 +58,6 @@ export const formElements = [
             addUserTitleForm: "Formulaire d'enregistrement d'un collaborateur",
             updateUserTitleForm: "Formulaire de modification d'un utilisateur",
 
-            
             titleTypeContract: "Formulaire de création d'un type de contract",
 
             inputTypeConract: [
@@ -105,7 +104,7 @@ export const formElements = [
                     alias: "status"
                 },
                 {
-                    label: "Image",
+                    label: "Image de profil du collaborateur",
                     placeholder: "Sélectionnez une image...",
                     requireField: false,
                     type: "file",
@@ -113,7 +112,7 @@ export const formElements = [
                     alias: "photo"
                 },
                 {
-                    label: "Rôle utiisateur",
+                    label: "Rôle du collaborateur",
                     placeholder: "Sélectionnez un rôle",
                     requireField: true,
                     type: "text",
@@ -121,7 +120,6 @@ export const formElements = [
                     dynamicOptions: {
                         status: false
                     },
-
                     alias: "role"
                 },
                 {
@@ -218,7 +216,7 @@ export const formElements = [
                 {
                     label: "Département",
                     placeholder: "Sélectionnez un département...",
-                    requireField: false,
+                    requireField: true,
                     type: "number",
                     selectedInput: true,
                     dynamicOptions: {
@@ -227,26 +225,26 @@ export const formElements = [
                     alias: "DepartmentPostId"
                 },
                 {
-                    label: "Type de contrat",
-                    placeholder: "Sélectionnez un type de contrat...",
-                    requireField: false,
-                    type: "number",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true,
-                    },
-                    alias: "ContractTypeId"
-                },
-                {
                     label: "Poste",
                     placeholder: "Sélectionnez un poste...",
-                    requireField: false,
+                    requireField: true,
                     type: "number",
                     selectedInput: true,
                     dynamicOptions: {
                         status: true
                     },
                     alias: "PostId"
+                },
+                {
+                    label: "Type de contrat",
+                    placeholder: "Sélectionnez un type de contrat...",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true,
+                    },
+                    alias: "ContractTypeId"
                 },
                 {
                     label: "Salaire",

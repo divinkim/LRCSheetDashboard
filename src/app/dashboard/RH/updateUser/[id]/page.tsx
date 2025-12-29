@@ -13,15 +13,15 @@ import { controllers } from "@/app/main";
 import { UpdateUserHookModal } from "../hook";
 
 export default function UpdateUser() {
-    
-    const { dynamicOptions, staticsOptions, setInputs, inputs, handleSubmit, isLoading} = UpdateUserHookModal();
+
+    const { dynamicOptions, staticsOptions, setInputs, inputs, handleSubmit, isLoading } = UpdateUserHookModal();
 
     return (
-        <main className="bg-gray-100 text-gray-700 font-semibold dark:text-gray-300 dark:bg-transparent">
+        <main className="bg-gray-100 text-gray-700  dark:text-gray-300 dark:bg-transparent">
             <Header />
             <div className="flex">
                 <Sidebar />
-                <div className="mx-4 mt-6 mb-4 w-full">
+                <div className="mx-4 mt-6 mb-4 w-full font-semibold">
                     {
                         formElements.map((element) => (
                             <div className="flex-col flex-wrap text-gray-700 w-full space-y-4 md:space-y-0 items-center justify-between">

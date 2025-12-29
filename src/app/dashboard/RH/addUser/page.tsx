@@ -14,6 +14,8 @@ import AddUserHookModal from "./hook";
 export default function AddUser() {
     const { dynamicArrayDatas, staticArrayData, inputs, setInputs, isLoading, handleSubmit } = AddUserHookModal();
 
+    console.log(inputs)
+
     return (
         <main className="bg-gray-100 dark:bg-transparent">
             <Header />
@@ -60,12 +62,11 @@ export default function AddUser() {
                                 formElements.map((element) => (
 
                                     element.addOrUpdateUser.inputs.map((e, index) => (
-                                        <div className={cn('w-full mb-4',)}>
-                                            <label htmlFor="" className="mb-4 font-semibold dark:text-gray-300 text-gray-700"><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
+                                        <div className={cn('w-full mb-4', e.alias === "adminService" && inputs.role === null ? "hidden" : "block", e.alias === "status" ? "hidden" : "block")}>
+                                            <label htmlFor="" className={cn("mb-3 font-semibold dark:text-gray-300 text-gray-700", e.alias === "adminService" && inputs.role === null ? "hidden" : "block")}><span className={e.requireField ? "text-red-600" : "hidden"}>*</span> {e.label}</label>
                                             {!e.selectedInput ?
                                                 <input value={inputs[e.alias] ?? ""} onChange={async (v) => {
                                                     let field = e.alias;
-
                                                     if (e.type === "file") {
                                                         const files = v.target.files?.[0];
                                                         const response = await controllers.API.SendOne(urlAPI, "sendFiles", null, { files });
@@ -81,25 +82,18 @@ export default function AddUser() {
                                                         [field]: v.target.value
                                                     });
                                                     window?.localStorage.setItem("inputMemoryOfAddUserPage", JSON.stringify({ ...inputs, [field]: v.target.value }));
-                                                    
-                                                }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 f dark:text-gray-300 text-gray-700" />
+
+                                                }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 f dark:text-gray-300 text-gray-700 placeholder-gray-600" />
                                                 :
                                                 <select value={inputs[e.alias] ?? ""} onChange={(v) => {
                                                     let field = e.alias;
-                                                    for (const [key, _] of Object.entries(inputs)) {
-                                                        if (key === field) {
-                                                            setInputs({
-                                                                ...inputs,
-                                                                [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
-                                                            })
-                                                            window?.localStorage.setItem("inputMemoryOfAddUserPage", JSON.stringify({
-                                                                ...inputs,
-                                                                [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
-                                                            }))
-                                                        }
+                                                    const fieldValue = {
+                                                        ...inputs,
+                                                        [field]: e.type === "number" ? parseInt(v.target.value) : v.target.value
                                                     }
-
-                                                }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
+                                                    setInputs(fieldValue)
+                                                    localStorage.setItem("inputMemoryOfAddUserPage", JSON.stringify(fieldValue))
+                                                }} name="" id="" className={cn("w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700", e.alias === "adminService" && inputs.role === null ? "hidden" : "block")}>
                                                     <option value="" selected disabled>
                                                         {e.placeholder}
                                                     </option>

@@ -160,7 +160,7 @@ export default function UsersList() {
                                         <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">
                                             {u.Enterprise?.logo ? <img src={`${urlAPI}/images/${u.Enterprise.logo}`} className="w-[50px] mx-auto h-[50px] object-cover rounded-full" alt="" /> : <p>{u.Enterprise?.name}</p>}
                                         </td>
-                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.status ? <p className="bg-green-500 rounded-full p-2 text-white">Actif</p> : <p className='bg-red-500 rounded-full p-2 text-white'>Inactif</p>}</td>
+                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.status ? <p className="bg-green-500 rounded-full py-2 text-white">Actif</p> : <p className='bg-red-500 rounded-full py-2 text-white'>Inactif</p>}</td>
                                         <td className="text-center py-5 font-semibold border-b border-r  space-x-3 flex  h-auto p-2 border-gray-400 dark:border-gray-300">
                                             <Link onClick={() => {
                                                 if (!requireAdminRoles.includes(getAdminRole ?? "")) {
@@ -203,7 +203,7 @@ export default function UsersList() {
                                                 }).then(async (confirmed) => {
                                                     if (confirmed.isConfirmed) {
                                                         const response = await controllers.API.deleteOne(urlAPI, "deleteUser", u.id, {});
-                                                        controllers.alertMessage(response.status, response.title, response.message, "/pages/dashboard/RH/usersList")
+                                                        controllers.alertMessage(response.status, response.title, response.message, "/dashboard/RH/usersList")
                                                     }
                                                 })
                                             }} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">

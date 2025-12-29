@@ -12,6 +12,18 @@ export const validateFields = (input: any) => {
     }
 }
 
+const verifyRequireField = (data: Record<string, any>) => {
+    for (const [_, value] of Object.entries(data)) {
+        if (value === "" || value === null || value === undefined || ((Array.isArray(value)) && value?.length === 0)) {
+            return {
+                message: alertMessage(false, "Champs invalides", "Veuillez remplir tous les champs obligatoires", null),
+                status: false,
+            }
+        }
+    }
+    return { status: true };
+}
+
 export const speak = (text: string) => {
     const synth = window.speechSynthesis;
 
@@ -178,7 +190,7 @@ export class Api {
         } catch (error) {
             console.log(error)
             return {
-                title:"Une erreur est survenue lors de l'exécution de cette opération!",
+                title: "Une erreur est survenue lors de l'exécution de cette opération!",
                 message: "Veuillez contacter le service technique pour plus d'infos",
                 status: false,
             }
@@ -218,7 +230,7 @@ export class Api {
 
             const response = await fetch(`${url}/api/${methodName}`, {
                 method: 'POST',
-                credentials:"include",
+                credentials: "include",
                 headers,
                 body,
             });
@@ -299,7 +311,7 @@ export class Api {
 
 export const API = new Api();
 
-export const controllers = { alertMessage, API, navigateBetweenMonths, daysOfWeek, filterDataOfAdministrationSection }
+export const controllers = { alertMessage, API, navigateBetweenMonths, daysOfWeek, filterDataOfAdministrationSection, verifyRequireField }
 
 
 

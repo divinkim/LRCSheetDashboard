@@ -29,8 +29,8 @@ type InputsValue = {
 }
 
 export default function AddUserHookModal() {
-    const [getEnterprises, setGetEnterprises] = useState<any[]>([]);
-    const [getDepartmentPosts, setGetDepartmentPosts] = useState<any[]>([]);
+    const [getEnterprises, setEnterprises] = useState<any[]>([]);
+    const [getDepartmentPosts, setDepartmentPosts] = useState<any[]>([]);
     const [getPosts, setPosts] = useState<any[]>([]);
     const [getSalary, setSalary] = useState<any[]>([]);
     const [getContractTypes, setContractTypes] = useState<any[]>([]);
@@ -70,41 +70,29 @@ export default function AddUserHookModal() {
 
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
-        if (typeof (window) === "undefined") return;
         (async () => {
-            const inputMemory = window?.localStorage.getItem("inputMemoryOfAddUserPage");
-            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });
+            const getInputMemory = localStorage.getItem("inputMemoryOfAddUserPage");
+            getInputMemory ? setInputs(JSON.parse(getInputMemory ?? "")) : setInputs({ ...inputs });
 
-            const role = window?.localStorage.getItem("adminRole");
-            const getEnterpriseIdOfAdmin = window?.localStorage.getItem("EnterpriseId");
-
-            setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
-            setAdminRole(role);
+            const role = localStorage.getItem("adminRole");
+            const enterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
 
             const getEnterprises = await controllers.API.getAll(urlAPI, "getEnterprises", null);
 
-            if (parseInt(getEnterpriseIdOfAdmin ?? "") !== 1) {
-                const filterEnterpriseByEnterpriseId = getEnterprises.filter(
-                    (enterprise: { id: number }) => enterprise.id === parseInt(getEnterpriseIdOfAdmin ?? "")
-                );
-                setGetEnterprises(filterEnterpriseByEnterpriseId);
-                return;
-            }
+            const getEnterpriseByAdminEnterpriseId = getEnterprises;
 
-            setGetEnterprises(getEnterprises);
+            setEnterprises(getEnterpriseByAdminEnterpriseId);
+            setEnterpriseIdOfAdmin(enterpriseIdOfAdmin);
+            setAdminRole(role);
         })();
     }, []);
-
+    console.log("les entreprises", getEnterprises)
     // Récupération des départements d'entreprises
     useEffect(() => {
         (async () => {
             const getDepartmentPosts = await controllers.API.getAll(urlAPI, "getDepartmentPosts", null);
-            if (getAdminRole !== "Super-Admin") {
-                const filteredDepartmentPosts = getDepartmentPosts.filter((department: { EnterpriseId: number }) => department.EnterpriseId === inputs.EnterpriseId);
-                setGetDepartmentPosts(filteredDepartmentPosts)
-            } else {
-                setGetDepartmentPosts(getDepartmentPosts)
-            }
+            const filterDepartmentsByAdminEnterpriseId = inputs.EnterpriseId !== 1 ? getDepartmentPosts.filter((department: { EnterpriseId: number }) => department.EnterpriseId !== inputs.EnterpriseId) : getDepartmentPosts.filter((department: { EnterpriseId: number }) => [1, 2, 3, 4].includes(department.EnterpriseId));
+            setDepartmentPosts(filterDepartmentsByAdminEnterpriseId)
         })()
     }, [inputs.EnterpriseId]);
 
@@ -270,9 +258,30 @@ export default function AddUserHookModal() {
                 {
                     title: "Administrateur de contrôle",
                     value: "Controllor-Admin"
+                },
+                {
+                    title: "Utilisateur client",
+                    value: "Client-User"
                 }
             ]
         },
+        {
+            alias: "adminService",
+            arrayData: [
+                { title: "Administration", value: "ADMINISTRATION" },
+                { title: "Ressouces humaines", value: "RH" },
+                { title: "Comptabilité", value: "COMPTA" },
+            ]
+        },
+        {
+            alias: "maritalStatus",
+            arrayData: [
+                { title: "Célibataire", value: "Célibataire" },
+                { title: "Fiancé", value: "Fiancé" },
+                { title: "En couple", value: "En couple" },
+                { title: "Divorcé(e)", value: "Divorcé(e)" }
+            ]
+        }
     ]
 
     const handleSubmit = async () => {
@@ -286,24 +295,21 @@ export default function AddUserHookModal() {
             email: inputs.email,
             role: inputs.role ?? null,
             phone: inputs.phone ? `+242${inputs.phone}` : undefined,
-            DepartmentPostId: inputs.DepartmentPostId ?? null,
-            PostId: inputs.PostId ?? null,
-            ContractTypeId: inputs.ContractTypeId ?? null,
-            ContractId: inputs.ContractId ?? null,
-            marialStatus: inputs.maritalStatus ?? null,
-            SalaryId: inputs.SalaryId ?? null,
             CountryId: inputs.CountryId ?? null,
             CityId: inputs.CityId ?? null,
-            DistrictId: inputs.DistrictId ?? null,
-            QuarterId: inputs.QuarterId ?? null,
-            adminService: inputs.adminService ?? "aucune donnée",
         }
 
-        console.log(requireFields);
+        const validation = controllers.verifyRequireField(requireFields);
 
-        const response = await controllers.API.SendOne(urlAPI, "createUser", null, requireFields);
+        if (!validation.status) {
+            validation.message;
+            setIsLoading(false);
+            return;
+        }
 
-        if (response.status) window?.localStorage.removeItem("inputMemory")
+        const response = await controllers.API.SendOne(urlAPI, "createUser", null, inputs);
+
+        if (response.status) window?.localStorage.removeItem("inputMemoryOfAddUserPage");
 
         controllers.alertMessage(
             response.status,

@@ -295,6 +295,23 @@ export function UpdateUserHookModal() {
             alias: "role",
             arrayData: [{ title: "Super-Admin", value: "Super-Admin" }, { title: "Controller-Admin", value: "Administrateur de contôle" }, { title: "Supervisor-Admin", value: "Administrateur de supervision" }, { title: "Client-User", value: "Utilisateur client" }]
         },
+        {
+            alias: "adminService",
+            arrayData: [
+                { title: "Administration", value: "ADMINISTRATION" },
+                { title: "Ressouces humaines", value: "RH" },
+                { title: "Comptabilité", value: "COMPTA" },
+            ]
+        },
+        {
+            alias: "maritalStatus",
+            arrayData: [
+                { title: "Célibataire", value: "Célibataire" },
+                { title: "Fiancé", value: "Fiancé" },
+                { title: "En couple", value: "En couple" },
+                { title: "Divorcé(e)", value: "Divorcé(e)" }
+            ]
+        }
     ]
 
     const handleSubmit = async () => {
@@ -308,32 +325,28 @@ export function UpdateUserHookModal() {
             password: inputs.password,
             EnterpriseId: inputs.EnterpriseId,
             birthDate: new Date(inputs.birthDate ?? "").toISOString(),
-            address: inputs.address,
             email: inputs.email,
             role: inputs.role ?? null,
             phone: inputs.phone ? `+242${inputs.phone}` : undefined,
-            DepartmentPostId: inputs.DepartmentPostId ?? null,
-            PostId: inputs.PostId ?? null,
-            ContractTypeId: inputs.ContractTypeId ?? null,
-            ContractId: inputs.ContractId ?? null,
-            marialStatus: inputs.maritalStatus ?? null,
-            SalaryId: inputs.SalaryId ?? null,
-            CountryId: inputs.CountryId ?? null,
             CityId: inputs.CityId ?? null,
-            DistrictId: inputs.DistrictId ?? null,
-            QuarterId: inputs.QuarterId ?? null,
-            adminService: inputs.adminService ?? null,
-            status: inputs.status === "Actif" ? true : false
+            CountryId: inputs.ContractId ?? null
+        }
+
+        const validation = controllers.verifyRequireField(requireFields);
+
+        if (!validation.status) {
+            validation.message;
+            return setIsLoading(false)
         }
 
         console.log(requireFields);
-        const response = await controllers.API.UpdateOne(urlAPI, "updateUser", userId, requireFields);
+        const response = await controllers.API.UpdateOne(urlAPI, "updateUser", userId, inputs);
 
         controllers.alertMessage(
             response.status,
             response.title,
-            requireRoles.includes(requireFields.role ?? "") ? "L'administrateur a bien été enregistré" : response.message,
-            response.status ? "/pages/dashboard/RH/updateUser/" + userId : null
+            response.message,
+            response.status ? "/dashboard/RH/updateUser/" + userId : null
         );
 
         setIsLoading(false);

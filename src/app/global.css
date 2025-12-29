@@ -6,9 +6,11 @@ body {
 }
 /* Désactive l'affichage de l'indicateur de route Next.js 15 */
 nextjs-portal, 
+#nextjs-portal,
 [data-nextjs-route-announcer],
-#nextjs-portal {
+.nextjs-static-indicator {
     display: none !important;
     visibility: hidden !important;
+    opacity: 0 !important;
     pointer-events: none !important;
 }

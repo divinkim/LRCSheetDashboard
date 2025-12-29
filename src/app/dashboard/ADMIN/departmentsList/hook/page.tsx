@@ -35,7 +35,7 @@ export function DepartmentsListHook (){
         })()
     },[])
 
-    //Récupération et filtrage des contrats
+    //Récupération et filtrage des départements
     useEffect(() => {
         (async () => {
 

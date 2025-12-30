@@ -1,5 +1,7 @@
+"use client";
+
 import { controllers, urlAPI } from "@/app/main"
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 type contractList = {
     startDate: number,
@@ -18,7 +20,7 @@ export default function contractListHook (){
 
     const [search, setSearch] = useState("")
     const [contractLists, setContractLists] = useState<contractList[]>([])
-    const [contractListCloned, setContractListCloned] = useState<[]>([])
+    const [contractListCloned, setContractListCloned] = useState<contractList[]>([])
     
     const [page, setPage] = useState(1)
     const limit = 5
@@ -36,11 +38,23 @@ useEffect(() => {
     })()
 }, [])
 
+//Récupérer les contrats
+useEffect(() => {
+    (async () => {
+        const methodName = "getContracts"
+        const response = await controllers.API.getAll(urlAPI, methodName, null)
+        
+        //const filterContractList = response.filter((item : {ContractTypeId: number, EnterpriseId: number}))
+
+    })()
+},[])
+
+//Récuperer l'entreprise
 useEffect(() => {
     (async () => {
         const getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId")
 
-        const methodName = "getContracts"
+        const methodName = "getEnterprises"
         const response = await controllers.API.getAll(urlAPI, methodName, null)
         
         if(parseInt(getEnterpriseIdOfAdmin ?? "") === 1){
@@ -57,16 +71,27 @@ useEffect(() => {
             })
             setContractListCloned(filterContractEnterpriseId)
             setContractLists(filterContractEnterpriseId)
+            
         }
 
     })()
 },[])
 
+
+
 //Filtrage pour la recherche du contrat
 function onSearch (input: string){
+    const filtered = contractLists.filter((item) => 
+      item?.ContractTypeId?.title?.toLocaleLowerCase().includes(input.toLocaleLowerCase()))
+    setContractLists(filtered)
 
 }
 
-return {requireAdminRoles, getAdminRole}
+//Pagination
+const start = (page -1) * limit 
+const maxPage = Math.ceil(contractListCloned.length / limit)
+
+
+return {requireAdminRoles, getAdminRole, onSearch, start, maxPage, contractListCloned, limit, page, setPage}
 
 }

@@ -59,6 +59,7 @@ export default function DepartmentsList(){
                     </div>
 
                     <table className="border w-full mx-auto mt-8">
+                        {/**Tête du tableau */}
                         <thead >
                             <tr className="bg-gray-800 dark:bg-transparent ">
 
@@ -76,6 +77,7 @@ export default function DepartmentsList(){
 
                         </thead>
 
+                        {/**Corps du tableau */}
                         <tbody>
                             {
                                 departementListCloned.length > 0 && 

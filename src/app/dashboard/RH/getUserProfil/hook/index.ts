@@ -16,7 +16,9 @@ type User = {
     adminService: string | null,
     status: string | null,
     Enterprise: {
-        name: string | null
+        name: string | null,
+        latitude: string | null,
+        longitude: string | null,
     },
     Post: {
         title: string | null
@@ -59,7 +61,9 @@ export function GetUserHookModal() {
             title: ""
         },
         Enterprise: {
-            name: ""
+            name: "",
+            latitude: "",
+            longitude: ""
         },
         DepartmentPost: {
             name: ""
@@ -83,9 +87,9 @@ export function GetUserHookModal() {
 
     useEffect(() => {
         (async () => {
-            const id = window.location.href.split("/").pop()
-            if (!id) return;
-            const getUser = await controllers.API.getOne(urlAPI, 'getUser', parseInt(id));
+            let userId = window.location.href.split("/").pop()
+            userId ? parseInt(userId) : null
+            const getUser = await controllers.API.getOne(urlAPI, 'getUser', userId);
 
             setUser({
                 firstname: getUser.firstname ?? null,
@@ -104,7 +108,9 @@ export function GetUserHookModal() {
                     title: getUser?.Post?.title
                 },
                 Enterprise: {
-                    name: getUser?.Enterprise?.name
+                    name: getUser?.Enterprise?.name,
+                    latitude: getUser?.Enterprise?.latitude,
+                    longitude: getUser?.Enterprise?.longitude
                 },
                 DepartmentPost: {
                     name: getUser?.DepartmentPost?.name
@@ -128,90 +134,90 @@ export function GetUserHookModal() {
         })();
     }, []);
 
-    const userData = [
+    const userDataArray = [
         {
             alias: "Noms",
-            value: user.firstname ?? null,
+            value: user.firstname ?? "",
         },
         {
             alias: "Prénoms",
-            value: user.lastname ?? null,
+            value: user.lastname ?? "",
         },
         {
             alias: "Date de naissance",
             value: user.birthDate
                 ? new Date(user.birthDate).toLocaleDateString("fr-FR", {
-                    day:"2-digit",
+                    day: "2-digit",
                     weekday: "short",
                     month: "short",
                     year: "numeric",
                 }) : ""
         },
         {
-            alias: "Sexe",
-            value: user.gender ?? null,
+            alias: "Genre",
+            value: user.gender ?? "",
         },
         {
             alias: "Email",
-            value: user.email ?? null,
+            value: user.email ?? "",
         },
         {
             alias: "Téléphone",
-            value: user.phone ?? null,
+            value: user.phone ?? "",
         },
         {
             alias: "Photo",
-            value: user.photo ?? null,
+            value: user.photo ?? "",
         },
         {
             alias: "Rôle",
-            value: user.role ?? null,
+            value: user.adminService !== null ? user.role : "Utilisateur client",
         },
         {
             alias: "Situation matrimoniale",
-            value: user.maritalStatus ?? null,
+            value: user.maritalStatus ?? "",
         },
         {
             alias: "Service administratif",
-            value: user.adminService ?? null,
+            value: user.adminService ?? "",
         },
         {
             alias: "Statut",
-            value: user.status ?? null,
+            value: user.status ?? "",
         },
         {
             alias: "Poste",
-            value: user?.Post?.title ?? null,
+            value: user?.Post?.title ?? "",
         },
         {
             alias: "Entreprise",
-            value: user?.Enterprise?.name ?? null,
+            value: user?.Enterprise?.name ?? "",
         },
         {
             alias: "Département",
-            value: user?.DepartmentPost?.name ?? null,
+            value: user?.DepartmentPost?.name ?? "",
         },
         {
             alias: "Contrat",
-            value: user?.Contract?.title ?? null,
+            value: user?.Contract?.title ?? "",
         },
         {
             alias: "Pays",
-            value: user?.Country?.name ?? null,
+            value: user?.Country?.name ?? "",
         },
         {
             alias: "Ville",
-            value: user?.City?.name ?? null,
+            value: user?.City?.name ?? "",
         },
         {
             alias: "District",
-            value: user?.District?.name ?? null,
+            value: user?.District?.name ?? "",
         },
         {
             alias: "Quartier",
-            value: user?.Quarter?.name ?? null,
+            value: user?.Quarter?.name ?? "",
         },
     ];
 
-    return { userData }
+    return { userDataArray, user }
 }

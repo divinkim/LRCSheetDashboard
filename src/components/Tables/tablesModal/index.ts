@@ -130,7 +130,7 @@ export const tablesModal = [
             }
         },
 
-        departementList : {
+        departementList: {
             pageTitle: "Listes des départments  enregistrés",
             path: "Dashboard/ADMININISTRATION/Liste des départements",
             links: [
@@ -138,16 +138,16 @@ export const tablesModal = [
                     title: "Ajouter un département",
                     href: "/dashboard/ADMIN/addDepartment",
                     icon: faCalendarPlus
-                    
+
                 }
             ],
 
             table: {
                 titles: [
-                    {title:"Noms", alias:""},
-                    {title:"Description", alias:""},
-                    {title:"Entreprises", alias:""},
-                    {title:"Actions", alias:""}
+                    { title: "Noms", alias: "" },
+                    { title: "Description", alias: "" },
+                    { title: "Entreprises", alias: "" },
+                    { title: "Actions", alias: "" }
                 ]
             }
 
@@ -170,6 +170,37 @@ export const tablesModal = [
                     { title: "Salaire journaliers", alias: "" },
                     { title: "Entreprises", alias: "" },
                     { title: "Postes" },
+                    { title: "Actions", alias: "" },
+                ]
+            }
+        },
+
+        quartersList: {
+            pageTitle: "Liste des quartiers enregistrés",
+            path: "Dashboard/Localités/Quartiers enregistrés",
+            links: [
+                {
+                    title: "Ajouter un pays",
+                    href: "/dashboard/LOCALITIES/addCountry",
+                    icon: faCalendarPlus
+                },
+                {
+                    title: "Ajouter un département",
+                    href: "/dashboard/LOCALITIES/addDepartment",
+                    icon: faCalendarPlus
+                },
+                {
+                    title: "Ajouter un arrondissement",
+                    href: "/dashboard/LOCALITIES/addDistrict",
+                    icon: faCalendarPlus
+                },
+            ],
+            table: {
+                titles: [
+                    { title: "Noms", alias: "" },
+                    { title: "Pays", alias: "" },
+                    { title: "Villes", alias: "" },
+                    { title: "Arrondissements" },
                     { title: "Actions", alias: "" },
                 ]
             }

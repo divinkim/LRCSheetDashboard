@@ -1,5 +1,6 @@
 /** @type {import("next").NextConfig} */
 const nextConfig = {
+  devIndicators: false,
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "cdn.sanity.io" },
@@ -8,14 +9,12 @@ const nextConfig = {
       { protocol: "https", hostname: "pub-b7fd9c30cdbf439183b75041f5f71b92.r2.dev" },
     ],
   },
+
   eslint: { ignoreDuringBuilds: true },
-  // experimental: { appDir: true }, // Vous pouvez probablement supprimer cette ligne si vous êtes en v13.4+
-  assetPrefix: process.env.NODE_ENV === "production" ? "/_next/" : undefined,
 
   devIndicators: {
-    appIsrStatus: false,
     buildActivity: false,
-    buildActivityPosition: 'bottom-right',
+    appIsrStatus: false,
   },
 };
 

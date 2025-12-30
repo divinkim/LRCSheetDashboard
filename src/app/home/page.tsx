@@ -14,6 +14,7 @@ import { faArrowAltCircleUp, faEye, faUserGraduate, faUserGroup } from "@fortawe
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import Loader from "@/components/loader/loader";
+import GetAnnualGain from "../dashboard/STATS/annualGain/page";
 
 export default function HomePage({ searchParams }: PropsType) {
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
@@ -54,10 +55,10 @@ export default function HomePage({ searchParams }: PropsType) {
                        
                     </Suspense> */}
                         {/* <OverviewCardsGroup /> */}
-                        <div className="grid grid-cols-1  md:grid-cols-2 xl:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1  md:grid-cols-2 xl:grid-cols-3 gap-8 px-3">
                             {
                                 cardComponent.map((element, index) => (
-                                    <div className={index === 2 && !requireAdminRoles.includes(adminRole ?? "") ? "hidden" : index === 1 && parseInt(EnterpriseId ?? "") !== 1 ? "hidden" : "rounded-xl p-4 h-[200px] dark:bg-gray-800/50 shadow-xl dark:shadow-none ease duration-500  bg-white"}>
+                                    <div className={cn("rounded-xl p-4 h-[200px] dark:bg-gray-800/50 shadow-xl dark:shadow-none ease duration-500  bg-white", index === 2 && !requireAdminRoles.includes(adminRole ?? "") && "hidden")}>
                                         <div style={{ background: element.backgroundColor }} className={cn("w-[55px] rounded-full p-4 ")}>
                                             <FontAwesomeIcon icon={element.icon} className='text-white' />
                                         </div>
@@ -65,7 +66,7 @@ export default function HomePage({ searchParams }: PropsType) {
                                             <p className="text-[30px]">{index === 2 ? element.value?.toLocaleString() + " FCFA" : element.value}</p>
                                             <div className="flex justify-between w-full">
                                                 <p className='text-gray-500'>{element.title}</p>
-                                                <Link href={element.path} className="rounded-full  ease duration-500"><FontAwesomeIcon icon={faEye} style={{ background: element.backgroundColor }} className={cn("hover:scale-90 ease duration-500 rounded-full px-3.5 py-4   text-white relative left-1 -top-4")} />
+                                                <Link href={element.path} className={cn("rounded-full  ease duration-500", index === 2 && "hidden")}><FontAwesomeIcon icon={faEye} style={{ background: element.backgroundColor }} className={"hover:scale-90 ease duration-500 rounded-full px-3.5 py-4   text-white relative left-1 -top-4"} />
                                                 </Link>
                                             </div>
                                         </div>
@@ -73,8 +74,8 @@ export default function HomePage({ searchParams }: PropsType) {
                                 ))
                             }
                         </div>
-                        <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-9 2xl:gap-7.5">
-                            {/* <PaymentsOverview
+                        {/* <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-9 2xl:gap-7.5">
+                            <PaymentsOverview
                             className="col-span-12 xl:col-span-7"
                             key={extractTimeFrame("payments_overview")}
                             timeFrame={extractTimeFrame("payments_overview")?.split(":")[1]}
@@ -84,25 +85,28 @@ export default function HomePage({ searchParams }: PropsType) {
                             key={extractTimeFrame("weeks_profit")}
                             timeFrame={extractTimeFrame("weeks_profit")?.split(":")[1]}
                             className="col-span-12 xl:col-span-5"
-                        /> */}
+                        />
 
-                            {/* <UsedDevices
+                            <UsedDevices
                             className="col-span-12 xl:col-span-5"
                             key={extractTimeFrame("used_devices")}
                             timeFrame={extractTimeFrame("used_devices")?.split(":")[1]}
-                        /> */}
+                        />
 
-                            {/* <RegionLabels /> */}
+                            <RegionLabels />
 
-                            {/* <div className="col-span-12 grid xl:col-span-8">
+                            <div className="col-span-12 grid xl:col-span-8">
                             <Suspense fallback={<TopChannelsSkeleton />}>
                                 <TopChannels />
                             </Suspense>
-                        </div> */}
-                            {/* 
+                        </div>
+                            
                         <Suspense fallback={null}>
                             <ChatsCard />
-                        </Suspense> */}
+                        </Suspense>
+                        </div> */}
+                        <div className={!requireAdminRoles.includes(adminRole ?? "") ? "hidden" : "block"}>
+                            <GetAnnualGain />
                         </div>
                     </div>
                 </div>

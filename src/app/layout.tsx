@@ -4,7 +4,7 @@ import "@/css/style.css";
 import "./fontawesome"; // 
 
 import { Sidebar } from "@/components/Layouts/sidebar";
-
+import KillNextOverlay from "@/components/killNextOverlay";
 import "flatpickr/dist/flatpickr.min.css";
 import "jsvectormap/dist/jsvectormap.css";
 
@@ -28,12 +28,13 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
         <Providers>
           <NextTopLoader color="#5750F1" showSpinner={false} />
-
+          <KillNextOverlay />
           <div className="flex min-h-screen">
             {/* <Sidebar /> */}
 

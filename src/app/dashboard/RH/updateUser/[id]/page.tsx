@@ -122,7 +122,7 @@ export default function UpdateUser() {
                                                                 // ))
                                                                 staticsOptions.find(item => item.alias === e.alias)?.arrayData.map((option) => (
                                                                     <option value={option.value}>
-                                                                        {option.value}
+                                                                        {option.title}
                                                                     </option>
                                                                 ))
                                                         }

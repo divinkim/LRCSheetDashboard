@@ -293,7 +293,7 @@ export function UpdateUserHookModal() {
         },
         {
             alias: "role",
-            arrayData: [{ title: "Super-Admin", value: "Super-Admin" }, { title: "Controller-Admin", value: "Administrateur de contôle" }, { title: "Supervisor-Admin", value: "Administrateur de supervision" }, { title: "Client-User", value: "Utilisateur client" }]
+            arrayData: [{ title: "Super-Admin", value: "Super-Admin" }, { title: "Administrateur de contrôle", value: "Moderator-Admin" }, { title: "Supervisor-Admin", value: "Administrateur de supervision" }, { title: "Client-User", value: "Utilisateur client" }]
         },
         {
             alias: "adminService",
@@ -329,9 +329,9 @@ export function UpdateUserHookModal() {
             role: inputs.role ?? null,
             phone: inputs.phone ? `+242${inputs.phone}` : undefined,
             CityId: inputs.CityId ?? null,
-            CountryId: inputs.ContractId ?? null
+            CountryId: inputs.CountryId ?? null
         }
-
+       
         const validation = controllers.verifyRequireField(requireFields);
 
         if (!validation.status) {

@@ -5,12 +5,13 @@ body {
   font-family: sans-serif;
 }
 /* Désactive l'affichage de l'indicateur de route Next.js 15 */
-nextjs-portal, 
-#nextjs-portal,
-[data-nextjs-route-announcer],
-.nextjs-static-indicator {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+/* Nuke total du Dev Overlay Next.js */
+nextjs-portal,
+#__next-build-watcher,
+[data-nextjs-toast],
+[data-nextjs-dialog],
+[data-nextjs-error-overlay] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }

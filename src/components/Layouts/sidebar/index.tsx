@@ -344,7 +344,7 @@ export function Sidebar() {
         {
           index: 0,
           title: "Gain sur déduction",
-          href: "/dashboard/STATS/annualGain",
+          href: "/home",
           icon: faChartLine   // graphique linéaire pour gains/performances
         },
         {
@@ -386,7 +386,7 @@ export function Sidebar() {
         {
           index: 3,
           title: "Quartiers enregistrées",
-          href: "/dashboard/LOCALITY/quartersList",
+          href: "/dashboard/Localities/quartersList",
           icon:faHouseChimney
         },
       ]
@@ -482,6 +482,7 @@ export function Sidebar() {
                       </h3>
                       <FontAwesomeIcon icon={toggleAsideSections.includes(index) ? faChevronUp : faChevronDown} className="" />
                     </div>
+
                     <div className={toggleAsideSections.includes(index) ? "flex flex-col ease duration-700 space-y-2 pl-8 pt-3" : "ease duration-500 hidden"}>
                       {aside.ItemLists.map((list) => (
                         <Link href={list.href ?? "/"} onClick={() => {

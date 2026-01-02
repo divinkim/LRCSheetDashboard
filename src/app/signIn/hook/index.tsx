@@ -73,7 +73,7 @@ export function SignInHook() {
                 return Swal.fire({
                     icon: "warning",
                     title: "Violation d'accès!",
-                    text: "Vous n'avez aucun droit d'accès à cette plateforme, veuillez contacter votre administrateur local."
+                    text: "Vous n'avez aucun droit d'accès sur cette plateforme, veuillez contacter votre administrateur local."
                 });
             }
 

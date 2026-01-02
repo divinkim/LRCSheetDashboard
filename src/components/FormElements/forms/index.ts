@@ -58,40 +58,7 @@ export const formElements = [
             addUserTitleForm: "Formulaire d'enregistrement d'un collaborateur",
             updateUserTitleForm: "Formulaire de modification d'un utilisateur",
 
-            titleTypeContract: "Formulaire de création d'un type de contract",
-
-            inputTypeConract: [
-                {
-                    label: "Nom du titre",
-                    placeholder: "Saisissez un titre",
-                    requireField: true,
-                    type: "text",
-                    selectedInput: false,
-                    alias: "title"
-                },
-
-                {
-                    label: "Description",
-                    placeholder: "Saisissez la description",
-                    requireField: true,
-                    type: "text",
-                    selectedInput: false,
-                    alias: "description"
-                },
-
-                {
-                    lable: "Entreprise",
-                    placeholder: "Sélectionnez une entreprise",
-                    requireField: true,
-                    type: "text",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: false
-                    },
-                    alias: "EnterpriseId"
-                }
-
-            ],
+            
 
             inputs: [
                 // ---- Inputs classiques ----
@@ -303,71 +270,7 @@ export const formElements = [
                 },
             ],
 
-            inputContrat: [
-                {
-                    label: "Nom contrat",
-                    placeholder: "Saisissez le nom du contrat ",
-                    requireField: false,
-                    type: "text",
-                    selectedInput: false,
-                    alias: "ContractType"
-
-                },
-                {
-                    label: "Type de contrat",
-                    placeholder: "Sélectionnez un type de contrat...",
-                    requireField: true,
-                    type: "text",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true
-                    },
-                    alias: "ContractTypeId"
-
-                },
-                {
-                    label: "Date de début",
-                    placeholder: "Sélectionnez la date de début",
-                    requireField: true,
-                    type: "date",
-                    selectedInput: false,
-                    alias: "startDate"
-
-                },
-                {
-                    label: "Date de fin",
-                    placeholder: "Sélectionnez la date de fin",
-                    requireField: true,
-                    type: "date",
-                    selectedInput: false,
-                    alias: "endDate"
-
-                },
-                {
-                    label: "Durée",
-                    placeholder: "Sélectionnez la durée",
-                    requireField: true,
-                    type: "text",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true
-                    },
-                    alias: "delay"
-
-                },
-
-                {
-                    label: "Entreprise",
-                    placeholder: "Sélectionnez une entreprise",
-                    requireField: true,
-                    type: "number",
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true
-                    },
-                    alias: "EnterpriseId"
-
-                },],
+            
         },
 
         addOrUpdateEnterprise: {
@@ -563,6 +466,62 @@ export const formElements = [
             ],
         },
 
+        //Formulaire du type de contrat
+
+        addTypeContratUser : {
+            navigationsLinks : [
+                {
+                    title: "Ajouter un type de contrat",
+                    href: "/dashboard/ADMIN/addTypeContrat"
+
+                },
+
+                {
+                    title: "Liste des types de contrats",
+                    href: "/dashboard/ADMIN/listTypeContrat",
+                    icon: faFileContract
+                }
+            ],
+
+            titleTypeContract: "Formulaire de création d'un type de contract",
+
+
+            inputTypeConract: [
+                {
+                    label: "Nom du titre",
+                    placeholder: "Saisissez un titre",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "title"
+                },
+
+                {
+                    label: "Description",
+                    placeholder: "Saisissez la description",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "description"
+                },
+
+                {
+                    lable: "Entreprise",
+                    placeholder: "Sélectionnez une entreprise",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: false
+                    },
+                    alias: "EnterpriseId"
+                }
+
+            ],
+
+
+        },
+
         //Formulaire du contrat
         addContractUser: {
             navigationsLinks: [
@@ -667,9 +626,16 @@ export const formElements = [
                     href: "/dashboard/ADMIN/departmentsList",
                     icon: faBuilding
                 },
-            ],
+
+                {
+                    title: "Modifier un départements",
+                    href: "/dashboard/ADMIN/UpdateDept",
+                    icon: faBuilding
+                },
+            ], 
 
             titleDept: "Formulaire d'enregistrement d'un département",
+            titleUpdate: "Formulaire de modification d'un département",
             titleformDept: "Ajouter un département",
 
             inputDept: [

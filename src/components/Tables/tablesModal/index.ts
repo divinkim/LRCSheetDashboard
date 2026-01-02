@@ -1,5 +1,6 @@
 import { faCalendarPlus, faCity, faGlobe, faHouse, faMap, faPen, faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { title } from "process"
 export const tablesModal = [
     {
         usersList: {
@@ -147,6 +148,31 @@ export const tablesModal = [
                     { title: "Description", alias: "" },
                     { title: "Entreprises", alias: "" },
                     { title: "Actions", alias: "" }
+                ]
+            }
+
+        },
+
+        contractList: {
+            pageTitle: "Listes des contrats enregistrés",
+            path: "Dashboard/ADMININISTRATION/Liste des contrats",
+            links:[
+                {
+                    title: "Ajouter un département",
+                    href: "/dashboard/ADMIN/addContract",
+                    icon: faCalendarPlus
+
+                }
+            ],
+
+            tables: {
+                titles: [
+                    {title:"Date de début", alias: ""},
+                    {title:"Date de fin", alias:""},
+                    {title:"Délai", alias:""},
+                    {title:"Typde de contrat", alias:"",},
+                    {title:"Entreprise", alias:""},
+                    {title:"Action", alias: ""}
                 ]
             }
 

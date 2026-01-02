@@ -84,10 +84,10 @@ export default function HomeComponent() {
     (async () => {
       const attendances = await controllers.API.getAll(urlAPI, "getAllAttendances", null);
       if (parseInt(EnterpriseId ?? "") !== 1) {
-        const filterAttendancesByEnterpriseId = attendances.filter((attendance: { EnterpriseId: number, mounth: number }) => attendance.EnterpriseId === parseInt(EnterpriseId ?? "") && attendance.mounth === monthValue);
+        const filterAttendancesByEnterpriseId = attendances.filter((attendance: { EnterpriseId: number, mounth: number, createdAt: string }) => attendance.EnterpriseId === parseInt(EnterpriseId ?? "") && attendance.mounth === monthValue && new Date(attendance.createdAt).getFullYear() === new Date().getFullYear());
         return setAttendances(filterAttendancesByEnterpriseId);
       }
-      const filterAttendancesByEnterpriseId = attendances.filter((attendance: { EnterpriseId: number, mounth: number }) => [1, 2, 3, 4].includes(attendance.EnterpriseId) && attendance.mounth === monthValue);
+      const filterAttendancesByEnterpriseId = attendances.filter((attendance: { EnterpriseId: number, mounth: number, createdAt: string }) => [1, 2, 3, 4].includes(attendance.EnterpriseId) && attendance.mounth === monthValue && new Date(attendance.createdAt).getFullYear() === new Date().getFullYear());
       return setAttendances(filterAttendancesByEnterpriseId);
     })()
   }, [data.enterprisesArray])
@@ -108,7 +108,7 @@ export default function HomeComponent() {
       value: data.enterprisesArray?.length || 0
     },
     {
-      icon: faHandHoldingDollar, 
+      icon: faHandHoldingDollar,
       backgroundColor: "#10b981",
       path: "/dashboard/STATS/annualGain",
       title: "Gain mensuel",

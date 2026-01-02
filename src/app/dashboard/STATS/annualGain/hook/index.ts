@@ -7,7 +7,8 @@ type Attendances = {
     Salary: { dailySalary: string },
     EnterpriseId: number | null,
     mounth: number,
-    UserId: number
+    UserId: number,
+    createdAt: string
 };
 
 export function AnnualGainHook() {
@@ -18,7 +19,7 @@ export function AnnualGainHook() {
 
     function getDuductionByMonth(attendances: Attendances[], monthIndice: number) {
         let totalLates = 0, totalAbsences = 0;
-        const filterAttendanceByMonth = attendances.filter(a => a.mounth === monthIndice);
+        const filterAttendanceByMonth = attendances.filter(a => a.mounth === monthIndice && new Date(a.createdAt).getFullYear() === new Date().getFullYear());
         for (const attendance of filterAttendanceByMonth) {
             if (attendance.status === "En retard") totalLates += parseInt(attendance.Salary?.dailySalary) / 2;
             else if (attendance.status === "Absent") totalAbsences += parseInt(attendance.Salary?.dailySalary);
@@ -27,15 +28,15 @@ export function AnnualGainHook() {
     };
 
     const monthlyBalances = [
-        { month: "Jan", value: 0 },
-        { month: "Fev", value: 0 },
-        { month: "Mar", value: 0 },
-        { month: "Avr", value: 0 },
-        { month: "Mai", value: 0 },
-        { month: "Juin", value: getDuductionByMonth(attendances, 0) },
-        { month: "Jul", value: getDuductionByMonth(attendances, 0) },
-        { month: "Aug", value: getDuductionByMonth(attendances, 0) },
-        { month: "Sep", value: getDuductionByMonth(attendances, 0) },
+        { month: "Jan", value: getDuductionByMonth(attendances, 0) },
+        { month: "Fev", value: getDuductionByMonth(attendances, 1) },
+        { month: "Mar", value: getDuductionByMonth(attendances, 2) },
+        { month: "Avr", value: getDuductionByMonth(attendances, 3) },
+        { month: "Mai", value: getDuductionByMonth(attendances, 4) },
+        { month: "Juin", value: getDuductionByMonth(attendances, 5) },
+        { month: "Jul", value: getDuductionByMonth(attendances, 6) },
+        { month: "Aug", value: getDuductionByMonth(attendances, 7) },
+        { month: "Sep", value: getDuductionByMonth(attendances, 8) },
         { month: "Oct", value: getDuductionByMonth(attendances, 9) },
         { month: "Nov", value: getDuductionByMonth(attendances, 10) },
         { month: "Dec", value: getDuductionByMonth(attendances, 11) },

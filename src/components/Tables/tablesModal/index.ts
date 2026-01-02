@@ -1,4 +1,4 @@
-import { faCalendarPlus, faPen, faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import { faCalendarPlus, faCity, faGlobe, faHouse, faMap, faPen, faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 export const tablesModal = [
     {
@@ -11,7 +11,6 @@ export const tablesModal = [
                     href: "../RH/addUser",
                     icon: faUserPlus
                 },
-
             ],
             table: {
                 titles: [
@@ -182,18 +181,18 @@ export const tablesModal = [
                 {
                     title: "Ajouter un pays",
                     href: "/dashboard/LOCALITIES/addCountry",
-                    icon: faCalendarPlus
-                },
-                {
-                    title: "Ajouter un département",
-                    href: "/dashboard/LOCALITIES/addDepartment",
-                    icon: faCalendarPlus
+                    icon: faGlobe
                 },
                 {
                     title: "Ajouter un arrondissement",
                     href: "/dashboard/LOCALITIES/addDistrict",
-                    icon: faCalendarPlus
+                    icon: faCity
                 },
+                {
+                    title: "Ajouter un quartier",
+                    href: "/dashboard/LOCALITIES/addQuarter",
+                    icon: faHouse
+                }
             ],
             table: {
                 titles: [
@@ -201,6 +200,59 @@ export const tablesModal = [
                     { title: "Pays", alias: "" },
                     { title: "Villes", alias: "" },
                     { title: "Arrondissements" },
+                    { title: "Actions", alias: "" },
+                ]
+            }
+        },
+
+        districtsList: {
+            pageTitle: "Liste des arrondissements enregistrés",
+            path: "Dashboard/Localités/Arrondissements enregistrés",
+            links: [
+                {
+                    title: "Ajouter un pays",
+                    href: "/dashboard/LOCALITY/addCountry",
+                    icon: faGlobe
+                },
+                {
+                    title: "Ajouter une ville",
+                    href: "/dashboard/LOCALITY/addCountry",
+                    icon: faGlobe
+                },
+                {
+                    title: "Ajouter un arrondissement",
+                    href: "/dashboard/LOCALITY/addDistrict",
+                    icon: faCity
+                },
+            ],
+            table: {
+                titles: [
+                    { title: "Noms", alias: "" },
+                    { title: "Pays", alias: "" },
+                    { title: "Villes", alias: "" },
+                    { title: "Actions", alias: "" },
+                ]
+            }
+        },
+        citiesList: {
+            pageTitle: "Liste des villes enregistrées",
+            path: "Dashboard/Localités/Villes enregistrées",
+            links: [
+                {
+                    title: "Ajouter un pays",
+                    href: "/dashboard/LOCALITY/addCountry",
+                    icon: faGlobe
+                },
+                {
+                    title: "Ajouter une ville",
+                    href: "/dashboard/LOCALITY/addCountry",
+                    icon: faGlobe
+                },
+            ],
+            table: {
+                titles: [
+                    { title: "Noms", alias: "" },
+                    { title: "Pays", alias: "" },
                     { title: "Actions", alias: "" },
                 ]
             }

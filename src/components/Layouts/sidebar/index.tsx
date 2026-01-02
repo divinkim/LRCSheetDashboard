@@ -386,7 +386,7 @@ export function Sidebar() {
         {
           index: 3,
           title: "Quartiers enregistrées",
-          href: "/dashboard/Localities/quartersList",
+          href: "/dashboard/LOCALITY/quartersList",
           icon:faHouseChimney
         },
       ]

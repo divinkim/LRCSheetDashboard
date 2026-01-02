@@ -272,7 +272,7 @@ export const formElements = [
 
             
         },
-        
+
         addOrUpdateEnterprise: {
             navigationLinks: [
                 {
@@ -613,7 +613,7 @@ export const formElements = [
         },
 
         //Formulaire département
-        addDepartmentUser : {
+        addDepartmentUser: {
 
             navigationDeptLinks: [
                 {
@@ -638,7 +638,7 @@ export const formElements = [
             titleUpdate: "Formulaire de modification d'un département",
             titleformDept: "Ajouter un département",
 
-             inputDept: [
+            inputDept: [
                 {
                     label: "Nom",
                     placeholder: "Saisissez un nom",
@@ -735,7 +735,7 @@ export const formElements = [
                     },
                     alias: "PostId"
                 },
-            ],   
+            ],
         },
 
         addOrEditPost: {
@@ -809,6 +809,129 @@ export const formElements = [
                     type: "text",
                     selectedInput: false,
                     alias: "description"
+                },
+            ],
+        },
+
+        addQuarter: {
+
+            titleForm: "Formulaire d'enregistrement d'un quartier",
+
+            inputs: [
+                // ---- Inputs classiques ----
+                {
+                    label: "Nom",
+                    placeholder: "Entrez un nom...",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    textarea: false,
+                    alias: "name"
+                },
+
+                // ---- Select Inputs ----
+                {
+
+                    label: "pays",
+                    placeholder: "Sélectionnez un pays...",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    textarea: false,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "CountryId"
+                },
+                {
+                    label: "Villes",
+                    placeholder: "Sélectionnez une ville",
+                    requireField: true,
+                    type: "number",
+                    textarea: false,
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "CityId"
+                },
+                {
+                    label: "Arrondissements",
+                    placeholder: "Sélectionnez un arrondissement",
+                    requireField: true,
+                    type: "number",
+                    textarea: false,
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "DistrictId"
+                },
+
+            ],
+        },
+
+        addDistrict: {
+
+            titleForm: "Formulaire d'enregistrement d'un arrindissement",
+
+            inputs: [
+                // ---- Inputs classiques ----
+                {
+                    label: "Nom de la ville",
+                    placeholder: "Entrez un nom...",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    textarea: false,
+                    alias: "name"
+                },
+
+                // ---- Select Inputs ----
+                {
+
+                    label: "pays",
+                    placeholder: "Sélectionnez un pays...",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    textarea: false,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "CountryId"
+                },
+            ],
+        },
+        addCity: {
+
+            titleForm: "Formulaire d'enregistrement d'une ville",
+
+            inputs: [
+                // ---- Inputs classiques ----
+                {
+                    label: "Nom de la ville",
+                    placeholder: "Entrez un nom...",
+                    requireField: true,
+                    type: "text",
+                    selectedInput: false,
+                    textarea: false,
+                    alias: "name"
+                },
+
+                // ---- Select Inputs ----
+                {
+
+                    label: "pays",
+                    placeholder: "Sélectionnez un pays...",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    textarea: false,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "CountriesTypeId"
                 },
             ],
         }

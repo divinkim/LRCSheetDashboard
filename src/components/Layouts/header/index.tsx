@@ -49,7 +49,10 @@ export function Header() {
         {/* <h1 className="mb-0.5 text-heading-5 font-bold text-dark dark:text-white">
           Dashboard
         </h1> */}
-        <p className="font-bold text-gray-700 dark:text-gray-300"><span className="text-[40px] border border-gray-400 rounded-full py-3 pl-2.5">👮 </span> <span className="relative -top-2.5 left-4"> Bon service {adminRole === requireAdminRoles[0] ? "Super-Admin" : adminRole === requireAdminRoles[1] ? "Administrateur de contrôle" : "Administrateur de gestion"}</span></p>
+        <div className="flex items-center">
+          <img src="/images/adminProfile.png" className="w-[50px] h-[50px] object-cover" alt="" />
+          <p className="font-bold text-gray-700 dark:text-gray-300"><span className="text-[40px]"> </span> <span className="relative -top-2.5 left-4"> Bon service {adminRole === requireAdminRoles[0] ? "Super-Admin" : adminRole === requireAdminRoles[1] ? "Administrateur de contrôle" : "Administrateur de gestion"}</span></p>
+        </div>
       </div>
 
       <div className="flex flex-1 items-center justify-end gap-2 min-[375px]:gap-4">

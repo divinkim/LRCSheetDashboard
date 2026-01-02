@@ -351,6 +351,7 @@ export function UpdateUserHookModal() {
 
         setIsLoading(false);
     };
+    
 
     return { dynamicOptions, staticsOptions, setInputs, inputs, handleSubmit, isLoading, setIsLoading }
 }

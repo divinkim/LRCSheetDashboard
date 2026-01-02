@@ -1,7 +1,7 @@
 "use client";
 
-import { controllers, urlAPI } from "@/app/main"
-import { useEffect, useState } from "react";
+ import { controllers, urlAPI } from "@/app/main"
+ import { useEffect, useState } from "react";
 
 type contractList = {
     id: number,
@@ -16,7 +16,6 @@ type contractList = {
     }
 }
 
-
 export default function contractListHook (){
 
     const [search, setSearch] = useState("")
@@ -29,7 +28,7 @@ export default function contractListHook (){
     const getAdminRole = localStorage.getItem("adminRole")
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin']
 
-useEffect(() => {
+ useEffect(() => {
     (() => {
         const authToken = localStorage.getItem("authToken")
         if(authToken === null){
@@ -37,7 +36,7 @@ useEffect(() => {
         }
 
     })()
-}, [])
+ }, [])
 
 //Récupérer les contrats
 useEffect(() => {

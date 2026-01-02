@@ -13,6 +13,7 @@ import { controllers } from "@/app/main";
 import { UpdateUserHookModal } from "../hook";
 
 export default function UpdateUser() {
+    
 
     const { dynamicOptions, staticsOptions, setInputs, inputs, handleSubmit, isLoading } = UpdateUserHookModal();
 

@@ -14,7 +14,7 @@ type input = {
     description: string | null,
     enterpriseId: number | null,
     enterprise: string | null,
-    [key: string]: string | number | null
+    [key: string]: string | number | null | undefined
 
 };
 
@@ -39,8 +39,6 @@ export default function AddDepartmentHookUser() {
          description: null,
          enterpriseId: null,
          enterprise: null,
-         
-
 
      })
 
@@ -77,7 +75,7 @@ export default function AddDepartmentHookUser() {
      let DynamicArrayDatas: dynamicArrayData[] = [
          {
              alias: "EnterpriseId",
-             arrayData: getEnterprises.filter(item => item.id === item.name).map(item => (
+             arrayData: getEnterprises.filter(item => item.id && item.name).map(item => (
                  { value: item.id, title: item.name }
              ))
          }

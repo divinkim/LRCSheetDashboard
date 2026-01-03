@@ -50,7 +50,7 @@ export default function HomePage({ searchParams }: PropsType) {
                 <Header />
                 <div className="flex">
                     <Sidebar />
-                    <div className="mx-auto w-full p-4">
+                    <div className="mx-auto w-full py-4">
                         {/* <Suspense fallback={<OverviewCardsSkeleton />}>
                        
                     </Suspense> */}

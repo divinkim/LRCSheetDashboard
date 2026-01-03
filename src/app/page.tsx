@@ -31,25 +31,25 @@ export default function SingIn() {
                         </div>
                         <form className="w-full space-y-8 flex flex-col 2xl:pb-5" action="">
                             <div className='w-full relative'>
-                                <FontAwesomeIcon icon={faEnvelope} className='text-blue-900 dark:text-white text-[18px] absolute font-semibold top-4 left-2' />
+                                <FontAwesomeIcon icon={faEnvelope} className='text-blue-900 text-[18px] absolute font-semibold top-4 left-2' />
                                 <input value={signInData.email ?? ""} onChange={(e) => {
                                     setSignInData({
                                         ...signInData,
                                         email: e.target.value
                                     })
-                                }} placeholder="Email" className="py-3 bg-blue-100 placeholder-blue-900 dark:bg-white px-8 w-full outline-none text-blue-900 " type="email" name="" id="" />
+                                }} placeholder="Email" className="py-3 bg-blue-200 focus:bg-blue-200 placeholder-blue-900  px-8 w-full outline-none text-blue-900 " type="email" name="" id="" />
                             </div>
                             <div className='w-full relative'>
-                                <FontAwesomeIcon icon={faLock} className='text-blue-900 dark:text-white  text-[18px] absolute font-semibold top-4 left-2' />
+                                <FontAwesomeIcon icon={faLock} className='text-blue-900   text-[18px] absolute font-semibold top-4 left-2' />
                                 <input value={signInData.password ?? ""} onChange={(e) => {
                                     setSignInData({
                                         ...signInData,
                                         password: e.target.value
                                     })
-                                }} placeholder="Mot de passe" className="py-3 bg-gray-100 placeholder-blue-900 dark:bg-white px-8 w-full outline-none text-blue-900" type={showPassword ? "text" : "password"} maxLength={12} name="" id="" />
+                                }} placeholder="Mot de passe" className="py-3 bg-blue-200 focus:bg-blue-200  placeholder-blue-900  px-8 w-full outline-none text-blue-900" type={showPassword ? "text" : "password"} maxLength={12} name="" id="" />
                                 <FontAwesomeIcon onClick={() => {
                                     setShowPassword(!showPassword)
-                                }} icon={showPassword ? faEye : faEyeSlash} className='text-blue-900 dark:text-white cursor-pointer text-[18px] absolute top-4 right-2' />
+                                }} icon={showPassword ? faEye : faEyeSlash} className='text-blue-900 cursor-pointer text-[18px] absolute top-4 right-2' />
                             </div>
                             <button type="button" onClick={() => {
                                 handleSingnIn()

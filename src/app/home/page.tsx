@@ -63,7 +63,7 @@ export default function HomePage({ searchParams }: PropsType) {
                                             <FontAwesomeIcon icon={element.icon} className='text-white' />
                                         </div>
                                         <div className="mt-5 relative top-5  font-semibold text-gray-600 dark:text-gray-300">
-                                            <p className="text-[25px]">{index === 2 ? element.value?.toLocaleString() + " FCFA" : element.value}</p>
+                                            <p className="text-[25px]">{index === 2 ? element.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " FCFA" : element.value}</p>
                                             <div className="flex justify-between w-full">
                                                 <p className='text-gray-500'>{element.title}</p>
                                                 <Link href={element.path} className={cn("rounded-full  ease duration-500", index === 2 && "hidden")}><FontAwesomeIcon icon={faEye} style={{ background: element.backgroundColor }} className={"hover:scale-90 ease duration-500 rounded-full px-3.5 py-4   text-white relative left-1 -top-4"} />

@@ -58,7 +58,7 @@ export const formElements = [
             addUserTitleForm: "Formulaire d'enregistrement d'un collaborateur",
             updateUserTitleForm: "Formulaire de modification d'un utilisateur",
 
-            
+
 
             inputs: [
                 // ---- Inputs classiques ----
@@ -270,7 +270,7 @@ export const formElements = [
                 },
             ],
 
-            
+
         },
 
         addOrUpdateEnterprise: {
@@ -468,8 +468,8 @@ export const formElements = [
 
         //Formulaire du type de contrat
 
-        addTypeContratUser : {
-            navigationsLinks : [
+        addTypeContratUser: {
+            navigationsLinks: [
                 {
                     title: "Ajouter un type de contrat",
                     href: "/dashboard/ADMIN/addTypeContrat"
@@ -632,7 +632,7 @@ export const formElements = [
                     href: "/dashboard/ADMIN/UpdateDept",
                     icon: faBuilding
                 },
-            ], 
+            ],
 
             titleDept: "Formulaire d'enregistrement d'un département",
             titleUpdate: "Formulaire de modification d'un département",
@@ -872,13 +872,11 @@ export const formElements = [
         },
 
         addDistrict: {
-
-            titleForm: "Formulaire d'enregistrement d'un arrindissement",
-
+            titleForm: "Formulaire d'enregistrement d'un arrondissement",
             inputs: [
                 // ---- Inputs classiques ----
                 {
-                    label: "Nom de la ville",
+                    label: "Nom de l'arrondissement",
                     placeholder: "Entrez un nom...",
                     requireField: true,
                     type: "text",
@@ -900,6 +898,19 @@ export const formElements = [
                         status: true
                     },
                     alias: "CountryId"
+                },
+                {
+
+                    label: "Villes",
+                    placeholder: "Sélectionnez une ville...",
+                    requireField: true,
+                    type: "number",
+                    selectedInput: true,
+                    textarea: false,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "CityId"
                 },
             ],
         },

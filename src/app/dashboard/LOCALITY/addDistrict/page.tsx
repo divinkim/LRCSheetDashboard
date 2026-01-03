@@ -11,7 +11,7 @@ export default function AddDistrict({ isVisibleFormDistrict = false }) {
         <div className={isVisibleFormDistrict ? "w-full h-full flex items-center justify-center fixed bg-black/50" : "hidden"}>
             <div className="p-4 w-1/2 bg-white dark:bg-gray-800  rounded-md  relative right-[140px] -top-14">
                 <div className="flex justify-between items-center">
-                    <h1 className="font-bold text-[18px]">{formElements[0].addQuarter.titleForm}</h1>
+                    <h1 className="font-bold text-[18px]">{formElements[0].addDistrict.titleForm}</h1>
                     <p className="font-bold"><span className="text-red-600 font-bold">*</span> Champs obligatoires</p>
                 </div>
                 <hr className="my-4" />

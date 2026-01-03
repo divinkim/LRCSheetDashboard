@@ -40,14 +40,14 @@ export default function GetCities() {
                     <div className="px-4">
                         {
                             tablesModal.map((e) => (
-                                <div className="flex justify-between  items-center">
+                                <div className="flex justify-between font-semibold items-center">
                                     <h1 className="text-[20px] my-4 font-bold dark:text-gray-300">{e.citiesList.pageTitle}  </h1>
-                                    <p className='text-blue-700 dark:text-blue-600 hidden xl:block'>{e.citiesList.path}</p>
+                                    <p className='text-blue-700 font-semibold dark:text-blue-600 hidden xl:block'>{e.citiesList.path}</p>
                                 </div>
                             ))
                         }
-                        <hr className='bg-gray-400 border-0 h-[1px]' />
-                        <div className="flex flex-col space-y-4 lg:space-y-0 lg:space-x-4 my-6 lg:flex-row items-center justify-end">
+                        <hr className='' />
+                        <div className="flex flex-col  space-y-4 lg:space-y-0 lg:space-x-4 my-6 lg:flex-row items-center justify-end">
                             {/* <div className="relative w-[250px]">
                         <input
                             type="text"
@@ -69,10 +69,7 @@ export default function GetCities() {
                                             if (item.title === "Ajouter une ville") {
                                                return setIsVisibleFormAddCity(true);
                                             }
-                                            else if (item.title === "Ajouter un pays") {
-                                                setIsVisibleFormAddCountry(true);
-                                            }
-                                        }} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4">
+                                        }} className="bg-blue-800 font-semibold hover:bg-blue-900 ease duration-500 py-3 px-4">
                                             <FontAwesomeIcon icon={item.icon} className="text-white" />
                                             <span className='text-white font-semibold'> {item.title}</span>
                                         </Link>

@@ -22,43 +22,45 @@ export default function SingIn() {
     return (
         <>
             <Loader isLoading={loader} />
-            <div className={loader ? "hidden" : "bg-[url('/images/background/background.webp')] bg-no-repeat bg-cover bg-center w-screen h-screen items-center flex"}>
-                <div className="w-[95%] sm:w-1/2 lg:w-[40px]  xl:w-[35%] 2xl:w-[30%] flex flex-col items-center justify-center h-[65%] mt-3 lg:mt-0 sm:h-1/2 lg:h-[85%] backdrop-blur-2xl bg-black/20 2xl:h-[65%] shadow-sm rounded-[30px] px-4 py-4 2xl:pt-10 mx-auto">
-                    <h2 className="text-white  font-extrabold -top-3 sm:-top-0 text-[20px] relative xl:-top-2  2xl:-top-4 lg:-top-1">Se connecter à LRCSheet admin </h2>
-                    <div className='h-24 w-24 relative'>
-                        <img src="/images/logo/logo.png" className="w-full object-cover" alt="" />
+            <div className={loader ? "hidden" : "bg-[url('/images/background/background.webp')] bg-no-repeat bg-cover bg-center w-screen h-screen"}>
+                <div className="bg-black/50 w-full h-full flex items-center justify-center" >
+                    <div className="w-[95%] sm:w-1/2 lg:w-[40px]  xl:w-[35%] 2xl:w-[30%] flex flex-col items-center justify-center h-[65%] mt-3 lg:mt-0 sm:h-1/2 lg:h-[85%] shadow-xl bg-white 2xl:h-[65%] rounded-2xl px-4 py-4 2xl:pt-10 mx-auto">
+                        <h2 className="text-blue-800  font-extrabold -top-2 sm:-top-0 text-[20px] relative xl:-top-2  2xl:-top-4 lg:-top-1">Se connecter à LRCSheet Admin </h2>
+                        <div className='h-24 w-24 relative'>
+                            <img src="/images/logo/logo.png" className="w-full object-cover" alt="" />
+                        </div>
+                        <form className="w-full space-y-8 flex flex-col 2xl:pb-5" action="">
+                            <div className='w-full relative'>
+                                <FontAwesomeIcon icon={faEnvelope} className='text-blue-900 dark:text-white text-[18px] absolute font-semibold top-4 left-2' />
+                                <input value={signInData.email ?? ""} onChange={(e) => {
+                                    setSignInData({
+                                        ...signInData,
+                                        email: e.target.value
+                                    })
+                                }} placeholder="Email" className="py-3 bg-blue-100 placeholder-blue-900 dark:bg-white px-8 w-full outline-none text-blue-900 " type="email" name="" id="" />
+                            </div>
+                            <div className='w-full relative'>
+                                <FontAwesomeIcon icon={faLock} className='text-blue-900 dark:text-white  text-[18px] absolute font-semibold top-4 left-2' />
+                                <input value={signInData.password ?? ""} onChange={(e) => {
+                                    setSignInData({
+                                        ...signInData,
+                                        password: e.target.value
+                                    })
+                                }} placeholder="Mot de passe" className="py-3 bg-gray-100 placeholder-blue-900 dark:bg-white px-8 w-full outline-none text-blue-900" type={showPassword ? "text" : "password"} maxLength={12} name="" id="" />
+                                <FontAwesomeIcon onClick={() => {
+                                    setShowPassword(!showPassword)
+                                }} icon={showPassword ? faEye : faEyeSlash} className='text-blue-900 dark:text-white cursor-pointer text-[18px] absolute top-4 right-2' />
+                            </div>
+                            <button type="button" onClick={() => {
+                                handleSingnIn()
+                            }} className="bg-orange-400 text-white w-full mx-auto relative top-1 py-3.5 hover:bg-blue-700 outline-none mt-[100px] ease duration-500 rounded-md font-semibold">
+                                {loadingHandleSignIn ? <ClipLoader size={15} color='#fff' /> : "Connexion"}
+                            </button>
+                            <Link href="" className="font-semibold hover:ease hover:text-blue-700 hover:duration-500 w-[165px] border-b text-blue-600">
+                                Mot de passe oublié ?
+                            </Link>
+                        </form>
                     </div>
-                    <form className="w-full space-y-8 flex flex-col 2xl:pb-5" action="">
-                        <div className='w-full relative'>
-                            <FontAwesomeIcon icon={faEnvelope} className='text-blue-900 dark:text-white text-[18px] absolute font-semibold top-4 left-2' />
-                            <input value={signInData.email ?? ""} onChange={(e) => {
-                                setSignInData({
-                                    ...signInData,
-                                    email: e.target.value
-                                })
-                            }} placeholder="Email" className="py-3 dark:bg-transparent  placeholder-blue-900 dark:bg-white px-8 w-full outline-none text-blue-900 " type="email" name="" id="" />
-                        </div>
-                        <div className='w-full relative'>
-                            <FontAwesomeIcon icon={faLock} className='text-blue-900 dark:text-white  text-[18px] absolute font-semibold top-4 left-2' />
-                            <input value={signInData.password ?? ""} onChange={(e) => {
-                                setSignInData({
-                                    ...signInData,
-                                    password: e.target.value
-                                })
-                            }} placeholder="Mot de passe" className="py-3 dark:bg-transparent  placeholder-blue-900 dark:bg-white px-8 w-full outline-none text-blue-900" type={showPassword ? "text" : "password"} maxLength={12} name="" id="" />
-                            <FontAwesomeIcon onClick={() => {
-                                setShowPassword(!showPassword)
-                            }} icon={showPassword ? faEye : faEyeSlash} className='text-blue-900  dark:text-white cursor-pointer text-[18px] absolute top-4 right-2' />
-                        </div>
-                        <button type="button" onClick={() => {
-                            handleSingnIn()
-                        }} className="bg-orange-400 text-white w-[95%] mx-auto relative top-1 py-3.5 hover:bg-blue-700 outline-none mt-[100px] ease duration-500 rounded-full font-semibold">
-                            {loadingHandleSignIn ? <ClipLoader size={15} color='#fff' /> : "Connexion"}
-                        </button>
-                        <Link href="" className="hover:font-semibold hover:ease hover:duration-500 w-[155px] hover:w-[170px] border-b text-white">
-                            Mot de passe oublié ?
-                        </Link>
-                    </form>
                 </div>
             </div>
         </>

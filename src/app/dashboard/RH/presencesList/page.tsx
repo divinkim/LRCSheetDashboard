@@ -89,7 +89,7 @@ export default function PresencesList() {
                         ))
                     }
                     <div className="px-4 mx-auto">
-                        <hr className='bg-gray-400 border-0 h-[1px]' />
+                        <hr className='' />
                         <div className="flex flex-col space-y-4 xl:space-y-0  lg:flex-row items-center justify-between">
                             <div className="relative z-10 w-[250px]">
                                 <input

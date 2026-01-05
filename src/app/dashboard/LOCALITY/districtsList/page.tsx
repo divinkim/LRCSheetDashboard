@@ -12,6 +12,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import AddDistrict from "../addDistrict/page";
+import AddCity from "../addCity/page";
 
 export default function GetDistricts() {
     const { districtsArrayCloned, page, setPage, limit, requireAdminRoles, getAdminRole } = GetDistrictsHook();
@@ -31,22 +32,24 @@ export default function GetDistricts() {
                 <main className='bg-gray-100 z-1 relative w-full text-gray-700 dark:text-gray-300 dark:bg-transparent'
                 >
                     <div onClick={() => {
-                        setIsVisibleFormAddQuarter(false);
                         setIsVisibleFormAddDistrict(false);
-                    }} className={!isVisibleFormDistrict ? "hidden" : "absolute cursor-pointer text-white top-8 right-8 z-30"}>
+                        setIsVisibleFormAddCity(false);
+                        setIsVisibleFormAddCountry(false)
+                    }} className={!isVisibleFormDistrict && !isVisibleFormCity && !isVisibleFormCountry ? "hidden" : "absolute cursor-pointer text-white top-8 right-8 z-30"}>
                         <FontAwesomeIcon className="text-[20px]" icon={faTimes} />
                     </div>
                     <AddDistrict isVisibleFormDistrict={isVisibleFormDistrict} />
+                    <AddCity isVisibleForm={isVisibleFormCity} />
                     <div className="px-4">
                         {
                             tablesModal.map((e) => (
                                 <div className="flex justify-between  items-center">
                                     <h1 className="text-[20px] my-4 font-bold dark:text-gray-300">{e.districtsList.pageTitle}  </h1>
-                                    <p className='text-blue-700 dark:text-blue-600 hidden xl:block'>{e.districtsList.path}</p>
+                                    <p className='text-blue-700 font-semibold dark:text-blue-600 hidden xl:block'>{e.districtsList.path}</p>
                                 </div>
                             ))
                         }
-                        <hr className='bg-gray-400 border-0 h-[1px]' />
+                        <hr className='' />
                         <div className="flex flex-col space-y-4 lg:space-y-0 lg:space-x-4 my-6 lg:flex-row items-center justify-end">
                             {/* <div className="relative w-[250px]">
                         <input
@@ -68,6 +71,10 @@ export default function GetDistricts() {
                                         <Link href="" onClick={() => {
                                             if (item.title === "Ajouter un arrondissement") {
                                                 setIsVisibleFormAddDistrict(true);
+                                            } else if (item.title === "Ajouter une ville") {
+                                                setIsVisibleFormAddCity(true);
+                                            } else if (item.title === "Ajouter un pays") {
+                                                setIsVisibleFormAddCountry(true);
                                             }
                                         }} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4">
                                             <FontAwesomeIcon icon={item.icon} className="text-white" />

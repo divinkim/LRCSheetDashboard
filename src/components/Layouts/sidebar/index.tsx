@@ -256,7 +256,7 @@ export function Sidebar() {
         },
         {
           index: 7,
-          title: "Poste",
+          title: "Ajouter un poste",
           href: "/dashboard/ADMIN/addPost",
           icon: faIdBadge
         },
@@ -367,24 +367,18 @@ export function Sidebar() {
       ItemLists: [
         {
           index: 0,
-          title: "Pays enregistrés",
-          href: "/dashboard/LOCALITY/countriesList",
-          icon: faGlobe
-        },
-        {
-          index: 1,
           title: "Villes enregistrées",
           href: "/dashboard/LOCALITY/citiesList",
           icon: faCity
         },
         {
-          index: 2,
+          index: 1,
           title: "Arrondissements enregistrées",
           href: "/dashboard/LOCALITY/districtsList",
           icon: faBuildingColumns
         },
         {
-          index: 3,
+          index: 2,
           title: "Quartiers enregistrées",
           href: "/dashboard/LOCALITY/quartersList",
           icon:faHouseChimney

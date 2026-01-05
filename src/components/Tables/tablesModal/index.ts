@@ -1,4 +1,4 @@
-import { faCalendarPlus, faCity, faGlobe, faHouse, faMap, faPen, faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import { faCalendarPlus, faCity, faFlag, faGlobe, faHouse, faMap, faMapLocationDot, faPen, faPlus, faUserPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { title } from "process"
 export const tablesModal = [
@@ -156,7 +156,7 @@ export const tablesModal = [
         contractList: {
             pageTitle: "Listes des contrats enregistrés",
             path: "Dashboard/ADMININISTRATION/Liste des contrats",
-            links:[
+            links: [
                 {
                     title: "Ajouter un département",
                     href: "/dashboard/ADMIN/addContract",
@@ -167,12 +167,12 @@ export const tablesModal = [
 
             tables: {
                 titles: [
-                    {title:"Date de début", alias: ""},
-                    {title:"Date de fin", alias:""},
-                    {title:"Délai", alias:""},
-                    {title:"Typde de contrat", alias:"",},
-                    {title:"Entreprise", alias:""},
-                    {title:"Action", alias: ""}
+                    { title: "Date de début", alias: "" },
+                    { title: "Date de fin", alias: "" },
+                    { title: "Délai", alias: "" },
+                    { title: "Typde de contrat", alias: "", },
+                    { title: "Entreprise", alias: "" },
+                    { title: "Action", alias: "" }
                 ]
             }
 
@@ -236,19 +236,14 @@ export const tablesModal = [
             path: "Dashboard/Localités/Arrondissements enregistrés",
             links: [
                 {
-                    title: "Ajouter un pays",
-                    href: "/dashboard/LOCALITY/addCountry",
-                    icon: faGlobe
-                },
-                {
                     title: "Ajouter une ville",
-                    href: "/dashboard/LOCALITY/addCountry",
-                    icon: faGlobe
+                    href: "/dashboard/LOCALITY/addCity",
+                    icon: faCity
                 },
                 {
                     title: "Ajouter un arrondissement",
                     href: "/dashboard/LOCALITY/addDistrict",
-                    icon: faCity
+                    icon: faMapLocationDot
                 },
             ],
             table: {
@@ -264,11 +259,6 @@ export const tablesModal = [
             pageTitle: "Liste des villes enregistrées",
             path: "Dashboard/Localités/Villes enregistrées",
             links: [
-                {
-                    title: "Ajouter un pays",
-                    href: "/dashboard/LOCALITY/addCountry",
-                    icon: faGlobe
-                },
                 {
                     title: "Ajouter une ville",
                     href: "/dashboard/LOCALITY/addCountry",

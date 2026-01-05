@@ -105,15 +105,16 @@ export function UserInfo() {
 
         <div className="p-2 text-base text-[#4B5563] dark:text-dark-6">
           <button
-            className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-2 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white"
+            className="flex w-full items-center  gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-2 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white"
             onClick={() => {
               Swal.fire({
                 icon: "warning",
-                title: "Voulez-vous vous déconnecter ?",
-                confirmButtonText:"Je veux me déconnecter",
-                cancelButtonText:"Annuler",
-                confirmButtonColor:"#EF4444",
-                cancelButtonColor:"#22C55E",
+                title: "Attention!",
+                text:"voulez-vous vous déconnecter ?",
+                confirmButtonText:"OUI",
+                cancelButtonText:"NON",
+                confirmButtonColor:"#ef4444",
+                cancelButtonColor:"#22c55e",
                 showCancelButton: true
               }).then((confirm) => {
                 if (confirm.isConfirmed) {

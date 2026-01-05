@@ -83,7 +83,7 @@ export default function AddDepartment() {
                                                  {e.label}
                                              </label>
                                              {
-                                                 e.selectedInput && !e.textarea ?
+                                                 !e.selectedInput && !e.textarea ?
                                                      <input value={inputs[e.alias] ?? ""} onChange={async (v) => {
                                                          const field = e.alias
                                                          let fieldValue
@@ -117,7 +117,7 @@ export default function AddDepartment() {
 
                                                      :
 
-                                                     !e.textarea && !e.selectedInput ?
+                                                     e.textarea && !e.selectedInput ?
                                                          <textarea placeholder={e.placeholder ?? ""} value={inputs[e.alias] ?? ""} onChange={(u) => {
                                                              const field = e.alias
                                                              const fieldValue = { ...inputs, [field]: u.target.value }

@@ -657,19 +657,19 @@ export const formElements = [
                     type: "text",
                     textarea: false,
                     selectedInput: false,
-                    alias: "name"
+                    alias: "description"
 
                 },
 
                 {
                     label: "Entreprise",
-                    placeholder: "Saisissez une entreprise",
+                    placeholder: "Séléctionnez une entreprise",
                     requireField: true,
                     type: "text",
                     textarea: true,
                     selectedInput: true,
                     dynamicOptions: {
-                        status: false
+                        status: true
                     },
                     alias: "EnterpriseId"
 
@@ -903,6 +903,7 @@ export const formElements = [
                 },
             ],
         },
+        
         addCity: {
 
             titleForm: "Formulaire d'enregistrement d'une ville",

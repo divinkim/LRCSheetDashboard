@@ -27,7 +27,7 @@ export default function AddDepartment() {
              <div className="flex">
                  <Sidebar />
 
-                 <div className="mx-4 mb-2 mt-4 w-full">
+                 <div className="mx-4 mb-2 mt-4 w-full font-semibold">
 
                      {
                          formElements.map((element) => (
@@ -57,8 +57,8 @@ export default function AddDepartment() {
                          ))
                      }
 
-                     <div className='dark:border mt-8 w-full font-semibold h-auto border-gray-400 dark:border-gray-300 
-                                       rounded-[30px] border  dark:shadow-none p-4'>
+                     <div className='dark:border mt-8 w-full font-semibold md:w-3/4 h-auto border-gray-400 dark:border-gray-300 
+                         rounded-[30px] mx-auto border dark:shadow-none p-4'>
 
                          {
                             formElements.map((item) => (
@@ -73,7 +73,7 @@ export default function AddDepartment() {
                          }
 
                          <hr className='bg-gray-400 border-0 h-[1px]' />
-                         <div className='grid grid-cols-1 mt-4 gap-x-4 md:grid-cols-2 xl:grid-cols-3 font-semibold w-full'>
+                         <div className='grid grid-cols-1 mt-4 mx-auto gap-x-4 md:grid-cols-2 font-semibold w-full'>
                              {
                                  formElements.map((item) => (
                                      item.addDepartmentUser.inputDept.map((e, index) => (
@@ -178,8 +178,7 @@ export default function AddDepartment() {
                              }} className="bg-blue-600 my-2 hover:bg-blue-700 relative 
                                  rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
 
-                                 <p className={isLoading ? "hidden" : "block"} >Exécuter</p>
-                                  <p className={isLoading ? "hidden" : "block"} ><ClipLoader color="#fff" size={16} /></p>
+                                 <p>Exécuter</p>
 
                              </button>
                          </div>

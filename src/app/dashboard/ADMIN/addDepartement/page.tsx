@@ -165,10 +165,10 @@ export default function AddDepartment() {
                                                                                 {option.title}
                                                                             </option>
                                                                         ))
-                                                                )
+                                                                    )
 
-                                                             }
-                                                         </select>
+                                                                }
+                                                            </select>
                                              }
 
                                          </div>

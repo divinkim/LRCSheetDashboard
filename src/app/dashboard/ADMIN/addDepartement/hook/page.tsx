@@ -62,10 +62,10 @@ export default function AddDepartmentHookUser() {
 
              }
 
-              setGetEnterprises(getEnterprises)
+             setGetEnterprises(getEnterprises)
              setGetEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin)
              setGetAdminRole(role)
-             //  console.log("l'id de l'entreprise", getEnterpriseId)
+             //  console.log("l'id de l'entreprise", getEnterprises)
 
 
         })()

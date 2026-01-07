@@ -66,7 +66,6 @@ export default function UpdateEnterprise() {
                                                                 if (e.type === "file") {
                                                                     const files = v.target.files?.[0];
                                                                     const response = await controllers.API.SendOne(urlAPI, "sendFiles", null, { files });
-                                                                    console.log("L efichier image", response)
                                                                     if (response.status) {
                                                                         return setInputs({
                                                                             ...inputs,
@@ -132,7 +131,7 @@ export default function UpdateEnterprise() {
                         <div className="flex w-full justify-end ">
                             <button type="button" onClick={(e) => {
                                 handleSubmit()
-                            }} className="bg-blue-600 my-2 hover:bg-blue-700 relative xl:right-5 rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
+                            }} className="bg-blue-600 my-2 hover:bg-blue-700 relative  rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
                                 <p className={isLoading ? "hidden" : "block"}> Exécuter</p>
                                 <p className={isLoading ? "block" : "hidden"}><ClipLoader color="#fff" size={16} /></p>
                             </button>

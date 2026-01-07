@@ -70,7 +70,7 @@ export default function GetAnnualGain() {
                         <div className="p-4 shadow-xl dark:text-gray-300 dark:shadow-none dark:bg-gray-800/50  rounded-xl bg-white">
                             <h2 className="text-lg font-bold my-4 text-center">Solde total par rapport au plafond annuel</h2>
                             <div className="text-center mb-2">
-                                <strong>Total annuel :</strong> {yearlySum.toLocaleString()} / {YEARLY_LIMIT.toLocaleString()}
+                                <strong>Total annuel :</strong> {yearlySum.toLocaleString() + " FCFA"} / {YEARLY_LIMIT.toLocaleString() + " FCFA"}
                             </div>
                             <ResponsiveContainer width="100%" height={300}>
                                 <RadialBarChart

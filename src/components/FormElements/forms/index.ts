@@ -58,8 +58,6 @@ export const formElements = [
             addUserTitleForm: "Formulaire d'enregistrement d'un collaborateur",
             updateUserTitleForm: "Formulaire de modification d'un utilisateur",
 
-
-
             inputs: [
                 // ---- Inputs classiques ----
                 {
@@ -283,12 +281,12 @@ export const formElements = [
                 {
                     title: "Ajouter un ville",
                     href: "/dashboard/ADMIN/addCity",
-                    icon: faPlusCircle     // Poste = ajout → icône plus circle
+                    icon: faPlusCircle
                 },
                 {
                     title: "Ajouter un pays",
                     href: "/dashboard/ADMIN/addCountry",
-                    icon: faBuilding       // Département = bâtiment
+                    icon: faBuilding
                 },
             ],
 
@@ -431,6 +429,38 @@ export const formElements = [
                     dynamicOptions: {
                         status: false
                     }
+                },
+                {
+                    label: "Temps sur retard toléré",
+                    placeholder: "Entrez une valeur ex:15",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "toleranceTime",
+                },
+                {
+                    label: "Temps sur retard maximal toléré",
+                    placeholder: "Entrez une valeur ex:15",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "maxToleranceTime",
+                },
+                {
+                    label: "Pourcentage de déduction sur retard",
+                    placeholder: "Entrez une valeur ex:15",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "pourcentageOfHourlyDeduction",
+                },
+                {
+                    label: "Pourcentage de déduction maximal sur retard",
+                    placeholder: "Entrez une valeur ex:15",
+                    requireField: false,
+                    type: "text",
+                    selectedInput: false,
+                    alias: "maxPourcentageOfHourlyDeduction",
                 },
                 {
                     label: "Pays",
@@ -644,7 +674,7 @@ export const formElements = [
                     placeholder: "Saisissez un nom",
                     requireField: true,
                     type: "text",
-                    textarea: true,
+                    textarea: false,
                     selectedInput: false,
                     alias: "name"
 
@@ -655,21 +685,21 @@ export const formElements = [
                     placeholder: "Saisissez une description",
                     requireField: false,
                     type: "text",
-                    textarea: false,
+                    textarea: true,
                     selectedInput: false,
-                    alias: "name"
+                    alias: "description"
 
                 },
 
                 {
                     label: "Entreprise",
-                    placeholder: "Saisissez une entreprise",
+                    placeholder: "Séléctionnez une entreprise",
                     requireField: true,
                     type: "text",
                     textarea: true,
                     selectedInput: true,
                     dynamicOptions: {
-                        status: false
+                        status: true
                     },
                     alias: "EnterpriseId"
 
@@ -914,6 +944,7 @@ export const formElements = [
                 },
             ],
         },
+
         addCity: {
 
             titleForm: "Formulaire d'enregistrement d'une ville",

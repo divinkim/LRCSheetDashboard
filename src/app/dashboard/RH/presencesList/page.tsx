@@ -5,7 +5,7 @@ import { Header } from "@/components/Layouts/header";
 
 import { useEffect, useState } from "react";
 import { controllers, urlAPI } from "@/app/main";
-import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { tablesModal } from "@/components/Tables/tablesModal";
 import Link from "next/link";
 import { ClipLoader } from "react-spinners";
@@ -96,7 +96,7 @@ export default function PresencesList() {
                                     type="text"
                                     placeholder="Rechercher un profil..."
                                     className="border border-gray-400 outline-none dark:border-gray-300 dark:bg-transparent px-3 py-2.5 rounded-md my-6 w-full"
-                        
+
                                     onChange={(e) => {
                                         onSearch(e.target.value, "");
                                     }}
@@ -212,23 +212,25 @@ export default function PresencesList() {
                         </table>
                         {/* 🔄 Pagination */}
                         <div className="flex items-center justify-center  gap-4 mt-10">
-                            <button
-                                className="px-4 py-2 bg-green-500 ease duration-500 hover:bg-green-600 text-white font-semibold rounded disabled:opacity-40"
-                                onClick={() => setPage(page - 1)}
-                                disabled={page === 1}
-                            >
-                                Suivant
-                            </button>
-
-                            <span>Page {page} / {maxPage}</span>
-
-                            <button
-                                className="px-4 py-2  font-semibold text-white ease duration-500 hover:bg-red-600 bg-red-500 rounded disabled:opacity-40"
-                                onClick={() => setPage(page + 1)}
-                                disabled={page === maxPage}
-                            >
-                                Précédent
-                            </button>
+                            <div className="flex flex-col">
+                                <p className="text-center">Page {page} / {maxPage}</p>
+                                <div className="flex flex-row mt-4 space-x-4">
+                                    <button
+                                        className="px-4 py-3  font-semibold text-white ease duration-500 hover:bg-red-600 bg-red-500 rounded disabled:opacity-40"
+                                        onClick={() => setPage(page + 1)}
+                                        disabled={page === maxPage}
+                                    >
+                                        <span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronLeft} /></span> Précédent
+                                    </button>
+                                    <button
+                                        className="px-4 py-3 bg-green-500 ease duration-500 hover:bg-green-600 text-white font-semibold rounded disabled:opacity-40"
+                                        onClick={() => setPage(page - 1)}
+                                        disabled={page === 1}
+                                    >
+                                        Suivant<span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronRight} /></span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>

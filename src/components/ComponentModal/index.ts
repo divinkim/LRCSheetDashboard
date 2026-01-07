@@ -23,6 +23,7 @@ type RepportsValue = {
 export default function HookComponentModal() {
 
     const [repports, setRepports] = useState<RepportsValue[]>([]);
+    const [tasks, setTasks] = useState<RepportsValue[]>([])
     let EnterpriseId = localStorage.getItem("EnterpriseId");
 
     useEffect(() => {
@@ -32,10 +33,24 @@ export default function HookComponentModal() {
                 const getRepportsByEnterprise = allRepports.filter((repport: { EnterpriseId: number }) => repport.EnterpriseId === parseInt(EnterpriseId ?? ""));
                 return setRepports(getRepportsByEnterprise)
             }
-            const getRepportsByEnterprise = allRepports.filter((repport: { EnterpriseId: number }) => repport.EnterpriseId === 1 || repport.EnterpriseId === 4);
+            const getRepportsByEnterprise = allRepports.filter((repport: { EnterpriseId: number }) => [1, 4].includes(repport.EnterpriseId));
             setRepports(getRepportsByEnterprise)
+        })();
+    }, []);
+    
+    //Récupération des tâches
+
+    useEffect(() => {
+        (async () => {
+            const Tasks = await controllers.API.getAll(urlAPI, "getAllTasks", null);
+            if (parseInt(EnterpriseId ?? "") !== 1) {
+                const getRepportsByEnterprise = Tasks.filter((repport: { EnterpriseId: number }) => repport.EnterpriseId === parseInt(EnterpriseId ?? ""));
+                return setTasks(getRepportsByEnterprise)
+            }
+            const getRepportsByEnterprise = Tasks.filter((repport: { EnterpriseId: number }) => [1, 4, null].includes(repport.EnterpriseId));
+            setTasks(getRepportsByEnterprise)
         })()
-    }, [])
+    }, [repports])
 
     const ComponentModal = [
         {
@@ -43,6 +58,13 @@ export default function HookComponentModal() {
                 titlePage: "Liste des rapports",
                 path: "Dashboard/Administration/Rapports",
                 repportsArray: repports
+            }
+        },
+        {
+            Task: {
+                titlePage: "Liste des tâches",
+                path: "Dashboard/Administration/Tâches",
+                taskArray: tasks
             }
         }
     ]

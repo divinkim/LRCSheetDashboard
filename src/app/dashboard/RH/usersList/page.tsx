@@ -6,7 +6,7 @@ import { Header } from "@/components/Layouts/header";
 import { useEffect, useState } from "react";
 import { controllers, urlAPI } from "@/app/main";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faSearch } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { tablesModal } from "@/components/Tables/tablesModal";
 import Swal from "sweetalert2";
@@ -90,13 +90,13 @@ export default function UsersList() {
                 <main className='m-4 bg-gray-100 w-full text-gray-700 dark:text-gray-300 dark:bg-transparent'>
                     {
                         tablesModal.map((e) => (
-                            <div className="flex justify-between items-center">
+                            <div className="flex font-semibold justify-between items-center">
                                 <h1 className="text-[20px] my-4 font-bold dark:text-gray-300">{e.usersList.pageTitle}  </h1>
                                 <p className='text-blue-700 dark:text-blue-600 hidden xl:block'>{e.usersList.path}</p>
                             </div>
                         ))
                     }
-                    <hr className='bg-gray-400 border-0 h-[1px]' />
+                    <hr className='' />
                     <div className="flex flex-col space-y-4 xl:space-y-0  lg:flex-row items-center justify-between">
                         <div className="relative w-[250px]">
                             <input
@@ -227,24 +227,26 @@ export default function UsersList() {
                     </table>
 
                     {/* 🔄 Pagination */}
-                    <div className="flex items-center justify-center space-x-4 mt-14">
-                        <button
-                            className="px-4 py-2 bg-green-500 ease duration-500 hover:bg-green-600 text-white font-semibold rounded disabled:opacity-40"
-                            onClick={() => setPage(page - 1)}
-                            disabled={page === 1}
-                        >
-                            Suivant
-                        </button>
-
-                        <span>Page {page} / {maxPage}</span>
-
-                        <button
-                            className="px-4 py-2  font-semibold text-white ease duration-500 hover:bg-red-600 bg-red-500 rounded disabled:opacity-40"
-                            onClick={() => setPage(page + 1)}
-                            disabled={page === maxPage}
-                        >
-                            Précédent
-                        </button>
+                    <div className="flex items-center justify-center  gap-4 mt-10">
+                        <div className="flex flex-col">
+                            <p className="text-center">Page {page} / {maxPage}</p>
+                            <div className="flex flex-row mt-4 space-x-4">
+                                <button
+                                    className="px-4 py-3  font-semibold text-white ease duration-500 hover:bg-red-600 bg-red-500 rounded disabled:opacity-40"
+                                    onClick={() => setPage(page + 1)}
+                                    disabled={page === maxPage}
+                                >
+                                    <span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronLeft} /></span> Précédent
+                                </button>
+                                <button
+                                    className="px-4 py-3 bg-green-500 ease duration-500 hover:bg-green-600 text-white font-semibold rounded disabled:opacity-40"
+                                    onClick={() => setPage(page - 1)}
+                                    disabled={page === 1}
+                                >
+                                    Suivant<span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronRight} /></span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </main>
             </div>

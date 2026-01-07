@@ -122,26 +122,35 @@ const CalendarPage = () => {
      📌 Calcul salaire
   ------------------------------------------------------ */
   function getTotalSalary(attendances: any[], monthIndex: number, dailySalary: any) {
-    let totalPresences = 0;
-    let totalLates = 0;
+    let totalAmount: number = 0;
+    let totalLates: number = 0;
+    let totalePresences: number = 0;
 
-    const presences = attendances.filter(a => a.mounth === monthIndex && a.status === "A temps");
-    const lates = attendances.filter(a => a.mounth === monthIndex && a.status === "En retard");
+    const filterAttendance = attendances.filter((attendance: { mounth: number, createdAt: string }) => attendance.mounth === monthIndex)
 
-    presences.forEach(() => {
-      totalPresences += Number(dailySalary);
-    });
+    for (const attendance of filterAttendance) {
+      const status = attendance.status;
+      const arrivalTime = parseInt(attendance.arrivalTime.split(":")?.pop() ?? "");
+      const toleranceTime = parseInt(attendance.Enterprise?.toleranceTime ?? "");
+      const maxToleranceTime = parseInt(attendance.Enterprise?.maxToleranceTime ?? "") ?? 0;
+      const pourcentageOfHourlyDeduction = parseFloat(attendance.Enterprise?.pourcentageOfHourlyDeduction ?? "") ?? 0;
+      const maxPourcentageOfHourlyDeduction = parseFloat(attendance.Enterprise?.maxPourcentageOfHourlyDeduction ?? "") ?? 0;
+      const pourcent = pourcentageOfHourlyDeduction / 100;
+      const maxPourcent = maxPourcentageOfHourlyDeduction / 100;
 
-    lates.forEach(() => {
-      totalLates += Math.round(Number(dailySalary) / 2);
-    });
-
-    const amount = totalPresences + totalLates;
-    const formatted = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " XAF";
-
-    setTotalSalary(formatted);
+      if (status === "En retard" && arrivalTime > toleranceTime && arrivalTime < maxToleranceTime) {
+        totalLates += parseInt(dailySalary) * pourcent;
+      } else if (status === "En retard" && arrivalTime > maxToleranceTime) {
+        totalLates += parseInt(dailySalary) * maxPourcent;
+      }
+      if (attendance.status === "A temps") {
+        totalePresences += parseInt(dailySalary);
+      }
+    }
+    totalAmount = totalLates + totalePresences;
+    setTotalSalary(totalAmount.toString());
   }
-
+  console.log("Le putain de salaire", totalSalary)
   function getAttendancesStats(attendances: any[], monthIndex: number) {
     return {
       presencesCount: attendances.filter(a => a.mounth === monthIndex && a.status === "A temps").length,
@@ -185,7 +194,7 @@ const CalendarPage = () => {
                 <p className="text-red-400">❌ Absences: {absences ?? "0"}</p>
                 <p className="text-green-400">✅ Présences: {presences ?? "0"}</p>
                 <p className="text-yellow-400">⏳ Retards: {lates ?? "0"}</p>
-                <p className="text-white">💵 Total : {totalSalary}</p>
+                <p className="text-white">💵 Total : {totalSalary.replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " FCFA"}</p>
               </div>
             </div>
 

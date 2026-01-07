@@ -4,11 +4,21 @@ import { useEffect, useState } from "react";
 
 type Attendances = {
     status: string,
-    Salary: { dailySalary: string },
+    arrivalTime: string;
+    Salary: { dailySalary: string, netSalary: string },
     EnterpriseId: number | null,
     mounth: number,
     UserId: number,
-    createdAt: string
+    createdAt: string,
+    Planning: {
+        startTime: string,
+    },
+    Enterprise: {
+        toleranceTime: null,
+        maxToleranceTime: null,
+        pourcentageOfHourlyDeduction: null,
+        maxPourcentageOfHourlyDeduction: null
+    }
 };
 
 export function AnnualGainHook() {
@@ -18,13 +28,34 @@ export function AnnualGainHook() {
     const [adminRole, setAdminRole] = useState<string | null>(null);
 
     function getDuductionByMonth(attendances: Attendances[], monthIndice: number) {
-        let totalLates = 0, totalAbsences = 0;
+
         const filterAttendanceByMonth = attendances.filter(a => a.mounth === monthIndice && new Date(a.createdAt).getFullYear() === new Date().getFullYear());
+
+        let totalAmount: number = 0;
+        let totalLates: number = 0;
+        let totalAbsences: number = 0;
+
         for (const attendance of filterAttendanceByMonth) {
-            if (attendance.status === "En retard") totalLates += parseInt(attendance.Salary?.dailySalary) / 2;
-            else if (attendance.status === "Absent") totalAbsences += parseInt(attendance.Salary?.dailySalary);
+            const status = attendance.status;
+            const arrivalTime = parseInt(attendance.arrivalTime.split(":")?.pop() ?? "");
+            const toleranceTime = parseInt(attendance.Enterprise?.toleranceTime ?? "");
+            const maxToleranceTime = parseInt(attendance.Enterprise?.maxToleranceTime ?? "") ?? 0;
+            const pourcentageOfHourlyDeduction = parseFloat(attendance.Enterprise?.pourcentageOfHourlyDeduction ?? "") ?? 0;
+            const maxPourcentageOfHourlyDeduction = parseFloat(attendance.Enterprise?.maxPourcentageOfHourlyDeduction ?? "") ?? 0;
+            const pourcent = pourcentageOfHourlyDeduction / 100;
+            const maxPourcent = maxPourcentageOfHourlyDeduction / 100;
+            const dailySalary = parseInt(attendance.Salary?.dailySalary);
+
+            if (status === "En retard" && arrivalTime > toleranceTime && arrivalTime < maxToleranceTime) {
+                totalLates += dailySalary * pourcent;
+            } else if (status === "En retard" && arrivalTime > maxToleranceTime) {
+                totalLates += dailySalary * maxPourcent;
+            }
+            else if (attendance.status === "Absent") {
+                totalAbsences += dailySalary;
+            }
         }
-        return totalLates + totalAbsences;
+        return totalAmount = totalLates + totalAbsences;
     };
 
     const monthlyBalances = [
@@ -41,9 +72,8 @@ export function AnnualGainHook() {
         { month: "Nov", value: getDuductionByMonth(attendances, 10) },
         { month: "Dec", value: getDuductionByMonth(attendances, 11) },
     ];
-    useEffect(() => {
-        if (typeof (window) === "undefined") return;
 
+    useEffect(() => {
         (async () => {
             const EnterpriseId = window?.localStorage.getItem("EnterpriseId");
             const adminRole = window?.localStorage.getItem("adminRole");
@@ -61,13 +91,13 @@ export function AnnualGainHook() {
     useEffect(() => {
         (() => {
             let totalSalary = 0;
-            const filter = attendances.filter(a => a.mounth === 10 && a.UserId === 1);
-            for (const att of filter) totalSalary += parseInt(att?.Salary?.dailySalary) / 2;
+            const filter = attendances.filter(a => a.mounth === new Date().getMonth() && a.UserId === 1);
+            for (const att of filter) totalSalary += parseInt(att?.Salary?.dailySalary);
             setTotalDeductionByMonth(totalSalary);
         })();
     }, [attendances]);
 
-    const MONTHLY_LIMIT = totalDeductionByMonth * 24;
+    const MONTHLY_LIMIT = totalDeductionByMonth * 26;
     const YEARLY_LIMIT = MONTHLY_LIMIT * 12;
 
     const [selectedMonthIndex, setSelectedMonthIndex] = useState(0);

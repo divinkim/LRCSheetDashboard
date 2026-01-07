@@ -54,7 +54,7 @@ export default function AddPost() {
                         {/* <div className={inputs.photo ? "block w-[150px] h-[150px] mt-5" : "hidden"}>
                             <img src={`${urlAPI}/images/${inputs.photo}`} alt="" className="w-full rounded-full h-full object-cover" />
                         </div> */}
-                        <div className='grid grid-cols-1 mt-4 gap-x-4 md:grid-cols-2 font-semibold w-full'>
+                        <div className='grid grid-cols-1 mt-4 mx-auto gap-x-4 md:grid-cols-2 font-semibold w-full'>
                             {
                                 formElements.map((element) => (
                                     element.addOrEditPost.inputs.map((e, index) => (

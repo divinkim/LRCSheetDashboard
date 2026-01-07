@@ -6,7 +6,7 @@ import { Header } from "@/components/Layouts/header";
 import { useEffect, useState } from "react";
 import { controllers, urlAPI } from "@/app/main";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faSearch } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { tablesModal } from "@/components/Tables/tablesModal";
 import Swal from "sweetalert2";
@@ -73,7 +73,7 @@ export default function UsersList() {
                         {
                             tablesModal.map((e) => (
                                 e.enterprisesList.links.map((item) => (
-                                    <Link href={item.href} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4 rounded">
+                                    <Link href={item.href} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4">
                                         <FontAwesomeIcon icon={item.icon} className="text-white" />
                                         <span className='text-white font-semibold'> {item.title}</span>
                                     </Link>
@@ -186,24 +186,26 @@ export default function UsersList() {
                     </table>
 
                     {/* 🔄 Pagination */}
-                    <div className="flex items-center justify-center space-x-4 mt-14">
-                        <button
-                            className="px-4 py-2 bg-green-500 ease duration-500 hover:bg-green-600 text-white font-semibold rounded disabled:opacity-40"
-                            onClick={() => setPage(page - 1)}
-                            disabled={page === 1}
-                        >
-                            Suivant
-                        </button>
-
-                        <span>Page {page} / {maxPage}</span>
-
-                        <button
-                            className="px-4 py-2  font-semibold text-white ease duration-500 hover:bg-red-600 bg-red-500 rounded disabled:opacity-40"
-                            onClick={() => setPage(page + 1)}
-                            disabled={page === maxPage}
-                        >
-                            Précédent
-                        </button>
+                    <div className="flex items-center justify-center  gap-4 mt-10">
+                        <div className="flex flex-col">
+                            <p className="text-center">Page {page} / {maxPage}</p>
+                            <div className="flex flex-row mt-4 space-x-4">
+                                <button
+                                    className="px-4 py-3  font-semibold text-white ease duration-500 hover:bg-red-600 bg-red-500 rounded disabled:opacity-40"
+                                    onClick={() => setPage(page + 1)}
+                                    disabled={page === maxPage}
+                                >
+                                    <span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronLeft} /></span> Précédent
+                                </button>
+                                <button
+                                    className="px-4 py-3 bg-green-500 ease duration-500 hover:bg-green-600 text-white font-semibold rounded disabled:opacity-40"
+                                    onClick={() => setPage(page - 1)}
+                                    disabled={page === 1}
+                                >
+                                    Suivant<span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronRight} /></span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </main>
             </div>

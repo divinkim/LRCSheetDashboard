@@ -4,11 +4,11 @@ import { Header } from "@/components/Layouts/header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faChevronDown, faChevronLeft, faChevronRight, faChevronUp, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { urlAPI } from "@/app/main";
-import { RepportsListHook } from "./hook";
+import { TasksListHook } from "./hook";
 import { ClipLoader } from "react-spinners";
 
 export default function Repports() {
-    const { itemIndex, setItemIndex, isVisible, setIsVisible, itemIndexOnWriting, setItemIndexOnWriting, setAdminResponse, setMonthIndice, monthIndice, repportsArrayCloned, EnterpriseId, ComponentModal, filterRepportsByUsersNames, navigateBetweenMonths, adminResponse, monthsOfYear, RepportsArray, sendAdminResponse, isLoading, setIsLoading } = RepportsListHook();
+    const { itemIndex, setItemIndex, isVisible, setIsVisible, itemIndexOnWriting, setItemIndexOnWriting, setAdminResponse, setMonthIndice, monthIndice, repportsArrayCloned, EnterpriseId, ComponentModal, filterRepportsByUsersNames, navigateBetweenMonths, adminResponse, monthsOfYear, RepportsArray, sendAdminResponse, isLoading, setIsLoading } = TasksListHook();
 
     return (
         <main className="bg-gray-100 dark:bg-transparent">
@@ -17,8 +17,8 @@ export default function Repports() {
                 <Sidebar />
                 <div className="mx-4 dark:text-gray-300 text-gray-700 mt-6 mb-4 w-full">
                     <div className="flex justify-between font-semibold mb-4 items-center">
-                        <h1 className='font-bold text-[20px]'>{ComponentModal[0].Repport?.titlePage}</h1>
-                        <p className="text-blue-600">{ComponentModal[0].Repport?.path}</p>
+                        <h1 className='font-bold text-[20px]'>{ComponentModal[1].Task?.titlePage}</h1>
+                        <p className="text-blue-600">{ComponentModal[1].Task?.path}</p>
                     </div>
                     <hr className='' />
                     <div className="flex lg:justify-between mt-5 items-center flex-col space-y-4 lg:flex-row lg:space-y-0">

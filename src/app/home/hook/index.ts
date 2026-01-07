@@ -15,11 +15,24 @@ import { controllers, urlAPI } from "@/app/main";
 
 type Attendances = {
   status: string;
+  arrivalTime: string;
   Salary: {
     dailySalary: string;
   };
   EnterpriseId: number | null;
+
   mounth: number;
+
+  Planning: {
+    startTime: string,
+  },
+
+  Enterprise: {
+    toleranceTime: null,
+    maxToleranceTime: null,
+    pourcentageOfHourlyDeduction: null,
+    maxPourcentageOfHourlyDeduction: null
+  }
 };
 
 export default function HomeComponent() {
@@ -41,14 +54,27 @@ export default function HomeComponent() {
     let totalAbsences: number = 0;
 
     for (const attendance of attendances) {
-      if (attendance.status === "En retard") {
-        totalLates += parseInt(attendance.Salary.dailySalary) / 2;
-      } else if (attendance.status === "Absent") {
-        totalAbsences += parseInt(attendance.Salary?.dailySalary);
+      const status = attendance.status;
+      const arrivalTime = parseInt(attendance.arrivalTime.split(":")?.pop() ?? "");
+      const toleranceTime = parseInt(attendance.Enterprise.toleranceTime ?? "");
+      const maxToleranceTime = parseInt(attendance.Enterprise.maxToleranceTime ?? "");
+      const pourcentageOfHourlyDeduction = parseFloat(attendance.Enterprise.pourcentageOfHourlyDeduction ?? "");
+      const maxPourcentageOfHourlyDeduction = parseFloat(attendance.Enterprise.maxPourcentageOfHourlyDeduction ?? "");
+      const pourcent = pourcentageOfHourlyDeduction / 100;
+      const maxPourcent = maxPourcentageOfHourlyDeduction / 100;
+      const dailySalary = parseInt(attendance.Salary?.dailySalary);
+
+      if (status === "En retard" && arrivalTime > toleranceTime && arrivalTime < maxToleranceTime) {
+        totalLates += dailySalary * pourcent;
+      } else if (status === "En retard" && arrivalTime > maxToleranceTime) {
+        totalLates += dailySalary * maxPourcent;
+      }
+      else if (attendance.status === "Absent") {
+        totalAbsences += dailySalary;
       }
     }
 
-    return (totalAmount = totalLates + totalAbsences);
+    return totalAmount = totalLates + totalAbsences;
   }
 
   useEffect(() => {

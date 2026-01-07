@@ -16,8 +16,7 @@ import { parse } from "path";
 export default function AddDepartment() {
 
 
-     const { isLoading, dynamicArrayDatasCloned, inputs, setInputs, handleSubmit } = AddDepartmentHookUser()
-
+    const { isLoading, dynamicArrayDatasCloned, inputs, setInputs, handleSubmit } = AddDepartmentHookUser()
 
 
      return (
@@ -27,19 +26,19 @@ export default function AddDepartment() {
              <div className="flex">
                  <Sidebar />
 
-                 <div className="mx-4 mb-2 mt-4 w-full">
+                 <div className="mx-4 mb-2 mt-4 w-full font-semibold">
 
                      {
-                         formElements.map((element) => (
-                             <div className="text-gray-700 space-y-4 md:space-y-0 w-full items-center">
-                                 <div className="flex justify-between flex-wrap">
-                                     <h1 className="text-gray-700 text-[20pn] mb-3 font-bold dark:text-gray-300  ">
-                                         {element.addDepartmentUser.titleDept}
-                                     </h1>
-                                     <p className="text-blue-700 dark:text-blue-600" >
-                                         Dashboard/ADMIN/Ajouter un départemnt
-                                     </p>
-                                 </div>
+                        formElements.map((element) => (
+                            <div className="text-gray-700 space-y-4 md:space-y-0 w-full items-center">
+                                <div className="flex justify-between flex-wrap">
+                                    <h1 className="text-gray-700 text-[20pn] mb-3 font-bold dark:text-gray-300  ">
+                                        {element.addDepartmentUser.titleDept}
+                                    </h1>
+                                    <p className="text-blue-700 dark:text-blue-600" >
+                                        Dashboard/ADMIN/Ajouter un départemnt
+                                    </p>
+                                </div>
 
                                 <hr className="bg-gray-400 h-[1px] boder-0 " />
                                 <div className="flex flex-wrap py-4 itemq-center space-y-4 lg:space-x-4">
@@ -57,34 +56,42 @@ export default function AddDepartment() {
                          ))
                      }
 
-                     <div className='dark:border mt-8 w-full font-semibold h-auto border-gray-400 dark:border-gray-300 
-                                       rounded-[30px] border  dark:shadow-none p-4'>
+                     <div className='dark:border mt-8 w-full font-semibold md:w-3/4 h-auto border-gray-400 dark:border-gray-300 
+                         rounded-[30px] mx-auto border dark:shadow-none p-4'>
 
                          {
                             formElements.map((item) => (
 
-                                 <div className="flex flex-wrap space-y-4 justify-between mb-2 items-center dark:text-gray-300 text-gray-700">
-                                     <h2 className="font-bold"> {item.addDepartmentUser.titleformDept} </h2>
-                                     <p className="font-semibold"> <span className="text-red-600">*</span> Champs obligatoires</p>
+                                <div className="flex flex-wrap space-y-4 justify-between mb-2 items-center dark:text-gray-300 text-gray-700">
+                                    <h2 className="font-bold"> 
+                                        {item.addDepartmentUser.titleformDept} 
+                                    </h2>
 
-                                 </div>
+                                     <p className="font-semibold"> 
+                                        <span className="text-red-600">
+                                          *
+                                        </span> 
+                                      Champs obligatoires
+                                    </p>
+
+                                </div>
 
                              ))
                          }
 
                          <hr className='bg-gray-400 border-0 h-[1px]' />
-                         <div className='grid grid-cols-1 mt-4 gap-x-4 md:grid-cols-2 xl:grid-cols-3 font-semibold w-full'>
+                         <div className='grid grid-cols-1 mt-4 mx-auto gap-x-4 md:grid-cols-2 font-semibold w-full'>
                              {
-                                 formElements.map((item) => (
-                                     item.addDepartmentUser.inputDept.map((e, index) => (
-                                         <div key={index} className="w-full mb-4">
-                                             <label className="mb-4 font-semibold dark:text-gray-300 text-gray-700">
-                                                 <span className={e.requireField ? "text-red-600" : "hidden"} >*</span>
-                                                 {e.label}
-                                             </label>
+                                formElements.map((item) => (
+                                    item.addDepartmentUser.inputDept.map((e, index) => (
+                                        <div key={index} className="w-full mb-4">
+                                            <label className="mb-4 font-semibold dark:text-gray-300 text-gray-700">
+                                               <span className={e.requireField ? "text-red-600" : "hidden"} >*</span>
+                                                {e.label}
+                                            </label>
                                              {
-                                                 e.selectedInput && !e.textarea ?
-                                                     <input value={inputs[e.alias] ?? ""} onChange={async (v) => {
+                                                !e.selectedInput && !e.textarea ?
+                                                 <input value={inputs[e.alias] ?? ""} onChange={async (v) => {
                                                          const field = e.alias
                                                          let fieldValue
 
@@ -113,11 +120,11 @@ export default function AddDepartment() {
 
                                                      }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border
                                                       border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 font-normal dark:text-gray-300 text-gray-700"
-                                                         type={e.type} placeholder={e.placeholder} />
+                                                        type={e.type} placeholder={e.placeholder} />
 
                                                      :
 
-                                                     !e.textarea && !e.selectedInput ?
+                                                     e.textarea && !e.selectedInput ?
                                                          <textarea placeholder={e.placeholder ?? ""} value={inputs[e.alias] ?? ""} onChange={(u) => {
                                                              const field = e.alias
                                                              const fieldValue = { ...inputs, [field]: u.target.value }
@@ -158,10 +165,10 @@ export default function AddDepartment() {
                                                                                 {option.title}
                                                                             </option>
                                                                         ))
-                                                                )
+                                                                    )
 
-                                                             }
-                                                         </select>
+                                                                }
+                                                            </select>
                                              }
 
                                          </div>
@@ -178,8 +185,7 @@ export default function AddDepartment() {
                              }} className="bg-blue-600 my-2 hover:bg-blue-700 relative 
                                  rounded-md font-semibold ease duration-500 text-white py-2.5 px-8">
 
-                                 <p className={isLoading ? "hidden" : "block"} >Exécuter</p>
-                                  <p className={isLoading ? "hidden" : "block"} ><ClipLoader color="#fff" size={16} /></p>
+                                 <p className={isLoading ? "hidden" : "block"}>Exécuter</p>
 
                              </button>
                          </div>

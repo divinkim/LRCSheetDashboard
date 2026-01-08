@@ -135,7 +135,7 @@ export default function HomeComponent() {
     },
     {
       icon: faHandHoldingDollar,
-      backgroundColor: "#10b981",
+      backgroundColor: "#fb923c",
       path: "/dashboard/STATS/annualGain",
       title: "Gain mensuel",
       value: getTotalAttendanceDeductions(attendances)

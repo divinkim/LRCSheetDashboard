@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import Loader from "@/components/loader/loader";
 import GetAnnualGain from "../dashboard/STATS/annualGain/page";
+import { controllers, urlAPI } from "../main";
 
 export default function HomePage({ searchParams }: PropsType) {
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
@@ -24,24 +25,32 @@ export default function HomePage({ searchParams }: PropsType) {
     const { cardComponent } = HomeComponent()
 
     useEffect(() => {
-        if (typeof (window) === "undefined") return;
-        (() => {
+
+        (async () => {
             const EnterpriseId = localStorage.getItem("EnterpriseId");
             const adminRole = localStorage.getItem("adminRole");
+            const adminFcmToken = localStorage.getItem("adminFcmToken");
+            const UserId = localStorage.getItem("id");
+
+            const requireAdminRoles = ["Super-Admin", "Supervisor-Admin"];
+
+            if (requireAdminRoles.includes(String(adminRole))) {
+                const data = {
+                    EnterpriseId: parseInt(EnterpriseId ?? ""),
+                    adminRole,
+                    adminFcmToken,
+                    UserId: Number(UserId),
+                }
+                await controllers.API.SendOne(urlAPI, "updateOrAddAdminFcmToken", null, data);
+            }
+
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 1500);
             setEnterpriseId(EnterpriseId);
             setAdminRole(adminRole);
         })()
     }, [])
-
-    useEffect(() => {
-        (() => {
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 1500)
-        })();
-    }, [])
-
-    const HomeCard = HomeComponent();
 
     return (
         <div>
@@ -58,7 +67,7 @@ export default function HomePage({ searchParams }: PropsType) {
                         <div className="grid grid-cols-1  md:grid-cols-2 xl:grid-cols-3 gap-8 px-3">
                             {
                                 cardComponent.map((element, index) => (
-                                    <div className={cn("rounded-xl p-4 h-[200px] dark:bg-gray-800/50 shadow-xl dark:shadow-none ease duration-500  bg-white", index === 2 && !requireAdminRoles.includes(adminRole ?? "") && "hidden")}>
+                                    <div className={cn("rounded-xl p-4 h-[200px] dark:bg-gray-800/50 shadow-xl dark:shadow-none ease duration-500 bg-white", index === 2 && !requireAdminRoles.includes(adminRole ?? "") && "hidden")}>
                                         <div style={{ background: element.backgroundColor }} className={cn("w-[55px] rounded-full p-4 ")}>
                                             <FontAwesomeIcon icon={element.icon} className='text-white' />
                                         </div>

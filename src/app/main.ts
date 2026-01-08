@@ -241,8 +241,8 @@ export class Api {
         } catch (error) {
             console.error({ message: "Une erreur est survenue lors de l'exécution de cette opération veuillez réessayer à nouveau!", error: error });
             return {
-                title: "Une erreur est survenue lors de l'exécution de cette opération",
-                message: "Veuillez contacter le service technique pour plus d'infos",
+                title: "Une erreur est survenue lors de l'exécution de cette opération!",
+                message: "Veuillez contacter le service technique pour plus d'infos.",
                 status: false,
             }
         }

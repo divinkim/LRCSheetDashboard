@@ -33,6 +33,7 @@ export function SignInHook() {
         password: null
     });
     const [showPassword, setShowPassword] = useState(false);
+    const [message, setMessage] = useState("");
 
     const [loadingHandleSignIn, setLoadingHandleSignIn] = useState(false)
 
@@ -43,14 +44,13 @@ export function SignInHook() {
 
         if (!regexEmail.test(signInData.email ?? "") || !regexPassWord.test(signInData.password ?? "")) {
             setTimeout(() => {
-                controllers.alertMessage(false, "Echec d'authentification", "Veuillez vérifier vos identifiants de connexion!", null);
                 setLoadingHandleSignIn(false);
-            }, 1000)
-            return;
+                setMessage("Authentification échouée, veuillez renseigner des identifiants valides.");
+            }, 1000);
         }
 
         const response = await controllers.API.SendOne(urlAPI, "loginFromAdmin", null, { email: signInData.email, password: signInData.password });
-        console.log(response.user)
+
         if (response.status) {
             const localStorageData = {
                 id: response.user.id.toString(),
@@ -69,24 +69,25 @@ export function SignInHook() {
             const requireRoles = ['Super-Admin', 'Moderator-Admin', 'Supervisor-Admin'];
 
             if (!requireRoles.includes(localStorageData.adminRole ?? "")) {
-                setLoadingHandleSignIn(false);
-                return Swal.fire({
-                    icon: "warning",
-                    title: "Violation d'accès!",
-                    text: "Vous n'avez aucun droit d'accès sur cette plateforme, veuillez contacter votre administrateur local."
+                setTimeout(() => {
+                    setLoadingHandleSignIn(false);
+                    setMessage("Vous n'avez aucun droit d'accès sur cette plateforme, veuillez contacter votre administrateur local.")
                 });
+                return;
             }
 
             for (const [key, value] of Object.entries(localStorageData)) {
                 localStorage.setItem(`${key}`, `${value}`);
             }
-            return window.location.assign("/home");
+
+            window.location.assign("/home");
         }
+
         setTimeout(() => {
-            controllers.alertMessage(response.status, response.title, response.message, null);
             setLoadingHandleSignIn(false);
-        }, 1000)
+            setMessage(response.message);
+        }, 1000);
     }
 
-    return { signInData, setSignInData, showPassword, setShowPassword, loadingHandleSignIn, handleSingnIn }
+    return { signInData, setSignInData, showPassword, setShowPassword, loadingHandleSignIn, handleSingnIn, message }
 }

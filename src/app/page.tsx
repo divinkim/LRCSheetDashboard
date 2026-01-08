@@ -24,10 +24,10 @@ export default function SingIn() {
             <Loader isLoading={loader} />
             <div className={loader ? "hidden" : "bg-[url('/images/background/background.webp')] bg-no-repeat bg-cover bg-center w-screen h-screen overflow-hidden"}>
                 <div className="w-full h-full bg-black/50 " >
-                    <div className={message !=="" ? "bg-red-400 py-5 w-full" : "hidden"}>
+                    <div className={`duration-500 ease-in-out transition-all ${message !== "" ? "bg-red-400 py-5 w-full opacity-100 translate-y-0" : "opacity-0 -translate-y-1"}`}>
                         <p className="text-center text-white font-semibold">Erreur: {message}</p>
                     </div>
-                    <div className="w-full h-full flex items-center justify-center">
+                    <div className="w-full h-full relative -top-8 flex items-center justify-center">
                         <div className="w-[95%] sm:w-1/2 lg:w-[40px]  xl:w-[35%] 2xl:w-[30%] flex flex-col items-center justify-center h-[65%] mt-3 lg:mt-0 sm:h-1/2 lg:h-[85%] shadow-xl bg-gray-100 2xl:h-[65%] rounded-2xl px-4 py-4 2xl:pt-10 mx-auto">
                             <h2 className="text-blue-700  font-extrabold -top-2 sm:-top-0 text-[20px] relative xl:-top-2  2xl:-top-4 lg:-top-1">Se connecter à LRCSheet Admin </h2>
                             <div className='h-24 w-24 relative xl:top-1'>

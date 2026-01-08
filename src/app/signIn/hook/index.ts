@@ -81,8 +81,7 @@ export function SignInHook() {
                 localStorage.setItem(`${key}`, `${value}`);
             }
 
-            setMessage("");
-            window.location.assign("/home");
+            return window.location.assign("/home");
         }
 
         setTimeout(() => {

@@ -24,7 +24,7 @@ export default function SingIn() {
             <Loader isLoading={loader} />
             <div className={loader ? "hidden" : "bg-[url('/images/background/background.webp')] bg-no-repeat bg-cover bg-center w-screen h-screen overflow-hidden"}>
                 <div className="w-full h-full bg-black/50 " >
-                    <div className={message ? "bg-red-400 py-5 w-full" : "hidden"}>
+                    <div className={message !=="" ? "bg-red-400 py-5 w-full" : "hidden"}>
                         <p className="text-center text-white font-semibold">Erreur: {message}</p>
                     </div>
                     <div className="w-full h-full flex items-center justify-center">

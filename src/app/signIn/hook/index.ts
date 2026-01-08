@@ -7,6 +7,7 @@ import { ClipLoader } from 'react-spinners';
 import { messaging } from "@/firebase/firebaseConfig";
 import { getToken, onMessage } from "firebase/messaging";
 import { useEffect } from "react";
+import { setMaxIdleHTTPParsers } from 'http';
 
 type SignInput = {
     email: string | null,
@@ -80,6 +81,7 @@ export function SignInHook() {
                 localStorage.setItem(`${key}`, `${value}`);
             }
 
+            setMessage("");
             window.location.assign("/home");
         }
 

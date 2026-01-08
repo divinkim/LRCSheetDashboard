@@ -89,5 +89,5 @@ export function SignInHook() {
         }, 1000);
     }
 
-    return { signInData, setSignInData, showPassword, setShowPassword, loadingHandleSignIn, handleSingnIn, message }
+    return { signInData, setSignInData, showPassword, setShowPassword, loadingHandleSignIn, handleSingnIn, message, setMessage }
 }

@@ -8,28 +8,28 @@ import Loader from '@/components/loader/loader';
 import { useState, useEffect } from 'react';
 
 export default function SingIn() {
-    const { signInData, setSignInData, showPassword, setShowPassword, loadingHandleSignIn, handleSingnIn, message } = SignInHook();
+    const { signInData, setSignInData, showPassword, setShowPassword, loadingHandleSignIn, handleSingnIn, message, setMessage } = SignInHook();
     const [loader, setLoader] = useState(true);
 
-    useEffect(() => {
-        (() => {
-            setTimeout(() => {
-                setLoader(false);
-            }, 1500)
-        })();
-    }, [])
+    setTimeout(() => {
+        setLoader(false);
+    }, 1500);
+
+    if (message) setTimeout(() => {
+        setMessage("");
+    }, 5000);
 
     return (
         <>
             <Loader isLoading={loader} />
             <div className={loader ? "hidden" : "bg-[url('/images/background/background.webp')] bg-no-repeat bg-cover bg-center w-screen h-screen overflow-hidden"}>
                 <div className="w-full h-full bg-black/50 " >
-                    <div className={!loadingHandleSignIn && message ? "bg-red-200 py-5 w-full" : "hidden"}>
-                        <p className="text-center text-red-500 font-semibold">Erreur: {message}</p>
+                    <div className={message ? "bg-red-400 py-5 w-full" : "hidden"}>
+                        <p className="text-center text-white font-semibold">Erreur: {message}</p>
                     </div>
                     <div className="w-full h-full flex items-center justify-center">
                         <div className="w-[95%] sm:w-1/2 lg:w-[40px]  xl:w-[35%] 2xl:w-[30%] flex flex-col items-center justify-center h-[65%] mt-3 lg:mt-0 sm:h-1/2 lg:h-[85%] shadow-xl bg-gray-100 2xl:h-[65%] rounded-2xl px-4 py-4 2xl:pt-10 mx-auto">
-                            <h2 className="text-orange-400  font-extrabold -top-2 sm:-top-0 text-[20px] relative xl:-top-2  2xl:-top-4 lg:-top-1">Se connecter à LRCSheet Admin </h2>
+                            <h2 className="text-blue-700  font-extrabold -top-2 sm:-top-0 text-[20px] relative xl:-top-2  2xl:-top-4 lg:-top-1">Se connecter à LRCSheet Admin </h2>
                             <div className='h-24 w-24 relative xl:top-1'>
                                 <img src="/images/logo/logo.png" className="w-full object-cover" alt="" />
                             </div>

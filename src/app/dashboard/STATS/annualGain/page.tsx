@@ -11,7 +11,7 @@ import { AnnualGainHook } from "./hook";
 
 export default function GetAnnualGain() {
 
-    const { getDuductionByMonth, monthlyBalances, MONTHLY_LIMIT, YEARLY_LIMIT, setSelectedMonthIndex, selectedMonth, yearlySum, COLORS, lineData, barData, EnterpriseId, adminRole, attendances, selectedMonthIndex } = AnnualGainHook();
+    const { getDuductionByMonth, monthlyBalances, MonthlyLimit, YEARLY_LIMIT, setSelectedMonthIndex, selectedMonth, yearlySum, COLORS, lineData, barData, EnterpriseId, adminRole, attendances, selectedMonthIndex } = AnnualGainHook();
 
     console.log("les horaires", attendances);
     console.log("id", EnterpriseId)
@@ -46,7 +46,7 @@ export default function GetAnnualGain() {
                             <ResponsiveContainer width="100%" height={300}>
                                 <PieChart>
                                     <Pie
-                                        data={[{ name: "Solde", value: selectedMonth.value }, { name: "Limite", value: MONTHLY_LIMIT - selectedMonth.value }]}
+                                        data={[{ name: "Solde", value: selectedMonth.value }, { name: "Limite", value: MonthlyLimit - selectedMonth.value }]}
                                         dataKey="value"
                                         innerRadius={60}
                                         outerRadius={100}
@@ -55,7 +55,7 @@ export default function GetAnnualGain() {
                                     >
                                         {[
                                             { name: "Solde", value: selectedMonth.value },
-                                            { name: "Limite", value: MONTHLY_LIMIT - selectedMonth.value }
+                                            { name: "Limite", value: MonthlyLimit - selectedMonth.value }
                                         ].map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                         ))}

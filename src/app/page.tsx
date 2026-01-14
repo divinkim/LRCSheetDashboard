@@ -29,31 +29,31 @@ export default function SingIn() {
                     </div>
                     <div className="w-full h-full relative -top-8 flex items-center justify-center">
                         <div className="w-[95%] sm:w-1/2 lg:w-[40px]  xl:w-[35%] 2xl:w-[30%] flex flex-col items-center justify-center h-[65%] mt-3 lg:mt-0 sm:h-1/2 lg:h-[85%] shadow-xl bg-gray-100 2xl:h-[65%] rounded-2xl px-4 py-4 2xl:pt-10 mx-auto">
-                            <h2 className="text-blue-700  font-extrabold -top-2 sm:-top-0 text-[20px] relative xl:-top-2  2xl:-top-4 lg:-top-1">Se connecter à LRCSheet Admin </h2>
+                            <h2 className="text-blue-700  font-extrabold -top-2 sm:-top-0 text-[22px] relative xl:-top-2  2xl:-top-4 lg:-top-1">Se connecter à LRCSheet Admin </h2>
                             <div className='h-24 w-24 relative xl:top-1'>
                                 <img src="/images/logo/logo.png" className="w-full object-cover" alt="" />
                             </div>
                             <form className="w-full space-y-8 flex flex-col 2xl:pb-5" action="">
                                 <div className='w-full relative'>
-                                    <FontAwesomeIcon icon={faEnvelope} className='text-blue-700 text-[18px] absolute font-semibold top-4 left-2' />
+                                    <FontAwesomeIcon icon={faEnvelope} className='text-blue-600 text-[18px] absolute font-semibold top-4 left-2' />
                                     <input value={signInData.email ?? ""} onChange={(e) => {
                                         setSignInData({
                                             ...signInData,
                                             email: e.target.value
                                         })
-                                    }} placeholder="Email" className="py-3 bg-blue-100 placeholder-blue-900  px-8 w-full outline-none text-blue-700 focus:text-blue-700" type="email" name="" id="" />
+                                    }} placeholder="Email" className="py-3  px-8 w-full outline-none bg-gray-200 text-blue-600 focus:" type="email" name="" id="" />
                                 </div>
                                 <div className='w-full relative'>
-                                    <FontAwesomeIcon icon={faLock} className='text-blue-700   text-[18px] absolute font-semibold top-4 left-2' />
+                                    <FontAwesomeIcon icon={faLock} className='text-[18px] text-blue-600 absolute font-semibold top-4 left-2' />
                                     <input value={signInData.password ?? ""} onChange={(e) => {
                                         setSignInData({
                                             ...signInData,
                                             password: e.target.value
                                         })
-                                    }} placeholder="Mot de passe" className="py-3 bg-blue-100 placeholder-blue-900  px-8 w-full outline-none text-blue-700" type={showPassword ? "text" : "password"} maxLength={12} name="" id="" />
+                                    }} placeholder="Mot de passe" className="py-3 bg-gray-200  px-8 w-full outline-none text-blue-600 " type={showPassword ? "text" : "password"} maxLength={12} name="" id="" />
                                     <FontAwesomeIcon onClick={() => {
                                         setShowPassword(!showPassword)
-                                    }} icon={showPassword ? faEye : faEyeSlash} className='text-blue-700 cursor-pointer text-[18px] absolute top-4 right-2' />
+                                    }} icon={showPassword ? faEye : faEyeSlash} className='text-blue-600  cursor-pointer text-[18px] absolute top-4 right-2' />
                                 </div>
                                 <button type="button" onClick={() => {
                                     handleSingnIn()

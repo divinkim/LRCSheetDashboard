@@ -56,8 +56,8 @@ export default function UpdateUserInPlanningOfWeek() {
     }, [users]);
 
     function onSearch(value: string) {
-        const findUser = usersArray.filter(user => user.lastname?.toLowerCase().includes(value?.toLowerCase()) || user.firstname?.toLowerCase()?.includes(value?.toLocaleLowerCase()));
-        setUsersArrayCloned(findUser)
+        const findUser = usersArray.filter(user => user?.lastname?.toLowerCase().includes(value?.toLowerCase()) || user?.firstname?.toLowerCase()?.includes(value?.toLowerCase()));
+        setUsersArrayCloned(findUser);
     }
 
     async function handleSubmit() {
@@ -88,7 +88,7 @@ export default function UpdateUserInPlanningOfWeek() {
                         </p>
                     </div>
 
-                    <hr className='bg-gray-400 border-0 h-[1px]' />
+                    <hr className='' />
                     <div className="flex justify-end space-x-4 mt-4 item-center">
                         {
                             addEditUserPlanningOfWeek.updateUserInPlanningOfWeek.links.map((elm) => (

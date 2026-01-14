@@ -482,7 +482,7 @@ export function Sidebar() {
                         <Link href={list.href ?? "/"} onClick={() => {
                           removeAdminPageNotificationCount(aside.index, list.index)
                         }} className={cn(aside.index === 11 && list.index === 1 && parseInt(EnterpriseId ?? "") !== 1 ? "hidden" : aside.index === 11 && list.index === 1 && parseInt(EnterpriseId ?? "") === 1 && !requiresRole.includes(adminRole ?? "") ? "hidden" : "block")}>
-                          <li className="hover:text-orange-400 pb-2  text-gray-300 ease duration-500"><span><FontAwesomeIcon icon={list.icon} /></span> {list.title} <span className={getAdminPageNotificationCount(aside.index, list?.index) <= 0 ? "hidden" : 'bg-red-500 relative left-2 text-white font-semibold rounded-full px-[6px]'}>
+                          <li className="hover:text-orange-400/90 pb-2  text-gray-300 ease duration-500"><span><FontAwesomeIcon icon={list.icon} /></span> {list.title} <span className={getAdminPageNotificationCount(aside.index, list?.index) <= 0 ? "hidden" : 'bg-red-500 relative left-2 text-white font-semibold rounded-full px-[6px]'}>
                             {getAdminPageNotificationCount(aside.index, list?.index)}
                           </span>
                           </li>

@@ -49,22 +49,22 @@ export default function HomeComponent() {
   });
 
   function getTotalAttendanceDeductions(attendances: Attendances[]) {
-    let totalAmount: number = 0;
     let totalLates: number = 0;
     let totalAbsences: number = 0;
 
     for (const attendance of attendances) {
       const status = attendance.status;
-      const arrivalTime = parseInt(attendance.arrivalTime.split(":")?.pop() ?? "");
-      const toleranceTime = parseInt(attendance.Enterprise.toleranceTime ?? "");
-      const maxToleranceTime = parseInt(attendance.Enterprise.maxToleranceTime ?? "");
-      const pourcentageOfHourlyDeduction = parseFloat(attendance.Enterprise.pourcentageOfHourlyDeduction ?? "");
-      const maxPourcentageOfHourlyDeduction = parseFloat(attendance.Enterprise.maxPourcentageOfHourlyDeduction ?? "");
+      const arrivalTime = Number(attendance.arrivalTime.split(":")?.pop() || 0);
+      const toleranceTime = Number(attendance?.Enterprise?.toleranceTime || 0);
+      const maxToleranceTime = Number(attendance?.Enterprise?.maxToleranceTime || 0);
+      const pourcentageOfHourlyDeduction = parseFloat(String(attendance?.Enterprise?.pourcentageOfHourlyDeduction));
+      const maxPourcentageOfHourlyDeduction = parseFloat(String(attendance?.Enterprise?.maxPourcentageOfHourlyDeduction ?? ""));
+
       const pourcent = pourcentageOfHourlyDeduction / 100;
       const maxPourcent = maxPourcentageOfHourlyDeduction / 100;
-      const dailySalary = parseInt(attendance.Salary?.dailySalary);
+      const dailySalary = parseInt(attendance?.Salary?.dailySalary ?? 0);
 
-      if (status === "En retard" && arrivalTime > toleranceTime && arrivalTime < maxToleranceTime) {
+      if ((status === "En retard" && arrivalTime > toleranceTime) && (arrivalTime < maxToleranceTime)) {
         totalLates += dailySalary * pourcent;
       } else if (status === "En retard" && arrivalTime > maxToleranceTime) {
         totalLates += dailySalary * maxPourcent;
@@ -73,8 +73,7 @@ export default function HomeComponent() {
         totalAbsences += dailySalary;
       }
     }
-
-    return totalAmount = totalLates + totalAbsences;
+    return totalLates + totalAbsences;
   }
 
   useEffect(() => {
@@ -137,7 +136,7 @@ export default function HomeComponent() {
       icon: faHandHoldingDollar,
       backgroundColor: "#fb923c",
       path: "/dashboard/STATS/annualGain",
-      title: "Gain mensuel",
+      title: "Gain mensuel actuel (FCFA)",
       value: getTotalAttendanceDeductions(attendances)
     }
   ];

@@ -88,7 +88,13 @@ export default function WeekDaysPlanningsList() {
             let EnterpriseId = window?.localStorage.getItem("EnterpriseId");
 
             const request = await controllers.API.getAll(urlAPI, "getAllUsersPlanningsOfWeek", null);
-            const filterWeekDaysPlanningsByEnterpriseId = request.filter((item: { EnterpriseId: number }) => item.EnterpriseId === parseInt(EnterpriseId ?? ""))
+            if (Number(EnterpriseId) === 1) {
+                const filterWeekDaysPlanningsByEnterpriseId = request.filter((item: { EnterpriseId: number }) => [1, 2, 3, 4, null].includes(item.EnterpriseId))
+                setWeekDaysPlannings(filterWeekDaysPlanningsByEnterpriseId);
+                setWeekDaysPlanningsSaved(filterWeekDaysPlanningsByEnterpriseId);
+                return;
+            }
+            const filterWeekDaysPlanningsByEnterpriseId = request.filter((item: { EnterpriseId: number }) => item.EnterpriseId === (Number(EnterpriseId)))
             setWeekDaysPlannings(filterWeekDaysPlanningsByEnterpriseId);
             setWeekDaysPlanningsSaved(filterWeekDaysPlanningsByEnterpriseId);
         })();
@@ -96,7 +102,7 @@ export default function WeekDaysPlanningsList() {
 
     // 🔎 Filtrer par recherche
     function onSearch(value: string) {
-        let filtered = weekDaysPlannings.filter(item => item?.User.lastname?.toLocaleLowerCase()?.includes(value.toLocaleLowerCase()) || item?.User.firstname?.toLocaleLowerCase()?.includes(value.toLocaleLowerCase()));
+        let filtered = weekDaysPlannings.filter(item => item?.User?.lastname?.toLowerCase()?.includes(value.toLowerCase()) || item?.User?.firstname?.toLowerCase()?.includes(value.toLowerCase()));
         setWeekDaysPlanningsSaved(filtered)
     }
 
@@ -110,13 +116,13 @@ export default function WeekDaysPlanningsList() {
         <div>
             <Header />
             <div className="flex justify-center w-full mx-auto">
-                <div className='relative 2xl:right-5'><Sidebar /></div>
-                <main className='m-4 bg-gray-100 text-gray-700 dark:text-gray-300 dark:bg-transparent'>
+                <div className='relative w-[350px]'><Sidebar /></div>
+                <main className='m-4 w-full bg-gray-100 text-gray-700 dark:text-gray-300 dark:bg-transparent'>
                     <div className="flex justify-between items-center">
                         <h1 className="text-[20px] my-4 font-bold dark:text-gray-300">{tablesModal[0].weekDaysPlanningList.pageTitle}  </h1>
                         <p className='text-blue-700 font-semibold dark:text-blue-600 hidden xl:block'>{tablesModal[0].weekDaysPlanningList.path}</p>
                     </div>
-                    <hr className='bg-gray-400 border-0 h-[1px]' />
+                    <hr className='' />
                     <div className="flex flex-col space-y-4 xl:space-y-0  2xl:flex-row 2xl:items-center 2xl:justify-between mb-5 2xl:mb-0 justify-start space-x-5">
                         <div className="relative w-[250px]">
                             <input
@@ -127,7 +133,6 @@ export default function WeekDaysPlanningsList() {
                                 onChange={(e) => {
                                     setSearch(e.target.value)
                                     onSearch(e.target.value)
-                                    setPage(1); // reset page quand on tape
                                 }}
                             />
                             <FontAwesomeIcon icon={faSearch} className="absolute text-gray-400 right-3 top-[38px]" />
@@ -136,7 +141,7 @@ export default function WeekDaysPlanningsList() {
                             {
                                 tablesModal.map((e) => (
                                     e.weekDaysPlanningList.links.map((item) => (
-                                        <Link href={item.href} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-2 px-4">
+                                        <Link href={item.href} className="bg-blue-800 hover:bg-blue-900  ease duration-500 py-3 px-4">
                                             <FontAwesomeIcon icon={item.icon} className="text-white" />
                                             <span className='text-white font-semibold'> {item.title}</span>
                                         </Link>
@@ -168,18 +173,18 @@ export default function WeekDaysPlanningsList() {
                                     <tr className="">
 
                                         <td className="border p-2 border-gray-400 dark:border-gray-300">
-                                            {u.User.photo ? <img src={`${urlAPI}/images/${u.User.photo}`} className="w-[50px] mx-auto h-[50px] object-cover rounded-full" alt="" /> : <p className="text-center text-[40px]">
+                                            {u.User?.photo ? <img src={`${urlAPI}/images/${u.User?.photo}`} className="w-[50px] mx-auto h-[50px] object-cover rounded-full" alt="" /> : <p className="text-center text-[40px]">
                                                 🧑‍💼
                                             </p>}
                                         </td>
 
-                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.User.firstname} {u.User.lastname}</td>
+                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.User?.firstname} {u.User?.lastname}</td>
                                         <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.WeekDays.name}</td>
                                         <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.PlanningType.title}
                                         </td>
                                         <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.Planning.startTime?.slice(0, 5)}-{u.Planning.breakingStartTime?.slice(0, 5)}-{u.Planning.resumeEndTime?.slice(0, 5)}-{u.Planning.endTime?.slice(0, 5)}
                                         </td>
-                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.Enterprise.logo ? <img src={`${urlAPI}/images/${u.Enterprise.logo}`} className="w-[50px] mx-auto h-[50px] object-cover rounded-full" alt="" /> : u.Enterprise.name}
+                                        <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.Enterprise?.logo ? <img src={`${urlAPI}/images/${u.Enterprise?.logo}`} className="w-[50px] mx-auto h-[50px] object-cover rounded-full" alt="" /> : u.Enterprise?.name}
                                         </td>
                                         <td className="text-center py-5 font-semibold border-b border-r  space-x-3 flex justify-center h-auto p-2 border-gray-400 dark:border-gray-300">
                                             {/* <Link href={`/RH/getUserProfil/${u.id}`} className="bg-gray-300 hover:scale-105 ease duration-500 p-2 rounded-md">
@@ -245,7 +250,7 @@ export default function WeekDaysPlanningsList() {
                             onClick={() => setPage(page - 1)}
                             disabled={page === 1}
                         >
-                            Suivant
+                            Précédent
                         </button>
 
                         <span>Page {page} / {maxPage}</span>
@@ -255,7 +260,7 @@ export default function WeekDaysPlanningsList() {
                             onClick={() => setPage(page + 1)}
                             disabled={page === maxPage}
                         >
-                            Précédent
+                            Suivant
                         </button>
                     </div>
                 </main>

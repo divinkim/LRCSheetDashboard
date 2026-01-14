@@ -30,7 +30,7 @@ export default function UpdateUser() {
                                     <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Modifier un collaborateur existant</h1>
                                     <p className="text-blue-700 dark:text-blue-600">Dashboard/RH/Modifier un collaborateur</p>
                                 </div>
-                                <hr className="bg-gray-400 h-[1px] border-0" />
+                                <hr className="" />
                                 <div className="flex flex-wrap py-4 font-normal space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element, index) => (

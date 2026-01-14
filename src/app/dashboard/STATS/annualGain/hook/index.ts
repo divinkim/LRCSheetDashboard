@@ -21,41 +21,51 @@ type Attendances = {
     }
 };
 
+type Users = {
+    EnterpriseId: number,
+    Salary: {
+        dailySalary: string | null
+    }
+}[];
+
 export function AnnualGainHook() {
     const [totalDeductionByMonth, setTotalDeductionByMonth] = useState(0);
     const [attendances, setAttendances] = useState<Attendances[]>([]);
     const [EnterpriseId, setEnterpriseId] = useState<string | null>(null);
     const [adminRole, setAdminRole] = useState<string | null>(null);
+    const [MonthlyLimit, setMonthlyLimit] = useState(0);
 
     function getDuductionByMonth(attendances: Attendances[], monthIndice: number) {
+        const fullYear = new Date().getFullYear();
 
-        const filterAttendanceByMonth = attendances.filter(a => a.mounth === monthIndice && new Date(a.createdAt).getFullYear() === new Date().getFullYear());
+        const filterAttendanceByMonth = attendances.filter(a => a.mounth === monthIndice && new Date(a.createdAt).getFullYear() === fullYear);
 
-        let totalAmount: number = 0;
-        let totalLates: number = 0;
-        let totalAbsences: number = 0;
+        let totalLates = 0;
+        let totalAbsences = 0;
 
         for (const attendance of filterAttendanceByMonth) {
             const status = attendance.status;
-            const arrivalTime = parseInt(attendance.arrivalTime.split(":")?.pop() ?? "");
-            const toleranceTime = parseInt(attendance.Enterprise?.toleranceTime ?? "");
-            const maxToleranceTime = parseInt(attendance.Enterprise?.maxToleranceTime ?? "") ?? 0;
-            const pourcentageOfHourlyDeduction = parseFloat(attendance.Enterprise?.pourcentageOfHourlyDeduction ?? "") ?? 0;
-            const maxPourcentageOfHourlyDeduction = parseFloat(attendance.Enterprise?.maxPourcentageOfHourlyDeduction ?? "") ?? 0;
+
+            const arrivalTimeMinutes = Number(attendance?.arrivalTime.split(":")?.pop() || 0);
+            const toleranceTime = Number(attendance?.Enterprise?.toleranceTime || 0);
+            const maxToleranceTime = Number(attendance?.Enterprise?.maxToleranceTime || 0);
+            const pourcentageOfHourlyDeduction = parseFloat(attendance?.Enterprise?.pourcentageOfHourlyDeduction ?? "") || 0;
+            const maxPourcentageOfHourlyDeduction = parseFloat(attendance?.Enterprise?.maxPourcentageOfHourlyDeduction ?? "") || 0;
+
             const pourcent = pourcentageOfHourlyDeduction / 100;
             const maxPourcent = maxPourcentageOfHourlyDeduction / 100;
-            const dailySalary = parseInt(attendance.Salary?.dailySalary);
+            const dailySalary = Number(attendance.Salary?.dailySalary ?? 0);
 
-            if (status === "En retard" && arrivalTime > toleranceTime && arrivalTime < maxToleranceTime) {
+            if ((status === "En retard" && arrivalTimeMinutes > toleranceTime) && (arrivalTimeMinutes < maxToleranceTime)) {
                 totalLates += dailySalary * pourcent;
-            } else if (status === "En retard" && arrivalTime > maxToleranceTime) {
+            } else if (status === "En retard" && arrivalTimeMinutes > maxToleranceTime) {
                 totalLates += dailySalary * maxPourcent;
             }
             else if (attendance.status === "Absent") {
                 totalAbsences += dailySalary;
             }
         }
-        return totalAmount = totalLates + totalAbsences;
+        return totalLates + totalAbsences;
     };
 
     const monthlyBalances = [
@@ -73,13 +83,14 @@ export function AnnualGainHook() {
         { month: "Dec", value: getDuductionByMonth(attendances, 11) },
     ];
 
+    //Récuoération de toutes les horaires et filtrage en fonction de l'entreprise
     useEffect(() => {
         (async () => {
             const EnterpriseId = window?.localStorage.getItem("EnterpriseId");
             const adminRole = window?.localStorage.getItem("adminRole");
 
             const attendances = await controllers.API.getAll(urlAPI, "getAllAttendances", null);
-            const filtered = parseInt(EnterpriseId ?? "") !== 1
+            const filtered = Number(EnterpriseId) !== 1
                 ? attendances.filter((a: { EnterpriseId: number }) => a.EnterpriseId === parseInt(EnterpriseId ?? ""))
                 : attendances.filter((a: { EnterpriseId: number }) => [1, 2, 3, 4, null].includes(a.EnterpriseId));
             setAttendances(filtered);
@@ -88,6 +99,27 @@ export function AnnualGainHook() {
         })();
     }, []);
 
+    //Récupération et filtrage des utilisateurs en fonction de l'entreprise
+    useEffect(() => {
+        (async () => {
+            let total = 0;
+            const users: Users = await controllers.API.getAll(urlAPI, "getUsers", null);
+
+            const usersByEnterprisesId: Users = Number(EnterpriseId) !== 1 ?
+                users.filter(user => user.EnterpriseId === Number(EnterpriseId))
+                : users.filter(user => [1, 2, 3, 4, null].includes(Number(user.EnterpriseId)));
+
+            for (const user of usersByEnterprisesId) {
+                let dailySalary = Number(user?.Salary?.dailySalary || 0);
+                total += dailySalary * 26;
+            }
+
+            setMonthlyLimit(total);
+        })()
+    }, [attendances]);
+
+    console.log("la putain de limit par mois", MonthlyLimit);
+
     useEffect(() => {
         (() => {
             let totalSalary = 0;
@@ -95,10 +127,10 @@ export function AnnualGainHook() {
             for (const att of filter) totalSalary += parseInt(att?.Salary?.dailySalary);
             setTotalDeductionByMonth(totalSalary);
         })();
-    }, [attendances]);
+    }, [MonthlyLimit]);
 
-    const MONTHLY_LIMIT = totalDeductionByMonth * 26;
-    const YEARLY_LIMIT = MONTHLY_LIMIT * 12;
+
+    const YEARLY_LIMIT = MonthlyLimit * 12;
 
     const [selectedMonthIndex, setSelectedMonthIndex] = useState(0);
     const selectedMonth = monthlyBalances[selectedMonthIndex];
@@ -111,8 +143,8 @@ export function AnnualGainHook() {
     const barData = monthlyBalances.map((m, idx) => ({
         month: m.month,
         solde: m.value,
-        limite: MONTHLY_LIMIT
+        limite: MonthlyLimit
     }));
 
-    return { getDuductionByMonth, monthlyBalances, MONTHLY_LIMIT, YEARLY_LIMIT, setSelectedMonthIndex, selectedMonth, yearlySum, COLORS, lineData, barData, EnterpriseId, adminRole, attendances, selectedMonthIndex }
+    return { getDuductionByMonth, monthlyBalances, MonthlyLimit, YEARLY_LIMIT, setSelectedMonthIndex, selectedMonth, yearlySum, COLORS, lineData, barData, EnterpriseId, adminRole, attendances, selectedMonthIndex }
 }

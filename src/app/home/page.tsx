@@ -22,10 +22,10 @@ export default function HomePage({ searchParams }: PropsType) {
     const [EnterpriseId, setEnterpriseId] = useState<string | null>(null);
     const [adminRole, setAdminRole] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const { cardComponent } = HomeComponent()
+    const { cardComponent } = HomeComponent();
 
+    //Mise à jour ou ajout fcmToken administrateur
     useEffect(() => {
-
         (async () => {
             const EnterpriseId = localStorage.getItem("EnterpriseId");
             const adminRole = localStorage.getItem("adminRole");
@@ -50,7 +50,23 @@ export default function HomePage({ searchParams }: PropsType) {
             setEnterpriseId(EnterpriseId);
             setAdminRole(adminRole);
         })()
-    }, [])
+    }, []);
+
+    const formatNumber = (index: number, value: number) => {
+        if (index === 2) {
+            const somme = value.toString();
+            const sommeLength = somme.length;
+            const sommeRegex = somme.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+            if (sommeLength >= 4) {
+                return sommeRegex + " K"
+            } else if (sommeLength >= 7) {
+                return sommeRegex + " M"
+            }
+            return sommeRegex
+        }
+        return value
+    }
 
     return (
         <div>
@@ -72,7 +88,7 @@ export default function HomePage({ searchParams }: PropsType) {
                                             <FontAwesomeIcon icon={element.icon} className='text-white' />
                                         </div>
                                         <div className="mt-5 relative top-5  font-semibold text-gray-600 dark:text-gray-300">
-                                            <p className="text-[25px]">{index === 2 ? element.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " FCFA" : element.value}</p>
+                                            <p className="text-[25px]">{formatNumber(index, element.value)}</p>
                                             <div className="flex justify-between w-full">
                                                 <p className='text-gray-500'>{element.title}</p>
                                                 <Link href={element.path} className={cn("rounded-full  ease duration-500", index === 2 && "hidden")}><FontAwesomeIcon icon={faEye} style={{ background: element.backgroundColor }} className={"hover:scale-90 ease duration-500 rounded-full px-3.5 py-4   text-white relative left-1 -top-4"} />

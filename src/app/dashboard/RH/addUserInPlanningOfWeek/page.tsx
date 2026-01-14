@@ -17,6 +17,7 @@ type Users = {
     EnterpriseId: number,
     photo: string | null
 }
+
 type Plannings = {
     startTime: string,
     breakingStartTime: string,
@@ -29,6 +30,7 @@ type Plannings = {
         description: string
     }
 }
+
 type Datas = {
     usersId: number[],
     weekDaysId: number[],
@@ -60,13 +62,14 @@ export default function addUserInPlanningOfWeek() {
 
     async function handleSubmit() {
         setIsLoading(true);
+        
         if (datas.usersId.length <= 0 || datas.weekDaysId.length <= 0 || datas.PlanningId === 0) {
             return setTimeout(() => {
                 controllers.alertMessage(false, "Champs incorrectes", "Veuillez sélectionner au moins un utilisateur, un jour de la semaine y compris un planning", null);
                 setIsLoading(false)
             }, 1000)
         }
-        const response = await controllers.API.SendOne(urlAPI, "addUserInPlanningOfWeek", null);
+        const response = await controllers.API.SendOne(urlAPI, "joinUsersInPlanning", null, datas);
         controllers.alertMessage(response.status, response.title, response.message, response.status ? "/dashboard/RH/addUserInPlanningOfWeek" : null);
         setIsLoading(false);
     }
@@ -86,7 +89,7 @@ export default function addUserInPlanningOfWeek() {
                         </p>
                     </div>
 
-                    <hr className='bg-gray-400 border-0 h-[1px]' />
+                    <hr className='' />
                     <div className="flex justify-end space-x-4 mt-4 item-center">
                         {
                             addEditUserPlanningOfWeek.addUserInPlanningOfWeek.links.map((elm) => (
@@ -157,7 +160,7 @@ export default function addUserInPlanningOfWeek() {
                                         ...datas,
                                         PlanningId: Number(e.target.value)
                                     })
-                                }} className="bg-transparent border dark:text-gray-300 dark:bg-gray-900 border-gray-400 w-full p-4">
+                                }} className="bg-transparent border dark:text-gray-300 outline-none dark:bg-gray-900 border-gray-400 w-full p-4">
                                     <option disabled selected value="">
                                         Sélectionner un planning
                                     </option>

@@ -36,7 +36,7 @@ export default function Repports() {
                                 const incrementedMonthIndex = monthIndice + 1;
                                 setMonthIndice(incrementedMonthIndex);
                                 navigateBetweenMonths(RepportsArray, incrementedMonthIndex, parseInt(EnterpriseId ?? ""))
-                            }} className="bg-orange-400 hover:scale-105 ease duration-500 px-6 py-2"><span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronLeft} /></span>Précédent</button>
+                            }} className="bg-orange-500/90 over:scale-105 ease duration-500 px-6 py-2"><span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronLeft} /></span>Précédent</button>
                             <button type="button" onClick={() => {
                                 const decrementedMonthIndex = monthIndice - 1;
                                 setMonthIndice(decrementedMonthIndex)

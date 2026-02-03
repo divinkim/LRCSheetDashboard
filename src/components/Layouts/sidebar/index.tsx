@@ -33,7 +33,7 @@ import { icon } from "@fortawesome/fontawesome-svg-core";
 import { messaging } from "@/firebase/firebaseConfig";
 import { getToken, onMessage } from "firebase/messaging";
 import { controllers, urlAPI } from "@/app/main";
-
+import SidebarHook from "./hook";
 type AdminNotification = {
   path: string;
   adminSectionIndex: string,
@@ -55,18 +55,7 @@ export function Sidebar() {
     // );
   };
 
-  const adminFcmToken = localStorage.getItem("adminFcmToken");
-  const [adminNotificationStored, setAdminNotificationStored] = useState<AdminNotification[]>([]);
-
-  useEffect(() => {
-    (() => {
-      const getAdminNotificationStored = localStorage.getItem("adminNotificationStored");
-      if (getAdminNotificationStored !== null) {
-        const parseAdminNotificationStored = JSON.parse(getAdminNotificationStored);
-        return setAdminNotificationStored(parseAdminNotificationStored);
-      }
-    })()
-  }, [])
+  const { ItemAside, getPageNotificationsCount, getSectionNotificationsCount } = SidebarHook();
 
   useEffect(() => {
     (async () => {
@@ -74,6 +63,7 @@ export function Sidebar() {
       const adminRole = localStorage.getItem("adminRole");
       const EnterpriseId = localStorage.getItem("EnterpriseId");
       const adminService = localStorage.getItem("adminService");
+      const adminFcmToken = localStorage.getItem("adminFcmToken");
 
       const datas = {
         fcmToken: adminFcmToken,
@@ -84,46 +74,11 @@ export function Sidebar() {
       }
       // Mise à jour du token de l'administrateur
       const updateFcmTokenAdmin = await controllers.API.SendOne(urlAPI, "sendFcmToken", null, datas);
-      console.log(updateFcmTokenAdmin.message);
-      return
+      console.log("le token admin", updateFcmTokenAdmin.message);
+
     })()
   }, []);
   //Ecoute des notifications entrantes
-  useEffect(() => {
-    (() => {
-      if (!messaging) return
-      onMessage(messaging, (payload) => {
-        console.log("Notification reçue (foreground):", payload);
-
-        const adminNotificationStored = localStorage.getItem("adminNotificationStored");
-        const getAdminNotificationStored = adminNotificationStored ? JSON.parse(adminNotificationStored) : []
-
-        const newObject = [
-          ...getAdminNotificationStored,
-          {
-            path: payload.data?.path ?? "",
-            adminSectionIndex: "2",
-            adminPageIndex: "1",
-          }
-        ]
-        setAdminNotificationStored(newObject);
-        localStorage.setItem("adminNotificationStored", JSON.stringify(newObject))
-
-        // const { title, body } = payload?.notification
-        // Swal.fire({
-        //     icon: "info",
-        //     title: "Notification entrante!",
-        //     cancelButtonText: "Annuler",
-        //     confirmButtonText: "Voir plus",
-        //     showCancelButton: true,
-        // }).then((confirm) => {
-        //     if (confirm.isConfirmed) window.location.href = payload?.data?.path ?? ""
-        // })
-      });
-    })()
-  }, []);
-
-  console.log("Notifs sauvegardés", adminNotificationStored)
 
   useEffect(() => {
     // Keep collapsible open, when it's subpage is active
@@ -146,286 +101,6 @@ export function Sidebar() {
   const EnterpriseId = localStorage.getItem("EnterpriseId");
   const requiresRole = ['Super-Admin', 'Supervisor-Admin'];
   const adminRole = localStorage.getItem("adminRole");
-
-  const ItemAside = [
-    // Onglet notifications
-    {
-      index: 0,
-      title: "🔔 Notification",
-      ItemLists: [
-        {
-          index: 0,
-          title: "Envoyer une notification",
-          href: "/dashboard/notification/sendNotification",
-          icon: faPaperPlane
-        },
-        {
-          index: 1,
-          title: "Liste de notification",
-          href: "/dashboard/notifications/getAllNotifications",
-          icon: faBell
-        },
-      ]
-    },
-
-    // Onglet Ressources humaines
-    {
-      index: 2,
-      title: "💼 Ressources humaines",
-      ItemLists: [
-        {
-          index: 0,
-          title: "Présences au poste",
-          href: "/dashboard/RH/presencesList",
-          icon: faClipboardCheck
-        },
-        {
-          index: 1,
-          title: "Ajouter un collaborateur",
-          href: "/dashboard/RH/addUser",
-          icon: faUserPlus
-        },
-        {
-          index: 2,
-          title: "Liste des collaborateurs",
-          href: "/dashboard/RH/usersList",
-          icon: faUsers
-        },
-        {
-          index: 3,
-          title: "Ajouter un collaborateur au planning",
-          href: "/dashboard/RH/addUserInPlanningOfWeek",
-          icon: faCalendarPlus
-        },
-        {
-          index: 4,
-          title: "Liste des collaborateurs au planning",
-          href: "/dashboard/RH/weekDaysPlanningsList",
-          icon: faCalendarCheck
-        },
-      ]
-    },
-
-    // Onglet Administration
-    {
-      index: 2,
-      title: "🗂️ Administration",
-      adminService: "ADMINISTRATION",
-      ItemLists: [
-        {
-          index: 0,
-          title: "Permissions",
-          href: "/dashboard/ADMIN/permission",
-          icon: faUserShield
-        },
-        {
-          index: 1,
-          title: "Rapports",
-          href: "/dashboard/ADMIN/repportsList",
-          icon: faFileLines
-        },
-        {
-          index: 2,
-          title: "Tâches",
-          href: "/dashboard/ADMIN/tasksList",
-          icon: faCheckCircle
-        },
-        {
-          index: 3,
-          title: "Ajouter un contrat",
-          href: "/dashboard/ADMIN/addContract",
-          icon: faFileSignature
-        },
-        {
-          index: 4,
-          title: "Liste de contrat",
-          href: "/dashboard/ADMIN/listContrat",
-          icon: faFileContract
-        },
-        {
-          index: 5,
-          title: "Type de contrat",
-          href: "/dashboard/ADMIN/typeContrat",
-          icon: faFileContract
-        },
-        {
-          index: 6,
-          title: "Liste de Type de contrat",
-          href: "/dashboard/ADMIN/listTypeContrat",
-          icon: faFileContract
-        },
-        {
-          index: 7,
-          title: "Ajouter un poste",
-          href: "/dashboard/ADMIN/addPost",
-          icon: faIdBadge
-        },
-        {
-          index: 8,
-          title: "Liste de poste",
-          href: "/dashboard/ADMIN/postesList",
-          icon: faSuitcaseRolling
-        },
-        {
-          index: 9,
-          title: "Ajouter un département",
-          href: "/dashboard/ADMIN/addDepartement",
-          icon: faBuilding
-        },
-        {
-          index: 10,
-          title: "Liste de départements",
-          href: "/dashboard/ADMIN/departmentsList",
-          icon: faSuitcaseRolling
-        }
-      ]
-    },
-
-    // Onglet Comptabilité
-    {
-      index: 11,
-      title: "💵 Comptabilité",
-      ItemLists: [
-        {
-          index: 0,
-          title: "Ajouter un salaire",
-          href: "/dashboard/COMPTA/addSalary",
-          icon: faMoneyBill1Wave  // salaire / paie
-        },
-        {
-          index: 1,
-          title: "Liste des salaires",
-          href: "/dashboard/COMPTA/salaryList",
-          icon: faFileInvoiceDollar  // récapitulatif des paies
-        },
-        {
-          index: 2,
-          title: "Factures clients",
-          href: "/dashboard/COMPTA/clientInvoices",
-          icon: faFileInvoice  // suivi des factures émises
-        },
-        {
-          index: 3,
-          title: "Factures fournisseurs",
-          href: "/dashboard/COMPTA/vendorInvoices",
-          icon: faFileCircleCheck  // suivi des paiements fournisseurs
-        },
-        {
-          index: 4,
-          title: "Dépenses",
-          href: "/dashboard/COMPTA/expenses",
-          icon: faMoneyCheckDollar  // gestion des dépenses courantes
-        },
-        {
-          index: 5,
-          title: "Rapports financiers",
-          href: "/dashboard/COMPTA/financialReports",
-          icon: faChartLine  // bilans, comptes de résultat, cash flow
-        },
-        {
-          index: 6,
-          title: "Taxes & TVA",
-          href: "/dashboard/COMPTA/taxes",
-          icon: faReceipt  // déclarations fiscales, TVA, impôts
-        },
-        {
-          index: 7,
-          title: "Bilan annuel",
-          href: "/dashboard/COMPTA/annualBalance",
-          icon: faBalanceScale  // bilan comptable
-        },
-      ]
-    },
-    // Onglet Statistiques
-    {
-      index: 12,
-      title: "📊 Statistiques",
-      ItemLists: [
-        {
-          index: 0,
-          title: "Gain sur déduction",
-          href: "/home",
-          icon: faChartLine   // graphique linéaire pour gains/performances
-        },
-        {
-          index: 1,
-          title: "Gain sur abonnement",
-          href: "/dashboard/STATS/subscriptionRevenue",
-          icon: faCreditCard  // abonnement/revenu, carte de paiement
-        },
-        {
-          index: 2,
-          title: "Bilan général",
-          href: "/dashboard/STATS/generalPlan",
-          icon: faFileAlt      // bilan/rapport général
-        },
-      ]
-    },
-    {
-      index: 13,
-      title: "🌍 Localités",
-      ItemLists: [
-        {
-          index: 0,
-          title: "Villes enregistrées",
-          href: "/dashboard/LOCALITY/citiesList",
-          icon: faCity
-        },
-        {
-          index: 1,
-          title: "Arrondissements enregistrées",
-          href: "/dashboard/LOCALITY/districtsList",
-          icon: faBuildingColumns
-        },
-        {
-          index: 2,
-          title: "Quartiers enregistrées",
-          href: "/dashboard/LOCALITY/quartersList",
-          icon:faHouseChimney
-        },
-      ]
-    },
-    // Onglet Autres
-    {
-      index: 14,
-      title: "🧿 Autres",
-      ItemLists: [
-        {
-          index: 0,
-          title: "Enregistrer une entreprise",
-          href: "/dashboard/OTHERS/addEnterprise",
-          icon: faBuildingCircleCheck
-        },
-        {
-          index: 1,
-          title: "Liste des entreprises",
-          href: "/dashboard/OTHERS/enterprisesList",
-          icon: faBuildingColumns
-        },
-      ]
-    },
-  ];
-
-  console.log("le comportement de", toggleAsideSections);
-
-  function getAdminSectionNotificationCount(adminNotificationStored: AdminNotification[], index: number) {
-    const adminNotificationCount = adminNotificationStored.filter(item => parseInt(item.adminSectionIndex) === index);
-    return adminNotificationCount.length
-  }
-
-  function getAdminPageNotificationCount(adminSectionIndex: number, adminPageIndex: number) {
-    // const verifyItem = ItemAside.find(item => item.index === parseInt(adminSectionIndex))?.ItemLists.find(item => item?.index === parseInt(adminPageIndex));
-    const adminPageNotificationCount = adminNotificationStored.filter(item => parseInt(item.adminPageIndex) === adminPageIndex && parseInt(item.adminSectionIndex) === adminSectionIndex);
-
-    return adminPageNotificationCount.length;
-  }
-
-  function removeAdminPageNotificationCount(adminSectionIndex: number, adminPageIndex: number) {
-    const adminPageNotificationCount = adminNotificationStored.filter(item => parseInt(item.adminPageIndex) !== adminPageIndex && parseInt(item.adminSectionIndex) !== adminSectionIndex);
-    setAdminNotificationStored(adminPageNotificationCount);
-    localStorage.setItem("adminNotificationStored", JSON.stringify(adminPageNotificationCount))
-    return adminPageNotificationCount.length;
-  }
 
   return (
     <>
@@ -461,31 +136,43 @@ export function Sidebar() {
             <h1 className="font-bold text-[17px] mt-5 text-gray-300">Menu général</h1>
             <div className="mt-5">
               {
-                ItemAside.map((aside, index) => (
-                  <div key={index} className="mb-4">
+                ItemAside.map((aside, sectionIndex) => (
+                  <div key={sectionIndex} className="mb-4">
                     <div onClick={() => {
                       setToggleAsideSections(
-                        toggleAsideSections.includes(index) ?
-                          toggleAsideSections.filter(item => item !== index)
-                          : [...toggleAsideSections, index]
+                        toggleAsideSections.includes(sectionIndex) ?
+                          toggleAsideSections.filter(item => item !== sectionIndex)
+                          : [...toggleAsideSections, sectionIndex]
                       )
-                    }} className={toggleAsideSections.includes(index) ? "flex cursor-pointer p-2 bg-gray-900 text-gray-300 ease duration-700 flex-row items-center justify-between   dark:text-gray-300" : "flex cursor-pointer p-2 bg-gray-800 hover:bg-gray-900 ease duration-500 text-gray-300 flex-row items-center justify-between"}>
-                      <h3 className="font-bold">{aside.title ?? ""} <span className={getAdminSectionNotificationCount(adminNotificationStored, index) <= 0 ? "hidden" : 'bg-red-500 relative left-2 text-white rounded-full px-[6px]'}>
-                        {getAdminSectionNotificationCount(adminNotificationStored, index)}
-                      </span>
-                      </h3>
-                      <FontAwesomeIcon icon={toggleAsideSections.includes(index) ? faChevronUp : faChevronDown} className="" />
+                    }} className="flex cursor-pointer p-2 bg-gray-800 hover:bg-gray-900 ease  text-gray-300 flex-row items-center justify-between">
+                      <div>
+                        <h3 className="font-bold">{aside.title ?? ""} <span className='relative left-2 text-white rounded-full px-[6px]'>
+                        </span>
+                        </h3>
+                      </div>
+                      <div className="flex items-center space-x-2 flex-row">
+                        <div className={getPageNotificationsCount(sectionIndex) > 0 ? "bg-red-500 px-[9px] text-white rounded-full" : "hidden"}>
+                          {getPageNotificationsCount.length}
+                        </div>
+                        <div>
+                          <FontAwesomeIcon icon={toggleAsideSections.includes(sectionIndex) ? faChevronUp : faChevronDown} className="" />
+                        </div>
+                      </div>
                     </div>
 
-                    <div className={toggleAsideSections.includes(index) ? "flex flex-col ease duration-700 space-y-2 pl-8 pt-3" : "ease duration-500 hidden"}>
-                      {aside.ItemLists.map((list) => (
+                    <div className={`transition-all duration-500 ease opacity-0, ${toggleAsideSections.includes(sectionIndex) ? "flex flex-col ease opacity-1 space-y-2 pl-8 pt-3" : "opacity-0 hidden"}`}>
+                      {aside.ItemLists.map((list, pageIndex) => (
                         <Link href={list.href ?? "/"} onClick={() => {
-                          removeAdminPageNotificationCount(aside.index, list.index)
-                        }} className={cn(aside.index === 11 && list.index === 1 && parseInt(EnterpriseId ?? "") !== 1 ? "hidden" : aside.index === 11 && list.index === 1 && parseInt(EnterpriseId ?? "") === 1 && !requiresRole.includes(adminRole ?? "") ? "hidden" : "block")}>
-                          <li className="hover:text-orange-400/90 pb-2  text-gray-300 ease duration-500"><span><FontAwesomeIcon icon={list.icon} /></span> {list.title} <span className={getAdminPageNotificationCount(aside.index, list?.index) <= 0 ? "hidden" : 'bg-red-500 relative left-2 text-white font-semibold rounded-full px-[6px]'}>
-                            {getAdminPageNotificationCount(aside.index, list?.index)}
-                          </span>
-                          </li>
+
+                        }} className="flex flex-row justify-between items-center">
+                          <div className="">
+                            <li className="hover:text-orange-400/90 ease duration-500 pb-2 text-gray-300">
+                              <FontAwesomeIcon icon={list.icon} /> <span className='relativetext-gray-300'>{list.title}</span>
+                            </li>
+                          </div>
+                          <div className={getPageNotificationsCount(pageIndex) > 0 ? "bg-red-500 px-[9px] text-white rounded-full" : "hidden"}>
+                            {getPageNotificationsCount(pageIndex)}
+                          </div>
                         </Link>
                       ))}
                     </div>

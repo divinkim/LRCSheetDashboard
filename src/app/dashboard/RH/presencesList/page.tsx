@@ -217,15 +217,16 @@ export default function PresencesList() {
                                 <div className="flex flex-row mt-4 space-x-4">
                                     <button
                                         className="px-4 py-3  font-semibold text-white ease duration-500 hover:bg-red-600 bg-red-500 rounded disabled:opacity-40"
-                                        onClick={() => setPage(page + 1)}
-                                        disabled={page === maxPage}
+                                        onClick={() => setPage(page - 1)}
+                                        disabled={page === 1}
                                     >
                                         <span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronLeft} /></span> Précédent
                                     </button>
                                     <button
                                         className="px-4 py-3 bg-green-500 ease duration-500 hover:bg-green-600 text-white font-semibold rounded disabled:opacity-40"
-                                        onClick={() => setPage(page - 1)}
-                                        disabled={page === 1}
+                                        onClick={() => setPage(page + 1)}
+
+                                        disabled={page === maxPage}
                                     >
                                         Suivant<span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronRight} /></span>
                                     </button>

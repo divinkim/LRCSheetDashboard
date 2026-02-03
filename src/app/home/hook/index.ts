@@ -54,9 +54,9 @@ export default function HomeComponent() {
 
     for (const attendance of attendances) {
       const status = attendance.status;
-      const arrivalTime = Number(attendance.arrivalTime.split(":")?.pop() || 0);
-      const toleranceTime = Number(attendance?.Enterprise?.toleranceTime || 0);
-      const maxToleranceTime = Number(attendance?.Enterprise?.maxToleranceTime || 0);
+      const arrivalTime = Number(attendance.arrivalTime.split(":")?.pop()) ?? 0;
+      const toleranceTime = Number(attendance?.Enterprise?.toleranceTime) ?? 0;
+      const maxToleranceTime = Number(attendance?.Enterprise?.maxToleranceTime) ?? 0;
       const pourcentageOfHourlyDeduction = parseFloat(String(attendance?.Enterprise?.pourcentageOfHourlyDeduction));
       const maxPourcentageOfHourlyDeduction = parseFloat(String(attendance?.Enterprise?.maxPourcentageOfHourlyDeduction ?? ""));
 

@@ -3,7 +3,7 @@ import { Sidebar } from "@/components/Layouts/sidebar";
 import { Header } from "@/components/Layouts/header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faChevronDown, faChevronLeft, faChevronRight, faChevronUp, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { urlAPI } from "@/app/main";
+import { controllers, urlAPI } from "@/app/main";
 import { RepportsListHook } from "./hook";
 import { ClipLoader } from "react-spinners";
 
@@ -33,14 +33,14 @@ export default function Repports() {
                         </div>
                         <div className="flex item-center font-semibold text-white space-x-4">
                             <button type="button" onClick={() => {
-                                const incrementedMonthIndex = monthIndice + 1;
-                                setMonthIndice(incrementedMonthIndex);
-                                navigateBetweenMonths(RepportsArray, incrementedMonthIndex, parseInt(EnterpriseId ?? ""))
+                                const decrementMonthIndex = monthIndice - 1;
+                                setMonthIndice(decrementMonthIndex);
+                                navigateBetweenMonths(RepportsArray, decrementMonthIndex, parseInt(EnterpriseId ?? ""))
                             }} className="bg-orange-500/90 over:scale-105 ease duration-500 px-6 py-2"><span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronLeft} /></span>Précédent</button>
                             <button type="button" onClick={() => {
-                                const decrementedMonthIndex = monthIndice - 1;
-                                setMonthIndice(decrementedMonthIndex)
-                                navigateBetweenMonths(RepportsArray, decrementedMonthIndex, parseInt(EnterpriseId ?? ""))
+                                const incrementedMonthIndex = monthIndice + 1;
+                                setMonthIndice(incrementedMonthIndex)
+                                navigateBetweenMonths(RepportsArray, incrementedMonthIndex, parseInt(EnterpriseId ?? ""))
                             }} className="bg-blue-600 px-6 py-3 hover:scale-105 ease duration-500">Suivant<span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronRight} /></span></button>
                         </div>
                     </div>
@@ -94,6 +94,12 @@ export default function Repports() {
                                                 }} type="button" className="text-white bg-blue-600 rounded-md hover:bg-blue-600 w-[100px] py-2">
                                                     {isLoading ? <ClipLoader size={16} color="#fff" /> : "Envoyer"}
                                                 </button>
+                                            </div>
+                                            <div className={repport.files !== null ? "block" : "hidden"}>
+                                                <a href={`${urlAPI}/images/${repport.files}`} target="_blank">
+                                                    <img src="/images/fileIcone.png" className="w-[50px] h-[50px] object-contain" />
+                                                    <p className="mb-1 text-blue-700  underline">Fichier joint!</p>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>

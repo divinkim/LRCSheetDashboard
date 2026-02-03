@@ -3,9 +3,9 @@
 import { controllers, urlAPI } from "@/app/main";
 import HookComponentModal from "@/components/ComponentModal";
 import { isValidElement, useEffect, useState } from "react";
-
+import SidebarHook from "@/components/Layouts/sidebar/hook";
 type RepportsValue = {
-    id:number,
+    id: number,
     title: string,
     content: string,
     files: string,
@@ -34,13 +34,17 @@ export function RepportsListHook() {
     const [EnterpriseId, setEnterpriseId] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    const { setStoredNotificationsArray } = SidebarHook();
+
     useEffect(() => {
         (() => {
             if (typeof (window) === undefined) return;
             let EnterpriseId = window?.localStorage.getItem("EnterpriseId");
             setRepportsArray(ComponentModal.at(0)?.Repport?.repportsArray ?? []);
             setRepportsArrayCloned(ComponentModal.at(0)?.Repport?.repportsArray ?? []);
-            setEnterpriseId(EnterpriseId)
+            setEnterpriseId(EnterpriseId);
+            setStoredNotificationsArray([]);
+            localStorage.removeItem("storedNotificationsArray");
         })()
     }, [ComponentModal.at(0)?.Repport?.repportsArray]);
 
@@ -69,7 +73,7 @@ export function RepportsListHook() {
         setRepportsArrayCloned(repports)
     }
 
-    async function sendAdminResponse(adminResponse: string, tableName: string, id:number,  email: string, UserId: number, lastname: string, firstname: string) {
+    async function sendAdminResponse(adminResponse: string, tableName: string, id: number, email: string, UserId: number, lastname: string, firstname: string) {
         setIsLoading(true);
 
         if (adminResponse === "") {

@@ -29,7 +29,7 @@ export default function AddUser() {
                                     <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Ajouter un nouveau collaborateur</h1>
                                     <p className="text-blue-700 dark:text-blue-600">Dashboard/RH/Ajouter un collaborateur</p>
                                 </div>
-                                <hr className='bg-gray-400 border-0 h-[1px]' />
+                                <hr className='bg-gray-400' />
                                 <div className="flex flex-wrap py-4 lg:space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateUser.navigationLinks.map((element, index) => (
@@ -93,7 +93,7 @@ export default function AddUser() {
                                                     }
                                                     setInputs(fieldValue)
                                                     localStorage.setItem("inputMemoryOfAddUserPage", JSON.stringify(fieldValue))
-                                                }} name="" id="" className={cn("w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700", e.alias === "adminService" && inputs.role === null ? "hidden" : "block")}>
+                                                }} name="" id="" className={cn("w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900  dark:placeholder-gray-300 dark:text-gray-300 text-gray-700 placeholder-gray-700", e.alias === "adminService" && inputs.role === null ? "hidden" : "block")}>
                                                     <option value="" selected disabled>
                                                         {e.placeholder}
                                                     </option>
@@ -102,7 +102,7 @@ export default function AddUser() {
                                                             .find(item => item.alias === e.alias)
                                                             ?.arrayData
                                                             ?.map(option => (
-                                                                <option value={option.value}>
+                                                                <option className="text-gray-700" value={option.value}>
                                                                     {option.title}
                                                                 </option>
                                                             )) :

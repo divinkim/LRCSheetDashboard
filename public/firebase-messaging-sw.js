@@ -15,38 +15,60 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-/* ------------------------------------------------------------------ */
-/*        Réception en arrière-plan (app fermée / onglet fermé)     */
-/* ------------------------------------------------------------------ */
-messaging.onBackgroundMessage((payload) => {
-  console.log("Notification background:", payload);
+// UNIQUE fonction de sauvegarde
+async function saveNotificationToDB(notification) {
+  const dbName = "NotificationDB";
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(dbName, 1);
+    
+    request.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains("notifications")) {
+        db.createObjectStore("notifications", { autoIncrement: true });
+      }
+    };
 
-  const title = payload?.notification?.title || "Nouvelle notification";
-  const body = payload?.notification?.body || "";
-  const path = payload?.data?.path || "/"; 
-
-  self.registration.showNotification(title, {
-    body,
-    icon: "/images/logo/logo.png", 
-    requireInteraction: true,       
-    data: { path }             
+    request.onsuccess = (e) => {
+      const db = e.target.result;
+      const transaction = db.transaction("notifications", "readwrite");
+      const store = transaction.objectStore("notifications");
+      const addRequest = store.add(notification);
+      addRequest.onsuccess = () => {
+        console.log("Notif sauvegardée en DB (Site fermé)");
+        resolve();
+      };
+    };
+    
+    request.onerror = (e) => reject(e);
   });
+}
+
+// UNIQUE écouteur de messages en arrière-plan
+messaging.onBackgroundMessage(async (payload) => {
+  console.log("Payload reçu en background:", payload);
+
+  const notificationData = {
+    path: payload?.data?.path || "/",
+    adminSectionIndex: payload?.data?.adminSectionIndex || "0",
+    adminPageIndex: payload?.data?.adminPageIndex || "0",
+  };
+
+  // Sauvegarde impérative
+  await saveNotificationToDB(notificationData);
+
+  // Affichage de la notif système
+  return self.registration.showNotification(
+    payload?.notification?.title || "Nouvelle notification", 
+    {
+      body: payload?.notification?.body || "",
+      icon: "/images/logo/logo.png",
+      data: notificationData
+    }
+  );
 });
 
-/* ------------------------------------------------------------------ */
-/*                      Clic sur la notification                    */
-/* ------------------------------------------------------------------ */
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-
-  const path = event?.notification?.data?.path;
-
-  if (!path) {
-    console.warn("Aucun chemin reçu pour la notification");
-    return;
-  }
-
-  event.waitUntil(
-    clients.openWindow(path) //
-  );
+  const path = event.notification.data.path;
+  event.waitUntil(clients.openWindow(path));
 });

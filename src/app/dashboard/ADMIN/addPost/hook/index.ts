@@ -35,34 +35,32 @@ export default function AddOrUpdatePostHookModal() {
 
     //Récupère les données de champs en mémoire
     useEffect(() => {
-        if (typeof (window) === "undefined") return;
         (() => {
-            const inputMemory = window?.localStorage.getItem("inputMemoryAddPost");
-            inputMemory ? setInputs(JSON.parse(inputMemory ?? "")) : setInputs({ ...inputs });
-            setDynamicArrayDatasCloned(dynamicArrayDatas);
+            const inputMemory = localStorage.getItem("inputMemoryOfAddPost");
+            inputMemory ? setInputs(JSON.parse(inputMemory)) : setInputs({ ...inputs });
         })();
     }, []);
 
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
-        if (typeof (window) === "undefined") return;
         (async () => {
             const role = window?.localStorage.getItem("adminRole");
             const getEnterpriseIdOfAdmin = window?.localStorage.getItem("EnterpriseId");
 
             const enterprises = await controllers.API.getAll(urlAPI, "getEnterprises", null);
 
-            if (parseInt(getEnterpriseIdOfAdmin ?? "") !== 1) {
+            if (Number(getEnterpriseIdOfAdmin) !== 1) {
                 const filterEnterpriseByEnterpriseId = enterprises.filter(
-                    (enterprise: { id: number }) => enterprise.id === parseInt(getEnterpriseIdOfAdmin ?? "")
+                    (enterprise: { id: number }) => enterprise.id === Number(getEnterpriseIdOfAdmin)
                 );
                 setEnterprises(filterEnterpriseByEnterpriseId);
-                return;
+                setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
+                setAdminRole(role);
+            } else {
+                setEnterprises(enterprises);
+                setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
+                setAdminRole(role);
             }
-
-            setEnterprises(enterprises);
-            setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
-            setAdminRole(role);
         })();
     }, []);
 
@@ -93,7 +91,7 @@ export default function AddOrUpdatePostHookModal() {
         },
     ];
 
-    let staticArrayData = [
+    let staticArrayDatas = [
         {
             alias: "gender",
             arrayData: [
@@ -129,14 +127,12 @@ export default function AddOrUpdatePostHookModal() {
         },
     ]
 
-    const [dynamicArrayDatasCloned, setDynamicArrayDatasCloned] = useState<DynamicArrayData[]>([]);
-
     const handleSubmit = async () => {
         setIsLoading(true);
 
         const response = await controllers.API.SendOne(urlAPI, "createPoste", null, inputs);
 
-        if (response.status) window?.localStorage.removeItem("inputMemory")
+        if (response.status) localStorage.removeItem("inputMemoryofAddPost")
 
         controllers.alertMessage(
             response.status,
@@ -148,5 +144,5 @@ export default function AddOrUpdatePostHookModal() {
         setIsLoading(false);
     };
 
-    return { dynamicArrayDatas, staticArrayData, inputs, setInputs, isLoading, handleSubmit, dynamicArrayDatasCloned }
+    return { dynamicArrayDatas, staticArrayDatas, inputs, setInputs, isLoading, handleSubmit}
 }

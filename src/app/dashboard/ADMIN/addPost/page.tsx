@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import AddOrUpdatePostHookModal from "./hook";
 
 export default function AddPost() {
-    const { dynamicArrayDatasCloned, staticArrayData, inputs, setInputs, handleSubmit, isLoading } = AddOrUpdatePostHookModal();
+    const { staticArrayDatas, dynamicArrayDatas, inputs, setInputs, handleSubmit, isLoading } = AddOrUpdatePostHookModal();
 
     return (
         <main className="bg-gray-100 dark:bg-transparent">
@@ -40,7 +40,7 @@ export default function AddPost() {
                         ))
                     }
 
-                    <div className='dark:border mt-8 w-full mx-auto lg:w-[70%] font-semibold h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none p-4'>
+                    <div className='dark:border mt-8 w-full mx-auto lg:w-[70%] xl:w-[80%] 2xl:w-[70%] font-semibold h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none p-4'>
                         {
                             formElements.map((element) => (
 
@@ -74,16 +74,16 @@ export default function AddPost() {
                                                             }
                                                             setInputs(fieldValue);
 
-                                                            window?.localStorage.setItem("inputMemory", JSON.stringify(fieldValue));
+                                                        localStorage.setItem("inputMemoryOfAddPost", JSON.stringify(fieldValue));
                                                         }
                                                         return;
                                                     }
                                                     fieldValue = { ...inputs, [field]: v.target.value }
                                                     setInputs(fieldValue);
 
-                                                    window?.localStorage.setItem("inputMemory", JSON.stringify(fieldValue));
+                                                    localStorage.setItem("inputMemoryOfAddPost", JSON.stringify(fieldValue));
 
-                                                }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 f dark:text-gray-300 text-gray-700" />
+                                                }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 placeholder-gray-700 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 f dark:text-gray-300 text-gray-700" />
                                                 :
                                                 e.textarea && !e.selectedInput ?
                                                     <textarea placeholder={e.placeholder ?? ""} value={inputs[e.alias] ?? ""} onChange={(v) => {
@@ -93,8 +93,8 @@ export default function AddPost() {
 
                                                         setInputs(fieldValue);
 
-                                                        window?.localStorage.setItem("inputMemoryAddPost", JSON.stringify(fieldValue))
-                                                    }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 h-[100px] bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 dark:text-gray-300 text-gray-700"></textarea>
+                                                        window?.localStorage.setItem("inputMemoryOfAddPost", JSON.stringify(fieldValue))
+                                                    }} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 h-[100px] bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 dark:text-gray-300 placeholder-gray-700 text-gray-700"></textarea>
                                                     :
                                                     <select value={inputs[e.alias] ?? ""} onChange={(v) => {
                                                         const field = e.alias;
@@ -105,13 +105,13 @@ export default function AddPost() {
                                                         };
 
                                                         setInputs(fieldValue);
-                                                        window?.localStorage.setItem("inputMemoryAddPost", JSON.stringify(fieldValue));
-                                                    }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
+                                                        window?.localStorage.setItem("inputMemoryOfAddPost", JSON.stringify(fieldValue));
+                                                    }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 placeholder-gray-700 text-gray-700">
                                                         <option value="" selected disabled>
                                                             {e.placeholder}
                                                         </option>
                                                         {
-                                                            e.dynamicOptions?.status ? dynamicArrayDatasCloned
+                                                            e.dynamicOptions?.status ? dynamicArrayDatas
                                                                 .find(item => item.alias === e.alias)
                                                                 ?.arrayData
                                                                 ?.map(option => (
@@ -119,7 +119,7 @@ export default function AddPost() {
                                                                         {option.title}
                                                                     </option>
                                                                 )) :
-                                                                staticArrayData.find(item => item.alias === e.alias)?.arrayData.map(option => (
+                                                                staticArrayDatas.find(item => item.alias === e.alias)?.arrayData.map(option => (
                                                                     <option value={option.value}>
                                                                         {option.title}
                                                                     </option>

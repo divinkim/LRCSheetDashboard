@@ -26,7 +26,7 @@ export default function AddSalary() {
                                     <h1 className="font-bold mb-3 text-[20px] dark:text-gray-300 text-gray-700">Ajouter un salaire</h1>
                                     <p className="text-blue-700 dark:text-blue-600">Dashboard/COMPTA/Ajouter un salaire</p>
                                 </div>
-                                <hr className='bg-gray-400 border-0 h-[1px]' />
+                                <hr className='bg-gray-400' />
                                 <div className="flex flex-wrap py-4 lg:space-x-4 space-y-4 items-center">
                                     {
                                         element.addOrUpdateSalary.navigationLinks.map((element, index) => (
@@ -39,7 +39,7 @@ export default function AddSalary() {
                             </div>
                         ))
                     }
-                    <div className='dark:border mt-8 w-full xl:w-[55%] mx-auto font-semibold h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none px-4 py-8'>
+                    <div className='dark:border mt-8 w-full xl:w-[70%] 2xl:w-[60%] mx-auto font-semibold h-auto border-gray-400 dark:border-gray-300 rounded-[30px] border  dark:shadow-none px-4 py-8'>
                         {
                             formElements.map((element) => (
 
@@ -49,7 +49,7 @@ export default function AddSalary() {
                                 </div>
                             ))
                         }
-                        <hr className='bg-gray-400 border-0 h-[1px]' />
+                        <hr className='bg-gray-400' />
 
                         <div className='grid grid-cols-1  mt-4 gap-x-4 md:grid-cols-2 xl:grid-cols-2 font-semibold w-full'>
                             {
@@ -78,8 +78,8 @@ export default function AddSalary() {
                                                             })
                                                         }
                                                     }
-
-                                                }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 f dark:text-gray-300 text-gray-700" />
+                                                    localStorage.setItem("inputMemoryOfAddSalary", JSON.stringify(inputs))
+                                                }} type={e.type} maxLength={e.type === "tel" ? 9 : undefined} placeholder={e.placeholder} className="w-full mt-1 outline-none rounded-md  placeholder-gray-700 dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300  dark:placeholder-gray-300 f dark:text-gray-300 text-gray-700" />
                                                 :
                                                 <select onChange={(v) => {
                                                     for (const [key, _] of Object.entries(inputs)) {
@@ -90,7 +90,7 @@ export default function AddSalary() {
                                                             })
                                                         }
                                                     }
-
+                                                    localStorage.setItem("inputMemoryOfAddSalary", JSON.stringify(inputs))
                                                 }} name="" id="" className="w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900 f dark:placeholder-gray-300 dark:text-gray-300 text-gray-700">
                                                     <option value="" selected disabled>
                                                         {e.placeholder}

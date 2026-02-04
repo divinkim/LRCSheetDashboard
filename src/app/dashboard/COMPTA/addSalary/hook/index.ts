@@ -27,8 +27,10 @@ export function AddSalaryHookModal() {
 
     useEffect(() => {
         (async () => {
-            const authToken = window?.localStorage.getItem("authToken");
-            const role = window?.localStorage.getItem("adminRole");
+            const inputMemory = localStorage.getItem("inputMemoryOfAddSalary");
+            inputMemory ? setInputs(JSON.parse(inputMemory)) : setInputs({ ...inputs });
+
+            const role = localStorage.getItem("adminRole");
             let getEnterpriseIdOfAdmin = window?.localStorage.getItem("EnterpriseId");
 
             setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
@@ -75,6 +77,9 @@ export function AddSalaryHookModal() {
         }
 
         const response = await controllers.API.SendOne(urlAPI, "addSalary", null, data);
+
+        if (response.status) localStorage.removeItem("inputMemoryOfAddSalary");
+        
         controllers.alertMessage(
             response.status,
             response.title,
@@ -84,5 +89,6 @@ export function AddSalaryHookModal() {
 
         setIsLoading(false);
     };
-    return {isLoading, inputs, dynamicOptions, posts, setInputs, handleSubmit}
+    
+    return { isLoading, inputs, dynamicOptions, posts, setInputs, handleSubmit };
 }

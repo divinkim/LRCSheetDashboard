@@ -33,9 +33,38 @@ export default function SidebarHook() {
     const [storedNotificationsArray, setStoredNotificationsArray] = useState<notificationProps[]>([]);
     //Réception des notifs entrantes
     useEffect(() => {
-        (() => {
-            const storedNotificationsArray = localStorage.getItem("storedNotificationsArray");
-            storedNotificationsArray ? setStoredNotificationsArray(JSON.parse(storedNotificationsArray)) : setStoredNotificationsArray([]);
+        (async () => {
+            const localData = localStorage.getItem("storedNotificationsArray");
+            let currentNotifs = localData ? JSON.parse(localData) : [];
+            setStoredNotificationsArray(currentNotifs);
+            // Récupération des notifs pendant que le site est FERMÉ (IndexedDB)
+            const dbName = "NotificationDB";
+            const request = indexedDB.open(dbName, 1);
+
+            // request.onsuccess = (e: any) => {
+            //     const db = e.target.result;
+            //     if (!db.objectStoreNames.contains("notifications")) return;
+
+            //     const transaction = db.transaction("notifications", "readwrite");
+            //     const store = transaction.objectStore("notifications");
+            //     const getAllRequest = store.getAll();
+
+            //     getAllRequest.onsuccess = () => {
+            //         const backgroundNotifs = getAllRequest.result;
+
+            //         if (backgroundNotifs.length > 0) {
+            //             // Fusionner les nouvelles notifs d'arrière-plan avec le localStorage
+            //             const updatedArray = [...currentNotifs, ...backgroundNotifs];
+            //             setStoredNotificationsArray(updatedArray);
+            //             localStorage.setItem("storedNotificationsArray", JSON.stringify(updatedArray));
+
+            //             // Vider IndexedDB pour ne pas les traiter deux fois
+            //             store.clear();
+            //         } else {
+            //             setStoredNotificationsArray(currentNotifs);
+            //         }
+            //     };
+            // };
         })();
 
         const unSubscribe = onMessage(messaging, (remoteMessage) => {
@@ -48,7 +77,7 @@ export default function SidebarHook() {
                     adminPageIndex: remoteMessage.data?.adminPageIndex,
                 }
 
-                setStoredNotificationsArray((prevNotifications) => [...prevNotifications, notification]);
+                setStoredNotificationsArray((prevNotifications) =>[...prevNotifications, notification]);
                 localStorage.setItem("storedNotificationsArray", JSON.stringify([...storedNotificationsArray, notification]));
 
                 Swal.fire({
@@ -68,7 +97,7 @@ export default function SidebarHook() {
         });
 
         return () => { unSubscribe }
-    }, [])
+    }, []);
 
     const ItemAside = [
         // Onglet notifications
@@ -147,7 +176,7 @@ export default function SidebarHook() {
                     href: "/dashboard/ADMIN/repportsList",
                     icon: faFileLines
                 },
-    
+
                 {
                     index: 2,
                     title: "Ajouter un contrat",
@@ -187,7 +216,7 @@ export default function SidebarHook() {
                 {
                     index: 8,
                     title: "Ajouter un département",
-                    href: "/dashboard/ADMIN/addDepartement",
+                    href: "/dashboard/ADMIN/addDepartment",
                     icon: faBuilding
                 },
                 {
@@ -334,6 +363,8 @@ export default function SidebarHook() {
 
         return notificationArray.length;
     }
+
+    console.log("le putain de tableau de notif", storedNotificationsArray)
 
     return { ItemAside, storedNotificationsArray, setStoredNotificationsArray, getSectionNotificationsCount, getPageNotificationsCount };
 }

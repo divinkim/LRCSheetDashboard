@@ -91,7 +91,7 @@ export default function AddUserHookModal() {
     useEffect(() => {
         (async () => {
             const getDepartmentPosts = await controllers.API.getAll(urlAPI, "getDepartmentPosts", null);
-            const filterDepartmentsByAdminEnterpriseId = inputs.EnterpriseId !== 1 ? getDepartmentPosts.filter((department: { EnterpriseId: number }) => department.EnterpriseId !== inputs.EnterpriseId) : getDepartmentPosts.filter((department: { EnterpriseId: number }) => [1, 2, 3, 4].includes(department.EnterpriseId));
+            const filterDepartmentsByAdminEnterpriseId = getDepartmentPosts.filter((department: { EnterpriseId: number }) => department.EnterpriseId === inputs.EnterpriseId);
             setDepartmentPosts(filterDepartmentsByAdminEnterpriseId)
         })()
     }, [inputs.EnterpriseId]);
@@ -102,7 +102,7 @@ export default function AddUserHookModal() {
             const getPosts = await controllers.API.getAll(urlAPI, "getPosts", null);
             const filteredPosts = getPosts.filter((post: { EnterpriseId: number, DepartmentPostId: number }) => post.DepartmentPostId === inputs.DepartmentPostId && post.EnterpriseId === inputs.EnterpriseId);
             setPosts(filteredPosts)
-            console.log(filteredPosts);
+            console.log("Voici la liste des postes", filteredPosts);
         })()
     }, [inputs.DepartmentPostId, inputs.EnterpriseId]);
 
@@ -114,7 +114,7 @@ export default function AddUserHookModal() {
             setSalary(filteredSalries)
             console.log(filteredSalries);
         })()
-    }, [inputs.PostId]);
+    }, [inputs.PostId, inputs.EnterpriseId]);
 
     // Récupération des type de Contrat
     useEffect(() => {
@@ -195,7 +195,7 @@ export default function AddUserHookModal() {
         },
         {
             alias: "PostId",
-            arrayData: getPosts.filter(item => item.id && item.title).map(item => ({ value: item.id, title: item.name }))
+            arrayData: getPosts.filter(item => item.id && item.title).map(item => ({ value: item.id, title: item.title }))
         },
         {
             alias: "SalaryId",
@@ -309,7 +309,7 @@ export default function AddUserHookModal() {
 
         const response = await controllers.API.SendOne(urlAPI, "createUser", null, inputs);
 
-        if (response.status) window?.localStorage.removeItem("inputMemoryOfAddUserPage");
+        if (response.status) localStorage.removeItem("inputMemoryOfAddUserPage");
 
         controllers.alertMessage(
             response.status,
@@ -320,6 +320,8 @@ export default function AddUserHookModal() {
 
         setIsLoading(false);
     };
+
+    console.log("les datas",inputs);
 
     return { dynamicArrayDatas, staticArrayData, handleSubmit, inputs, setInputs, isLoading }
 }

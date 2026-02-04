@@ -6,7 +6,8 @@ import {
     faMoneyBillWave,
     faMapMarkedAlt,
     faMapPin, faFileContract, faSuitcaseRolling, faIdBadge,
-    faMoneyCheckAlt
+    faMoneyCheckAlt,
+    faContactCard
 } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { title } from "process";
@@ -679,7 +680,19 @@ export const formElements = [
                     alias: "name"
 
                 },
+                {
+                    label: "Entreprise",
+                    placeholder: "Séléctionnez une entreprise",
+                    requireField: true,
+                    type: "number",
+                    textarea: true,
+                    selectedInput: true,
+                    dynamicOptions: {
+                        status: true
+                    },
+                    alias: "EnterpriseId"
 
+                },
                 {
                     label: "Description",
                     placeholder: "Saisissez une description",
@@ -691,19 +704,6 @@ export const formElements = [
 
                 },
 
-                {
-                    label: "Entreprise",
-                    placeholder: "Séléctionnez une entreprise",
-                    requireField: true,
-                    type: "text",
-                    textarea: true,
-                    selectedInput: true,
-                    dynamicOptions: {
-                        status: true
-                    },
-                    alias: "EnterpriseId"
-
-                }
             ],
 
 
@@ -716,6 +716,11 @@ export const formElements = [
                     title: "Liste des salaires",
                     href: "/dashboard/COMPTA/salariesList",
                     icon: faMoneyCheckAlt
+                },
+                {
+                    title: "Ajouter un poste",
+                    href: "/dashboard/ADMIN/addPost",
+                    icon: faContactCard
                 },
             ],
 

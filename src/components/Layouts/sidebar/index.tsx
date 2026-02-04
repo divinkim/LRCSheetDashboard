@@ -137,22 +137,22 @@ export function Sidebar() {
             <div className="mt-5">
               {
                 ItemAside.map((aside, sectionIndex) => (
-                  <div key={sectionIndex} className="mb-4">
+                  <div key={sectionIndex} className="mb-4 relative">
                     <div onClick={() => {
                       setToggleAsideSections(
                         toggleAsideSections.includes(sectionIndex) ?
                           toggleAsideSections.filter(item => item !== sectionIndex)
                           : [...toggleAsideSections, sectionIndex]
                       )
-                    }} className="flex cursor-pointer p-2 bg-gray-800 hover:bg-gray-900 ease  text-gray-300 flex-row items-center justify-between">
+                    }} className="transition-all duration-1000 ease-in-out flex cursor-pointer p-2 bg-gray-800 relative z-20 hover:bg-gray-900 ease  text-gray-300 flex-row items-center justify-between">
                       <div>
                         <h3 className="font-bold">{aside.title ?? ""} <span className='relative left-2 text-white rounded-full px-[6px]'>
                         </span>
                         </h3>
                       </div>
                       <div className="flex items-center space-x-2 flex-row">
-                        <div className={getPageNotificationsCount(sectionIndex) > 0 ? "bg-red-500 px-[9px] text-white rounded-full" : "hidden"}>
-                          {getPageNotificationsCount.length}
+                        <div className={getSectionNotificationsCount(sectionIndex) > 0 ? "bg-red-500 px-[9px] text-white rounded-full" : "hidden"}>
+                          {getSectionNotificationsCount(sectionIndex)}
                         </div>
                         <div>
                           <FontAwesomeIcon icon={toggleAsideSections.includes(sectionIndex) ? faChevronUp : faChevronDown} className="" />
@@ -160,17 +160,17 @@ export function Sidebar() {
                       </div>
                     </div>
 
-                    <div className={`transition-all duration-500 ease opacity-0, ${toggleAsideSections.includes(sectionIndex) ? "flex flex-col ease opacity-1 space-y-2 pl-8 pt-3" : "opacity-0 hidden"}`}>
+                    <div className={`transition-all duration-1000 ease-in-out space-y-2 pl-8 pt-4, ${toggleAsideSections.includes(sectionIndex) ? "opacity-1" : "opacity-0 absolute z-0"}`}>
                       {aside.ItemLists.map((list, pageIndex) => (
                         <Link href={list.href ?? "/"} onClick={() => {
 
-                        }} className="flex flex-row justify-between items-center">
+                        }} className="flex flex-row space-x-3 mt-3 items-center">
                           <div className="">
                             <li className="hover:text-orange-400/90 ease duration-500 pb-2 text-gray-300">
                               <FontAwesomeIcon icon={list.icon} /> <span className='relativetext-gray-300'>{list.title}</span>
                             </li>
                           </div>
-                          <div className={getPageNotificationsCount(pageIndex) > 0 ? "bg-red-500 px-[9px] text-white rounded-full" : "hidden"}>
+                          <div className={getPageNotificationsCount(pageIndex) > 0 ? "bg-red-500 relative -top-1 px-[8.5px] text-white rounded-full" : "hidden"}>
                             {getPageNotificationsCount(pageIndex)}
                           </div>
                         </Link>

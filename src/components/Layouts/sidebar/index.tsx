@@ -55,7 +55,7 @@ export function Sidebar() {
     // );
   };
 
-  const { ItemAside, getPageNotificationsCount, getSectionNotificationsCount } = SidebarHook();
+  const { ItemAside, getPageNotificationsCount, getSectionNotificationsCount, storedNotificationsArray } = SidebarHook();
 
   useEffect(() => {
     (async () => {
@@ -151,7 +151,7 @@ export function Sidebar() {
                         </h3>
                       </div>
                       <div className="flex items-center space-x-2 flex-row">
-                        <div className={getSectionNotificationsCount(sectionIndex) > 0 ? "bg-red-500 px-[9px] text-white rounded-full" : "hidden"}>
+                        <div className={getSectionNotificationsCount(sectionIndex) > 0 ? "bg-red-500 px-[8.5px] text-white rounded-full" : "hidden"}>
                           {getSectionNotificationsCount(sectionIndex)}
                         </div>
                         <div>
@@ -170,7 +170,7 @@ export function Sidebar() {
                               <FontAwesomeIcon icon={list.icon} /> <span className='relativetext-gray-300'>{list.title}</span>
                             </li>
                           </div>
-                          <div className={getPageNotificationsCount(pageIndex) > 0 ? "bg-red-500 relative -top-1 px-[8.5px] text-white rounded-full" : "hidden"}>
+                          <div className={storedNotificationsArray.find(item => Number(item.adminPageIndex) === pageIndex && Number(item.adminSectionIndex) === sectionIndex) && getPageNotificationsCount(pageIndex) > 0 ? "bg-red-500 relative -top-1 px-[8.5px] text-white rounded-full" : "hidden"}>
                             {getPageNotificationsCount(pageIndex)}
                           </div>
                         </Link>

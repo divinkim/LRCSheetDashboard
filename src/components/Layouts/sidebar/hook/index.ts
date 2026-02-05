@@ -31,73 +31,99 @@ type notificationProps = {
 
 export default function SidebarHook() {
     const [storedNotificationsArray, setStoredNotificationsArray] = useState<notificationProps[]>([]);
+    const [count, setCount] = useState(0);
+
+    const DB_NAME = "NotificationDB";
+    const DB_VERSION = 2;
+    const STORE_NAME = "notifications";
+
+    function openDB(): Promise<IDBDatabase> {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+            request.onupgradeneeded = (e: any) => {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains(STORE_NAME)) {
+                    db.createObjectStore(STORE_NAME, { autoIncrement: true });
+                }
+            };
+
+            request.onsuccess = (e: any) => resolve(e.target.result);
+            request.onerror = (e) => reject(e);
+        });
+    }
+
+    async function getAndClearNotifications() {
+        const db = await openDB();
+
+        return new Promise<any[]>((resolve) => {
+            const tx = db.transaction(STORE_NAME, "readwrite");
+            const store = tx.objectStore(STORE_NAME);
+            const req = store.getAll();
+
+            req.onsuccess = () => {
+                const data = req.result || [];
+                store.clear();
+                resolve(data);
+            };
+        });
+    }
+
     //Réception des notifs entrantes
     useEffect(() => {
         (async () => {
-            const localData = localStorage.getItem("storedNotificationsArray");
-            let currentNotifs = localData ? JSON.parse(localData) : [];
-            setStoredNotificationsArray(currentNotifs);
-            // Récupération des notifs pendant que le site est FERMÉ (IndexedDB)
-            const dbName = "NotificationDB";
-            const request = indexedDB.open(dbName, 1);
+            const local = localStorage.getItem("storedNotificationsArray");
+            const current = local ? JSON.parse(local) : [];
+            setStoredNotificationsArray(current);
 
-            // request.onsuccess = (e: any) => {
-            //     const db = e.target.result;
-            //     if (!db.objectStoreNames.contains("notifications")) return;
+            //Récupération de IndexedDB (site fermé)
+            const backgroundNotifs = await getAndClearNotifications();
 
-            //     const transaction = db.transaction("notifications", "readwrite");
-            //     const store = transaction.objectStore("notifications");
-            //     const getAllRequest = store.getAll();
-
-            //     getAllRequest.onsuccess = () => {
-            //         const backgroundNotifs = getAllRequest.result;
-
-            //         if (backgroundNotifs.length > 0) {
-            //             // Fusionner les nouvelles notifs d'arrière-plan avec le localStorage
-            //             const updatedArray = [...currentNotifs, ...backgroundNotifs];
-            //             setStoredNotificationsArray(updatedArray);
-            //             localStorage.setItem("storedNotificationsArray", JSON.stringify(updatedArray));
-
-            //             // Vider IndexedDB pour ne pas les traiter deux fois
-            //             store.clear();
-            //         } else {
-            //             setStoredNotificationsArray(currentNotifs);
-            //         }
-            //     };
-            // };
+            if (backgroundNotifs.length > 0) {
+                const merged = [...current, ...backgroundNotifs];
+                setStoredNotificationsArray(merged);
+                setCount(prevCount => prevCount + 1);
+            }
         })();
 
-        const unSubscribe = onMessage(messaging, (remoteMessage) => {
-            const EnterpriseId = localStorage.getItem("EnterpriseId")
-            console.log(remoteMessage)
+        //Notifications live
+        const unsubscribe = onMessage(messaging, (remoteMessage) => {
+            const EnterpriseId = localStorage.getItem("EnterpriseId");
+
             if (Number(remoteMessage.data?.EnterpriseId) === Number(EnterpriseId)) {
-                const notification = {
+                const notif = {
                     path: remoteMessage.data?.path,
                     adminSectionIndex: remoteMessage.data?.adminSectionIndex,
                     adminPageIndex: remoteMessage.data?.adminPageIndex,
-                }
+                };
 
-                setStoredNotificationsArray((prevNotifications) =>[...prevNotifications, notification]);
-                localStorage.setItem("storedNotificationsArray", JSON.stringify([...storedNotificationsArray, notification]));
+                setStoredNotificationsArray((prev) => [...prev, notif]);
+                setCount(prevCount => prevCount + 1);
 
                 Swal.fire({
                     icon: "info",
-                    title: "Notification entrante!",
-                    text: "Vous avez une nouvelle notification.",
+                    title: "Notification entrante",
+                    text: "Vous avez une nouvelle notification",
                     showCancelButton: true,
-                    cancelButtonText: "Pas maintenant",
-                    confirmButtonText: "Voire plus",
-                }).then((confirm) => {
-                    if (confirm.isConfirmed) {
-                        window.location.href = `${remoteMessage.data?.path}`
+                    cancelButtonText: "Plus tard",
+                    confirmButtonText: "Voir",
+                }).then((res) => {
+                    if (res.isConfirmed) {
+                        window.location.href = `${notif.path}`;
                     }
-                })
-
+                });
             }
         });
 
-        return () => { unSubscribe }
+        return () => unsubscribe();
     }, []);
+
+    useEffect(() => {
+        (() => {
+            console.log("les notifs en question", storedNotificationsArray);
+            if (storedNotificationsArray.length > 0) localStorage.setItem("storedNotificationsArray", JSON.stringify(storedNotificationsArray));
+        })();
+    }, [count]);
 
     const ItemAside = [
         // Onglet notifications
@@ -364,7 +390,5 @@ export default function SidebarHook() {
         return notificationArray.length;
     }
 
-    console.log("le putain de tableau de notif", storedNotificationsArray)
-
-    return { ItemAside, storedNotificationsArray, setStoredNotificationsArray, getSectionNotificationsCount, getPageNotificationsCount };
+    return { ItemAside, storedNotificationsArray, setStoredNotificationsArray, getSectionNotificationsCount, getPageNotificationsCount, };
 }

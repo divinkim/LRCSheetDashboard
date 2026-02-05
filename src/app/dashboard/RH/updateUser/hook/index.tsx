@@ -71,11 +71,10 @@ export function UpdateUserHookModal() {
 
     // Récupération des entreprises et filtrage en fonction de l'id de l'administrateur courant
     useEffect(() => {
-        if (typeof (window) === "undefined") return;
         (async () => {
-            const authToken = window?.localStorage.getItem("authToken");
-            const role = window?.localStorage.getItem("adminRole");
-            let getEnterpriseIdOfAdmin = window?.localStorage.getItem("EnterpriseId");
+            const authToken = localStorage.getItem("authToken");
+            const role = localStorage.getItem("adminRole");
+            let getEnterpriseIdOfAdmin = localStorage.getItem("EnterpriseId");
 
             setEnterpriseIdOfAdmin(getEnterpriseIdOfAdmin);
             setAdminRole(role)
@@ -147,9 +146,10 @@ export function UpdateUserHookModal() {
             const getDepartmentPosts = await controllers.API.getAll(urlAPI, "getDepartmentPosts", null);
             if (getAdminRole !== "Super-Admin") {
                 const filteredDepartmentPosts = getDepartmentPosts.filter((department: { EnterpriseId: number }) => department.EnterpriseId === inputs.EnterpriseId);
-                setGetDepartmentPosts(filteredDepartmentPosts)
+                setGetDepartmentPosts(filteredDepartmentPosts);
             } else {
-                setGetDepartmentPosts(getDepartmentPosts)
+                setGetDepartmentPosts(getDepartmentPosts);
+                console.log("les postes départements", getDepartmentPosts)
             }
         })()
     }, [inputs.EnterpriseId]);
@@ -245,7 +245,7 @@ export function UpdateUserHookModal() {
             arrayData: getEnterprises.filter(item => item.id && item.name).map(item => ({ value: item.id, title: item.name }))
         },
         {
-            alias: "departmentPostId",
+            alias: "DepartmentPostId",
             arrayData: getDepartmentPosts.filter(item => item.id && item.name).map(item => ({ value: item.id, title: item.name }))
         },
         {

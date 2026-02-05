@@ -30,15 +30,14 @@ export default function AddOrEditUserPlanningOfWeek() {
     const [plannings, setPlannings] = useState<Plannings[]>([]);
     const [enterpriseId, setEnterpriseId] = useState<string | null>(null);
     useEffect(() => {
-
         (async () => {
             let EnterpriseId = localStorage.getItem("EnterpriseId");
             setEnterpriseId(EnterpriseId);
-            
+
             const users = await controllers.API.getAll(urlAPI, "getUsers", null);
 
             if (Number(EnterpriseId) === 1) {
-                const filterUserByEnterpriseId = users.filter((user: { EnterpriseId: number, adminService: string | null }) => [1, 2, 3, 4, null].includes(Number(EnterpriseId)) && user.adminService === null);
+                const filterUserByEnterpriseId = users.filter((user: { EnterpriseId: number, adminService: string | null }) => [1, 2, 3, 4, null].includes(user.EnterpriseId));
 
                 setUsers(filterUserByEnterpriseId);
                 return;

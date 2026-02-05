@@ -94,7 +94,7 @@ export default function AddUser() {
                                                     setInputs(fieldValue)
                                                     localStorage.setItem("inputMemoryOfAddUserPage", JSON.stringify(fieldValue))
                                                 }} name="" id="" className={cn("w-full mt-1 outline-none rounded-md  dark:shadow-none p-2.5 bg-transparent border border-gray-400 dark:border-gray-300 dark:bg-gray-900  dark:placeholder-gray-300 dark:text-gray-300 text-gray-700 placeholder-gray-700", e.alias === "adminService" && inputs.role === null ? "hidden" : "block")}>
-                                                    <option value="" selected disabled>
+                                                    <option value="" selected>
                                                         {e.placeholder}
                                                     </option>
                                                     {

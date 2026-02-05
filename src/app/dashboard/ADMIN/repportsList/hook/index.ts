@@ -38,8 +38,8 @@ export function RepportsListHook() {
 
     useEffect(() => {
         (() => {
-            if (typeof (window) === undefined) return;
-            let EnterpriseId = window?.localStorage.getItem("EnterpriseId");
+
+            let EnterpriseId = localStorage.getItem("EnterpriseId");
             setRepportsArray(ComponentModal.at(0)?.Repport?.repportsArray ?? []);
             setRepportsArrayCloned(ComponentModal.at(0)?.Repport?.repportsArray ?? []);
             setEnterpriseId(EnterpriseId);

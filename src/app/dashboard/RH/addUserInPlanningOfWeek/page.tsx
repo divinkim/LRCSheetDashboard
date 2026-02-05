@@ -46,7 +46,7 @@ export default function addUserInPlanningOfWeek() {
         usersId: [],
         weekDaysId: [],
         PlanningId: 0,
-    })
+    });
 
     useEffect(() => {
         (() => {

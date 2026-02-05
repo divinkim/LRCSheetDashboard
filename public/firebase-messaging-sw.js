@@ -2,6 +2,7 @@
 importScripts("https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js");
 
+/* ================= FIREBASE INIT ================= */
 firebase.initializeApp({
   apiKey: "AIzaSyBB_fGNjfj2w8Y4lgG2nGw0vxrevVcaVb0",
   authDomain: "lrcsheetmobile.firebaseapp.com",
@@ -15,37 +16,47 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// UNIQUE fonction de sauvegarde
-async function saveNotificationToDB(notification) {
-  const dbName = "NotificationDB";
+/* ================= INDEXED DB CONFIG ================= */
+const DB_NAME = "NotificationDB";
+const DB_VERSION = 2;
+const STORE_NAME = "notifications";
+
+function openDB() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(dbName, 1);
-    
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
     request.onupgradeneeded = (e) => {
       const db = e.target.result;
-      if (!db.objectStoreNames.contains("notifications")) {
-        db.createObjectStore("notifications", { autoIncrement: true });
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { autoIncrement: true });
       }
     };
-
-    request.onsuccess = (e) => {
-      const db = e.target.result;
-      const transaction = db.transaction("notifications", "readwrite");
-      const store = transaction.objectStore("notifications");
-      const addRequest = store.add(notification);
-      addRequest.onsuccess = () => {
-        console.log("Notif sauvegardée en DB (Site fermé)");
-        resolve();
-      };
-    };
-    
-    request.onerror = (e) => reject(e);
+    request.onsuccess = (e) => resolve(e.target.result);
+    request.onerror = (e) => reject(e.target.error);
   });
 }
 
-// UNIQUE écouteur de messages en arrière-plan
+async function saveNotificationToDB(notification) {
+  try {
+    const db = await openDB();
+    if (!db) return;
+    return new Promise((resolve) => {
+      const tx = db.transaction(STORE_NAME, "readwrite");
+      const store = tx.objectStore(STORE_NAME);
+      store.add(notification);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => resolve();
+    });
+  } catch (err) {
+    console.error("❌ saveNotificationToDB failed:", err);
+  }
+}
+
+/* ================= BACKGROUND MESSAGE ================= */
 messaging.onBackgroundMessage(async (payload) => {
   console.log("Payload reçu en background:", payload);
+
+  const title = payload?.data?.title || "Nouvelle notification";
+  const body = payload?.data?.body || "";
 
   const notificationData = {
     path: payload?.data?.path || "/",
@@ -53,22 +64,31 @@ messaging.onBackgroundMessage(async (payload) => {
     adminPageIndex: payload?.data?.adminPageIndex || "0",
   };
 
-  // Sauvegarde impérative
+  //Sauvegarde locale
   await saveNotificationToDB(notificationData);
 
-  // Affichage de la notif système
-  return self.registration.showNotification(
-    payload?.notification?.title || "Nouvelle notification", 
-    {
-      body: payload?.notification?.body || "",
-      icon: "/images/logo/logo.png",
-      data: notificationData
-    }
-  );
+  //Affichage de la notification navigateur
+  await self.registration.showNotification(title, {
+    body: body,
+    icon: "/images/logo/logo.png",
+    data: notificationData,
+    requireInteraction: true, // reste affichée jusqu'à interaction
+    actions: [
+      { action: "close", title: "Fermer" } // bouton Fermer
+    ]
+  });
 });
 
+/* ================= CLICK HANDLER ================= */
 self.addEventListener("notificationclick", (event) => {
+  if (event.action === "close") {
+    // Bouton Fermer cliqué
+    event.notification.close();
+    return;
+  }
+
+  // Clic sur la notification elle-même
   event.notification.close();
-  const path = event.notification.data.path;
+  const path = event.notification?.data?.path || "/";
   event.waitUntil(clients.openWindow(path));
 });

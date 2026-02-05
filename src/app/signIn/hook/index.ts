@@ -9,6 +9,7 @@ import { getToken, onMessage } from "firebase/messaging";
 import { useEffect } from "react";
 import { setMaxIdleHTTPParsers } from 'http';
 
+
 type SignInput = {
     email: string | null,
     password: string | null
@@ -20,10 +21,12 @@ export function SignInHook() {
             await Notification.requestPermission().then(async (permission) => {
                 if (permission === "granted") {
                     if (!messaging) return
+                    console.log("permission accordée")
                     const adminFcmToken = await getToken(messaging, {
                         vapidKey: "BM91689dVSwzQt0EWC0MmE0UBLvdkXzahkR0-UFppnWI3rOP8OTakisMCaxco0lXPZzx6jmxbtsbzWECTN6K6lg",
                     });
-                    adminFcmToken ? window?.localStorage.setItem("adminFcmToken", adminFcmToken) : "";
+                    console.log("le token", adminFcmToken)
+                    if(adminFcmToken) localStorage.setItem("adminFcmToken", adminFcmToken);
                 }
             })
         })();

@@ -119,7 +119,7 @@ const CalendarPage = () => {
   }, []);
 
   /* ------------------------------------------------------
-     📌 Calcul salaire
+    Calcul salaire
   ------------------------------------------------------ */
   function getTotalSalary(attendances: any[], monthIndex: number, dailySalary: any) {
     let totalAmount: number = 0;
@@ -130,27 +130,47 @@ const CalendarPage = () => {
 
     for (const attendance of filterAttendance) {
       const status = attendance.status;
-      const arrivalTime = parseInt(attendance.arrivalTime.split(":")?.pop() ?? "");
+      const minutes = parseInt(attendance.arrivalTime.split(":")?.pop() ?? "");
+      const finalMinutes = Number(minutes);
+      const finalDailySalary = Number(dailySalary);
+      let deductionAmount = 0;
       const toleranceTime = parseInt(attendance.Enterprise?.toleranceTime ?? "");
       const maxToleranceTime = parseInt(attendance.Enterprise?.maxToleranceTime ?? "") ?? 0;
       const pourcentageOfHourlyDeduction = parseFloat(attendance.Enterprise?.pourcentageOfHourlyDeduction ?? "") ?? 0;
       const maxPourcentageOfHourlyDeduction = parseFloat(attendance.Enterprise?.maxPourcentageOfHourlyDeduction ?? "") ?? 0;
-      const pourcent = pourcentageOfHourlyDeduction / 100;
-      const maxPourcent = maxPourcentageOfHourlyDeduction / 100;
 
-      if (status === "En retard" && arrivalTime > toleranceTime && arrivalTime < maxToleranceTime) {
-        totalLates += parseInt(dailySalary) * pourcent;
-      } else if (status === "En retard" && arrivalTime > maxToleranceTime) {
-        totalLates += parseInt(dailySalary) * maxPourcent;
-      }
-      if (attendance.status === "A temps") {
-        totalePresences += parseInt(dailySalary);
+      // const pourcent = pourcentageOfHourlyDeduction / 100;
+      // const maxPourcent = maxPourcentageOfHourlyDeduction / 100;
+
+      // if (status === "En retard" && arrivalTime > toleranceTime && arrivalTime < maxToleranceTime) {
+      //   totalLates += parseInt(dailySalary) * pourcent;
+      // } else if (status === "En retard" && arrivalTime > maxToleranceTime) {
+      //   totalLates += parseInt(dailySalary) * maxPourcent;
+      // }
+      // if (attendance.status === "A temps") {
+      //   totalePresences += parseInt(dailySalary);
+      // }
+
+      if (status === "En retard" && finalMinutes <= 15) {
+        deductionAmount = Math.round(0.1 * finalDailySalary);
+        totalLates += finalDailySalary - deductionAmount;
+      } else if (status === "En retard" && finalMinutes > 15 && finalMinutes < 30) {
+        deductionAmount = Math.round(0.15 * finalDailySalary);
+        totalLates += finalDailySalary - deductionAmount;
+      } else if (status === "En retard" && finalMinutes >= 30) {
+        deductionAmount = Math.round(0.5 * finalDailySalary);
+        totalAmount += finalDailySalary - deductionAmount;
+      } else if (status === "A temps") {
+        totalePresences += finalDailySalary;
       }
     }
+
     totalAmount = totalLates + totalePresences;
     setTotalSalary(totalAmount.toString());
   }
-  console.log("Le putain de salaire", totalSalary)
+
+  // console.log("Le salaire", totalSalary)
+
   function getAttendancesStats(attendances: any[], monthIndex: number) {
     return {
       presencesCount: attendances.filter(a => a.mounth === monthIndex && a.status === "A temps").length,

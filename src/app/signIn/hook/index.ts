@@ -11,30 +11,36 @@ import { setMaxIdleHTTPParsers } from 'http';
 
 
 type SignInput = {
-    email: string | null,
-    password: string | null
+    email: string ,
+    password: string
 }
 
 export function SignInHook() {
     useEffect(() => {
         (async () => {
-            await Notification.requestPermission().then(async (permission) => {
-                if (permission === "granted") {
-                    if (!messaging) return
-                    console.log("permission accordée")
-                    const adminFcmToken = await getToken(messaging, {
-                        vapidKey: "BM91689dVSwzQt0EWC0MmE0UBLvdkXzahkR0-UFppnWI3rOP8OTakisMCaxco0lXPZzx6jmxbtsbzWECTN6K6lg",
-                    });
-                    console.log("le token", adminFcmToken)
-                    if(adminFcmToken) localStorage.setItem("adminFcmToken", adminFcmToken);
-                }
-            })
+            try {
+                await Notification.requestPermission().then(async (permission) => {
+                    if (permission === "granted") {
+                        if (!messaging) return
+                        console.log("permission accordée")
+                        const adminFcmToken = await getToken(messaging, {
+                            vapidKey: "BM91689dVSwzQt0EWC0MmE0UBLvdkXzahkR0-UFppnWI3rOP8OTakisMCaxco0lXPZzx6jmxbtsbzWECTN6K6lg",
+                        });
+                        console.log("le token", adminFcmToken)
+                        if (adminFcmToken) localStorage.setItem("adminFcmToken", adminFcmToken);
+                    } else {
+                        console.log("permissions non accordées")
+                    }
+                })
+            } catch (error) {
+                console.error(error)
+            }
         })();
     }, [])
 
     const [signInData, setSignInData] = useState<SignInput>({
-        email: null,
-        password: null
+        email: "",
+        password:""
     });
     const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState("");

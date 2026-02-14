@@ -129,7 +129,7 @@ export default function SingIn() {
                                             <div>
                                                 <button onClick={() => {
                                                     handleSingnIn()
-                                                }} type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                }} type="button" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                                     {loadingHandleSignIn ? <ClipLoader color='#fff' size={16} /> : "Connexion"}
                                                 </button>
                                             </div>

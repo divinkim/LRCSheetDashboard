@@ -78,6 +78,9 @@ export default function HomeComponent() {
 
   useEffect(() => {
     (async () => {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) return window.location.href = "/";
+      
       const users = await controllers.API.getAll(urlAPI, "getUsers", null);
       const EnterpriseId = window.localStorage.getItem("EnterpriseId");
       setEnterpriseId(EnterpriseId);

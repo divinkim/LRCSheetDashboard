@@ -100,9 +100,9 @@ export default function SingIn() {
                             </div>
                             <div className="flex w-full h-full items-center justify-center">
                                 <div className="w-[90%] sm:w-[80%] lg:w-3/4 xl:w-[60%]">
-                                    <div className="w-full  bg-white shadow-2xl p-6 rounded-xl">
+                                    <div className="w-full  bg-white shadow-2xl py-10 px-6 rounded-xl">
                                         <div className="text-center lg:text-left">
-                                            <h2 className="text-2xl leading-8 font-extrabold text-gray-700 mb-2 text-center">Authentification à  LRCSheet Admin!</h2>
+                                            <h2 className="text-2xl leading-8 font-extrabold text-gray-600 mb-2 text-center">Authentification à  LRCSheet Admin!</h2>
                                         </div>
 
                                         <form className="space-y-6 mt-6">
@@ -113,7 +113,7 @@ export default function SingIn() {
                                                         ...signInData,
                                                         email: input.target.value
                                                     })
-                                                }} value={signInData.email ?? ""} type="email" id="email" name="email" className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="ornek@mail.com" />
+                                                }} value={signInData.email ?? ""} type="email" id="email" name="email" className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="email@gmail.com" />
                                             </div>
 
                                             <div>
@@ -123,7 +123,7 @@ export default function SingIn() {
                                                         ...signInData,
                                                         password: input.target.value
                                                     })
-                                                }} value={signInData.password ?? ""} type="password" id="password" name="password" className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••" />
+                                                }} value={signInData.password ?? ""} type="password" id="password" name="password" className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Votre mot de passe" />
                                             </div>
 
                                             <div>

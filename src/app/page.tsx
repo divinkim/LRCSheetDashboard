@@ -113,7 +113,7 @@ export default function SingIn() {
                                                         ...signInData,
                                                         email: input.target.value
                                                     })
-                                                }} value={signInData.email ?? ""} type="email" id="email" name="email" className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="email@gmail.com" />
+                                                }} value={signInData.email ?? ""} type="email" id="email" name="email" className="mt-1 block w-full px-3 py-3 border bg-transparent border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="email@gmail.com" />
                                             </div>
 
                                             <div>
@@ -123,7 +123,7 @@ export default function SingIn() {
                                                         ...signInData,
                                                         password: input.target.value
                                                     })
-                                                }} value={signInData.password ?? ""} type="password" id="password" name="password" className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Votre mot de passe" />
+                                                }} value={signInData.password ?? ""} type="password" id="password" name="password" className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none bg-transparent focus:ring-blue-500 focus:border-blue-500" placeholder="Votre mot de passe" />
                                             </div>
 
                                             <div>

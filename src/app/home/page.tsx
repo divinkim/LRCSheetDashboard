@@ -16,13 +16,13 @@ import { useEffect, useState } from "react";
 import Loader from "@/components/loader/loader";
 import GetAnnualGain from "../dashboard/STATS/annualGain/page";
 import { controllers, urlAPI } from "../main";
-
+import SubscriptionEpiredComponent from "@/components/subscriptionExpiredComponent/page";
 export default function HomePage({ searchParams }: PropsType) {
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
     const [EnterpriseId, setEnterpriseId] = useState<string | null>(null);
     const [adminRole, setAdminRole] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const { cardComponent } = HomeComponent();
+    const { cardComponent, enterprise } = HomeComponent();
 
     //Mise à jour ou ajout fcmToken administrateur
     useEffect(() => {
@@ -67,10 +67,14 @@ export default function HomePage({ searchParams }: PropsType) {
         }
         return value
     }
-
+    console.log("entreprise", enterprise)
     return (
         <div>
             <Loader isLoading={isLoading} />
+            {
+                enterprise.subscriptionStatus === "expired" && <SubscriptionEpiredComponent />
+            }
+
             <div className={isLoading ? "hidden" : "block"}>
                 <Header />
                 <div className="flex">

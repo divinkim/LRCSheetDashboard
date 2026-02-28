@@ -13,7 +13,7 @@ import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 import type { PropsWithChildren } from "react";
 import { Providers } from "./providers";
-
+import SubscriptionEpiredComponent from "@/components/subscriptionExpiredComponent/page";
 export const metadata: Metadata = {
   title: {
     template: "%s | NextAdmin - Next.js Dashboard Kit",
@@ -35,9 +35,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <Providers>
           <NextTopLoader color="#5750F1" showSpinner={false} />
           <KillNextOverlay />
+       
           <div className="flex min-h-screen">
             {/* <Sidebar /> */}
-
             <div className="w-full h-full bg-gray-2 dark:bg-[#020d1a]">
               {/* <Header /> */}
               <main className="">

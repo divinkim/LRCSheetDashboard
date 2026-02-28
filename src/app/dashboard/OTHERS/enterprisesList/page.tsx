@@ -23,10 +23,9 @@ export default function UsersList() {
     const { enterprises, onSearch } = EnterprisesListHookModal()
 
     useEffect(() => {
-        if (typeof (window) === "undefined") return;
         (() => {
-            const authToken = window?.localStorage.getItem("authToken");
-            const getAdminRole = window?.localStorage.getItem("adminRole");
+            const authToken = localStorage.getItem("authToken");
+            const getAdminRole = localStorage.getItem("adminRole");
 
             if (authToken === null) {
                 window.location.href = "/"
@@ -42,10 +41,9 @@ export default function UsersList() {
     return (
         <div>
             <Header />
-            <div className="flex justify-center w-full mx-auto">
+            <div className="flex w-full mx-auto">
                 <Sidebar />
-
-                <main className='m-4 bg-gray-100 text-gray-700 dark:text-gray-300 dark:bg-transparent'>
+                <main className='m-4 w-full bg-gray-100 text-gray-700 dark:text-gray-300 dark:bg-transparent'>
                     {
                         tablesModal.map((e) => (
                             <div className="flex justify-between items-center">

@@ -38,6 +38,10 @@ type Attendances = {
 export default function HomeComponent() {
   const [attendances, setAttendances] = useState<Attendances[]>([]);
   const [EnterpriseId, setEnterpriseId] = useState<string | null>(null);
+  const [enterprise, setEnterprise] = useState({
+    subscriptionStatus: "",
+    subscriptionType: ""
+  })
   const monthValue = new Date().getMonth();
 
   const [data, setData] = useState({
@@ -54,23 +58,38 @@ export default function HomeComponent() {
 
     for (const attendance of attendances) {
       const status = attendance.status;
-      const arrivalTime = Number(attendance.arrivalTime.split(":")?.pop()) ?? 0;
-      const toleranceTime = Number(attendance?.Enterprise?.toleranceTime) ?? 0;
-      const maxToleranceTime = Number(attendance?.Enterprise?.maxToleranceTime) ?? 0;
-      const pourcentageOfHourlyDeduction = parseFloat(String(attendance?.Enterprise?.pourcentageOfHourlyDeduction));
-      const maxPourcentageOfHourlyDeduction = parseFloat(String(attendance?.Enterprise?.maxPourcentageOfHourlyDeduction ?? ""));
+      const minutes = attendance.arrivalTime.split(":")?.pop() || "0";
+      const finalMinutes = Number(minutes);
+      let deductionAmount = 0;
+      const finalDailySalary = Number(attendance?.Salary?.dailySalary) || 0;
+      // const toleranceTime = Number(attendance?.Enterprise?.toleranceTime) ?? 0;
+      // const maxToleranceTime = Number(attendance?.Enterprise?.maxToleranceTime) ?? 0;
+      // const pourcentageOfHourlyDeduction = parseFloat(String(attendance?.Enterprise?.pourcentageOfHourlyDeduction));
+      // const maxPourcentageOfHourlyDeduction = parseFloat(String(attendance?.Enterprise?.maxPourcentageOfHourlyDeduction ?? ""));
 
-      const pourcent = pourcentageOfHourlyDeduction / 100;
-      const maxPourcent = maxPourcentageOfHourlyDeduction / 100;
-      const dailySalary = parseInt(attendance?.Salary?.dailySalary ?? 0);
+      // const pourcent = pourcentageOfHourlyDeduction / 100;
+      // const maxPourcent = maxPourcentageOfHourlyDeduction / 100;
+      // const dailySalary = parseInt(attendance?.Salary?.dailySalary ?? 0);
 
-      if ((status === "En retard" && arrivalTime > toleranceTime) && (arrivalTime < maxToleranceTime)) {
-        totalLates += dailySalary * pourcent;
-      } else if (status === "En retard" && arrivalTime > maxToleranceTime) {
-        totalLates += dailySalary * maxPourcent;
-      }
-      else if (attendance.status === "Absent") {
-        totalAbsences += dailySalary;
+      // if ((status === "En retard" && arrivalTime > toleranceTime) && (arrivalTime < maxToleranceTime)) {
+      //   totalLates += dailySalary * pourcent;
+      // } else if (status === "En retard" && arrivalTime > maxToleranceTime) {
+      //   totalLates += dailySalary * maxPourcent;
+      // }
+      // else if (attendance.status === "Absent") {
+      //   totalAbsences += dailySalary;
+      // }
+      if (status === "En retard" && finalMinutes <= 15) {
+        deductionAmount = Math.round(0.1 * finalDailySalary);
+        totalLates += deductionAmount;
+      } else if (status === "En retard" && finalMinutes > 15 && finalMinutes <= 30) {
+        deductionAmount = Math.round(0.15 * finalDailySalary);
+        totalLates += deductionAmount;
+      } else if (status === "En retard" && finalMinutes > 30) {
+        deductionAmount = Math.round(0.5 * finalDailySalary);
+        totalLates += deductionAmount;
+      } else if (status === "Absent") {
+        totalAbsences += finalDailySalary;
       }
     }
     return totalLates + totalAbsences;
@@ -78,9 +97,6 @@ export default function HomeComponent() {
 
   useEffect(() => {
     (async () => {
-      const authToken = localStorage.getItem("authToken");
-      if (!authToken) return window.location.href = "/";
-      
       const users = await controllers.API.getAll(urlAPI, "getUsers", null);
       const EnterpriseId = window.localStorage.getItem("EnterpriseId");
       setEnterpriseId(EnterpriseId);
@@ -118,7 +134,19 @@ export default function HomeComponent() {
       const filterAttendancesByEnterpriseId = attendances.filter((attendance: { EnterpriseId: number, mounth: number, createdAt: string }) => [1, 2, 3, 4].includes(attendance.EnterpriseId) && attendance.mounth === monthValue && new Date(attendance.createdAt).getFullYear() === new Date().getFullYear());
       return setAttendances(filterAttendancesByEnterpriseId);
     })()
-  }, [data.enterprisesArray])
+  }, [data.enterprisesArray]);
+
+  useEffect(() => {
+    (async () => {
+      const EnterpriseId = localStorage.getItem("EnterpriseId");
+      const enterprise = await controllers.API.getOne(urlAPI, 'getEnterprise', Number(EnterpriseId));
+     
+      setEnterprise({
+        subscriptionStatus: enterprise?.subscriptionStatus,
+        subscriptionType: enterprise?.subscriptionType
+      })
+    })()
+  }, [attendances])
 
   const cardComponent = [
     {
@@ -144,5 +172,5 @@ export default function HomeComponent() {
     }
   ];
 
-  return { cardComponent }
+  return { cardComponent, enterprise }
 }

@@ -11,16 +11,14 @@ import { AnnualGainHook } from "./hook";
 
 export default function GetAnnualGain() {
 
-    const { getDuductionByMonth, monthlyBalances, MonthlyLimit, YEARLY_LIMIT, setSelectedMonthIndex, selectedMonth, yearlySum, COLORS, lineData, barData, EnterpriseId, adminRole, attendances, selectedMonthIndex } = AnnualGainHook();
+    const { monthlyBalances, MonthlyLimit, YEARLY_LIMIT, setSelectedMonthIndex, selectedMonth, yearlySum, COLORS, lineData, barData, EnterpriseId, adminRole, attendances, selectedMonthIndex } = AnnualGainHook();
 
-    console.log("les horaires", attendances);
-    console.log("id", EnterpriseId)
     return (
         <main className="bg-gray-100 dark:bg-transparent">
             <div className="flex min-w-0">
                 <div className="mx-4 mt-6 my-4 w-full min-w-0">
                     <div className="flex justify-between items-center mb-5">
-                        <h1 className="text-[20px] font-bold text-gray-700 dark:text-gray-300">Statistiques du gain annuel ({new Date().getFullYear()})</h1>
+                        <h1 className="text-[20px] font-bold text-gray-700 dark:text-gray-300">Statistique du gain annuel ({new Date().getFullYear()})</h1>
                         <p className="text-blue-700 hidden dark:text-blue-600">Dashboard / Statistiques / Gain annuel</p>
                     </div>
                     <hr className='bg-gray-200 border-0 h-[0.5px] dark:bg-gray-700' />

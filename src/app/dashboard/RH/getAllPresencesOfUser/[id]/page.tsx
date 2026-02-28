@@ -154,10 +154,10 @@ const CalendarPage = () => {
       if (status === "En retard" && finalMinutes <= 15) {
         deductionAmount = Math.round(0.1 * finalDailySalary);
         totalLates += finalDailySalary - deductionAmount;
-      } else if (status === "En retard" && finalMinutes > 15 && finalMinutes < 30) {
+      } else if (status === "En retard" && finalMinutes > 15 && finalMinutes <= 30) {
         deductionAmount = Math.round(0.15 * finalDailySalary);
         totalLates += finalDailySalary - deductionAmount;
-      } else if (status === "En retard" && finalMinutes >= 30) {
+      } else if (status === "En retard" && finalMinutes > 30) {
         deductionAmount = Math.round(0.5 * finalDailySalary);
         totalAmount += finalDailySalary - deductionAmount;
       } else if (status === "A temps") {

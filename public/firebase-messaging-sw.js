@@ -62,6 +62,7 @@ messaging.onBackgroundMessage(async (payload) => {
     path: payload?.data?.path || "/",
     adminSectionIndex: payload?.data?.adminSectionIndex || "0",
     adminPageIndex: payload?.data?.adminPageIndex || "0",
+    senderId: payload?.data?.senderId
   };
 
   //Sauvegarde locale

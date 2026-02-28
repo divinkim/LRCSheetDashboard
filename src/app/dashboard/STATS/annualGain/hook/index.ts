@@ -45,24 +45,40 @@ export function AnnualGainHook() {
 
         for (const attendance of filterAttendanceByMonth) {
             const status = attendance.status;
+            const minutes = parseInt(attendance.arrivalTime.split(":")?.pop() ?? "");
+            const finalMinutes = Number(minutes);
+            const finalDailySalary = Number(attendance?.Salary?.dailySalary) || 0
+            let deductionAmount = 0;
 
-            const arrivalTimeMinutes = Number(attendance?.arrivalTime.split(":")?.pop() || 0);
-            const toleranceTime = Number(attendance?.Enterprise?.toleranceTime || 0);
-            const maxToleranceTime = Number(attendance?.Enterprise?.maxToleranceTime || 0);
-            const pourcentageOfHourlyDeduction = parseFloat(attendance?.Enterprise?.pourcentageOfHourlyDeduction ?? "") || 0;
-            const maxPourcentageOfHourlyDeduction = parseFloat(attendance?.Enterprise?.maxPourcentageOfHourlyDeduction ?? "") || 0;
+            // const arrivalTimeMinutes = Number(attendance?.arrivalTime.split(":")?.pop() || 0);
+            // const toleranceTime = Number(attendance?.Enterprise?.toleranceTime || 0);
+            // const maxToleranceTime = Number(attendance?.Enterprise?.maxToleranceTime || 0);
+            // const pourcentageOfHourlyDeduction = parseFloat(attendance?.Enterprise?.pourcentageOfHourlyDeduction ?? "") || 0;
+            // const maxPourcentageOfHourlyDeduction = parseFloat(attendance?.Enterprise?.maxPourcentageOfHourlyDeduction ?? "") || 0;
 
-            const pourcent = pourcentageOfHourlyDeduction / 100;
-            const maxPourcent = maxPourcentageOfHourlyDeduction / 100;
-            const dailySalary = Number(attendance.Salary?.dailySalary ?? 0);
+            // const pourcent = pourcentageOfHourlyDeduction / 100;
+            // const maxPourcent = maxPourcentageOfHourlyDeduction / 100;
+            // const dailySalary = Number(attendance.Salary?.dailySalary ?? 0);
 
-            if ((status === "En retard" && arrivalTimeMinutes > toleranceTime) && (arrivalTimeMinutes < maxToleranceTime)) {
-                totalLates += dailySalary * pourcent;
-            } else if (status === "En retard" && arrivalTimeMinutes > maxToleranceTime) {
-                totalLates += dailySalary * maxPourcent;
-            }
-            else if (attendance.status === "Absent") {
-                totalAbsences += dailySalary;
+            // if ((status === "En retard" && arrivalTimeMinutes > toleranceTime) && (arrivalTimeMinutes < maxToleranceTime)) {
+            //     totalLates += dailySalary * pourcent;
+            // } else if (status === "En retard" && arrivalTimeMinutes > maxToleranceTime) {
+            //     totalLates += dailySalary * maxPourcent;
+            // }
+            // else if (attendance.status === "Absent") {
+            //     totalAbsences += dailySalary;
+            // }
+            if (status === "En retard" && finalMinutes <= 15) {
+                deductionAmount = Math.round(0.1 * finalDailySalary);
+                totalLates += deductionAmount;
+            } else if (status === "En retard" && finalMinutes > 15 && finalMinutes <= 30) {
+                deductionAmount = Math.round(0.15 * finalDailySalary);
+                totalLates += deductionAmount;
+            } else if (status === "En retard" && finalMinutes > 30) {
+                deductionAmount = Math.round(0.5 * finalDailySalary);
+                totalLates += deductionAmount;
+            } else if (status === "Absent") {
+                totalAbsences += finalDailySalary;
             }
         }
         return totalLates + totalAbsences;

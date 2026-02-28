@@ -24,13 +24,15 @@ import { onMessage } from "firebase/messaging";
 import Swal from "sweetalert2";
 
 type notificationProps = {
-    path: string | undefined,
-    adminSectionIndex: string | undefined,
-    adminPageIndex: string | undefined
+    path: string,
+    adminSectionIndex: string,
+    adminPageIndex: string,
+    title: string,
+    content: string,
 }
 
 export default function SidebarHook() {
-    const [storedNotificationsArray, setStoredNotificationsArray] = useState<notificationProps[]>([]);
+    const [storedNotificationsArray, setStoredNotificationsArray] = useState<any[]>([]);
     const [count, setCount] = useState(0);
 
     const DB_NAME = "NotificationDB";
@@ -91,10 +93,12 @@ export default function SidebarHook() {
             const EnterpriseId = localStorage.getItem("EnterpriseId");
 
             if (Number(remoteMessage.data?.EnterpriseId) === Number(EnterpriseId)) {
+
                 const notif = {
                     path: remoteMessage.data?.path,
                     adminSectionIndex: remoteMessage.data?.adminSectionIndex,
                     adminPageIndex: remoteMessage.data?.adminPageIndex,
+                    senderId: remoteMessage.data?.senderId,
                 };
 
                 setStoredNotificationsArray((prev) => [...prev, notif]);
@@ -133,14 +137,8 @@ export default function SidebarHook() {
             ItemLists: [
                 {
                     index: 0,
-                    title: "Envoyer une notification",
-                    href: "/dashboard/notification/sendNotification",
-                    icon: faPaperPlane
-                },
-                {
-                    index: 1,
                     title: "Liste de notification",
-                    href: "/dashboard/notifications/getAllNotifications",
+                    href: "/dashboard/NOTIF/getAllNotifications",
                     icon: faBell
                 },
             ]
@@ -390,5 +388,10 @@ export default function SidebarHook() {
         return notificationArray.length;
     }
 
-    return { ItemAside, storedNotificationsArray, setStoredNotificationsArray, getSectionNotificationsCount, getPageNotificationsCount, };
+    const getUserNotificationsCount = (UserId: string) => {
+        const getNotificationsCount = storedNotificationsArray.filter((item: { senderId: string }) => item.senderId === UserId);
+        return getNotificationsCount.length;
+    }
+
+    return { ItemAside, storedNotificationsArray, setStoredNotificationsArray, getSectionNotificationsCount, getPageNotificationsCount, getUserNotificationsCount};
 }

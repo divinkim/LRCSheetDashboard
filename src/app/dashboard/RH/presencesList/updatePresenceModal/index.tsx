@@ -16,7 +16,7 @@ type UpdatePresence = {
 }
 
 export default function UpdatePresenceModal() {
-    const { presencesListCloned, onSearch, onSelectAllUser } = PresencesListHookModal();
+    const { presencesListCloned, onSearch, onSelectAllUser,  } = PresencesListHookModal();
     const [isLoading, setIsLoading] = useState(false);
 
     const [inputs, setInputs] = useState<UpdatePresence>({

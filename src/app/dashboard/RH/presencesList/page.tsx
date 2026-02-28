@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getOriginalStackFrames } from "next/dist/next-devtools/shared/stack-frame";
 import Swal from "sweetalert2";
 import { PresencesListHookModal } from "./hook";
-import AddPresenceModal from "./addPresenceModal";
+import AddPresenceModal from "./addPresenceModal/page";
 import UpdatePresenceModal from "./updatePresenceModal";
 
 export default function PresencesList() {

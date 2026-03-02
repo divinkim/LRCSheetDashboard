@@ -5,9 +5,22 @@ import { faEllipsis, faMessage, faPaperclip, faPaperPlane, faPhone, faSmile, faV
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAllNotification } from "./hook";
 import { urlAPI } from "@/app/main";
+import { useRef, useEffect } from "react";
 
 export default function GetAllNotifications() {
     const { filterUserByName, setUserData, userData, groupedNotifications, adminId, getLatestMessage, reduceTextLength, storedUsers, handleSubmit, setInputs, inputs, usersIdConnected, setStoredNotificationsArray, storedNotificationsArray, getUserNotificationsCount } = useAllNotification();
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        (() => {
+            if (messagesEndRef.current) {
+                messagesEndRef.current.scrollTo({
+                    behavior: "smooth",
+                    top: messagesEndRef.current.scrollHeight
+                })
+            }
+        })()
+    }, [groupedNotifications, userData.receiverId])
 
     // console.log("les utilisateurs", usersIdConnected)
 
@@ -102,7 +115,7 @@ export default function GetAllNotifications() {
                                                                 {/* <div className="typing-indicator w-2 h-2 bg-green-400 rounded-full"></div> */}
                                                                 <div className="flex items-center space-x-1">
                                                                     <p className="text-sm text-gray-400">{
-                                                                        reduceTextLength(String(getLatestMessage(String(item.UserId)).content), 10)}
+                                                                        reduceTextLength(String(getLatestMessage(String(item.UserId)).content), 14)}
                                                                     </p>
                                                                     <p className={getUserNotificationsCount(String(item.UserId)) > 0 ? "bg-red-500 text-white rounded-full py-0.5 px-2.5 text-sm" : "hidden"}>{getUserNotificationsCount(String(item.UserId))}</p>
                                                                 </div>
@@ -160,22 +173,22 @@ export default function GetAllNotifications() {
                                             </div>
                                         </div>
 
-                                        <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+                                        <div ref={messagesEndRef} className="flex-1 xl:w-[650px] 2xl:w-[890px] overflow-y-auto p-4 space-y-4 custom-scrollbar">
                                             {
                                                 Object.entries(groupedNotifications).map(([label, notificationsArray]) => (
                                                     <div className="mt-6">
                                                         <h1 className="relative xl:right-32 text-center mb-4">{label}</h1>
                                                         {
                                                             notificationsArray.map((notification, index) => (
-                                                                <div className={userData.receiverId === notification.senderId ? "flex mb-4 justify-start relative space-x-2 message-bubble" : notification.senderId === adminId ? "flex mb-4 justify-end  space-x-2 message-bubble relative lg:right-60" : "hidden"}>
+                                                                <div className={userData.receiverId === notification.senderId ? "flex mb-4 justify-start relative space-x-2 message-bubble" : notification.senderId === adminId ? "flex mb-4 justify-end  space-x-2 message-bubble relative lg:right-0 2xl:" : "hidden"}>
                                                                     {userData.photo && userData.receiverId === notification.senderId ? <img src={`${urlAPI}/images/${userData.photo}`}
                                                                         alt="" className="w-8 h-8 rounded-full object-cover" /> : notification.senderId === adminId ? "" : <p className="text-[32px]">🧑‍💼</p>
                                                                     }
 
                                                                     <div className="max-w-xs lg:max-w-md">
                                                                         <div className="bg-gray-700 rounded-2xl rounded-tl-sm p-3 shadow-lg">
-                                                                            <div className={userData.receiverId === notification.senderId ? "border-b border-gray-200" : notification.senderId === adminId ? "hidden" : "hidden"}>
-                                                                                <p className="text-white text-lg font-bold">{notification.title}</p>
+                                                                            <div className={userData.receiverId === notification.senderId ? "border-b border-gray-600" : notification.senderId === adminId ? "hidden" : "hidden"}>
+                                                                                <p className="text-white text-[17px] font-bold">{notification.title}</p>
                                                                             </div>
                                                                             <p className="text-white mt-3 whitespace-pre-line">{notification.content}</p>
                                                                         </div>

@@ -18,15 +18,28 @@ import UpdatePresenceModal from "./updatePresenceModal";
 
 export default function PresencesList() {
     const { presencesListCloned, adminRole, onSearch, } = PresencesListHookModal();
-    const [page, setPage] = useState(1);             // page courante
+
+    const [page, setPage] = useState(0);             // page courante
     const limit = 5;                                 // items par page
     const [showAddPresenceModal, setShowAddPresenceModal] = useState(false);
     const [showUpdatePresenceModal, setShowUpdatePresenceModal] = useState(false);
+    const [maxPage, setMaxPage] = useState(0);
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
+    const [start, setStart] = useState(1);
+
+    useEffect(() => {
+        (() => {
+            const maxPage = Math.ceil(presencesListCloned?.length / limit);
+
+            setMaxPage(maxPage);
+            setPage(maxPage);
+
+        })()
+    }, [presencesListCloned])
+
+    const startPage = (start - 1) * limit;
 
     // 📑 Pagination
-    const start = (page - 1) * limit;
-    const maxPage = Math.ceil(presencesListCloned.length / limit);
 
     // const selectAllUser = () => {
     //     const allIds = presencesList.filter(user => user.UserId && user?.EnterpriseId && user?.SalaryId);
@@ -103,7 +116,7 @@ export default function PresencesList() {
                                 />
                                 <FontAwesomeIcon icon={faSearch} className="absolute text-gray-400 right-3 top-[38px]" />
                             </div>
-                            <div className="flex items-center space-x-4">
+                            <div className="flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-4">
                                 {
                                     tablesModal.map((e) => (
                                         e.presencesList.links.map((item) => (
@@ -124,7 +137,7 @@ export default function PresencesList() {
                                                 }
                                             }} className="bg-blue-800 hover:bg-blue-900 ease duration-500 py-3 px-4">
                                                 <FontAwesomeIcon icon={item.icon} className="text-white" />
-                                                <span className='text-white font-semibold'> {item.title}</span>
+                                                <span className='text-white font-semibold  lg:text-normal'> {item.title}</span>
                                             </Link>
                                         ))
 
@@ -133,7 +146,7 @@ export default function PresencesList() {
                             </div>
                         </div>
                         {/* 🧾 Tableau */}
-                        <table className="border w-full">
+                        <table className="border w-full mt-10 lg:mt-0">
                             <thead>
                                 <tr className="bg-gray-800 dark:bg-transparent ">
 
@@ -149,7 +162,7 @@ export default function PresencesList() {
 
                             <tbody className="w-full">
                                 {
-                                    presencesListCloned.length > 0 ? presencesListCloned.slice(start, start + limit).map((u) => (
+                                    presencesListCloned.length > 0 ? presencesListCloned.slice(startPage, startPage + limit).map((u) => (
                                         <tr className="">
                                             <td className="border p-2 border-gray-400 dark:border-gray-300">
                                                 {u.User?.photo ? <img src={`${urlAPI}/images/${u.User?.photo}`} className="w-[50px] mx-auto h-[50px] object-cover rounded-full" alt="" /> : <p className="text-center text-[40px]">
@@ -157,7 +170,7 @@ export default function PresencesList() {
                                                 </p>}
                                             </td>
                                             <td className="border p-2 border-gray-400 dark:border-gray-300  text-center font-semibold dark:text-gray-300">{u.User?.lastname} {u.User?.firstname}</td>
-                                            <td className="border p-2 border-gray-400 dark:border-gray-300 dark:text-gray-300 text-center font-semibold">{u.arrivalTime} - {u?.breakStartTime ?? "--"}</td>
+                                            <td className="border p-2 border-gray-400 dark:border-gray-300 dark:text-gray-300 text-center font-semibold">{u.arrivalTime === "00:00:00" ? "--" : u.arrivalTime} - {u?.breakStartTime ?? "--"}</td>
                                             <td className="border p-2 border-gray-400 dark:border-gray-300 dark:text-gray-300 text-center font-semibold">{u?.resumeTime ?? "--"} - {u?.departureTime ?? "--"}</td>
                                             {/* <td className="border p-2 border-gray-400 dark:border-gray-300 dark:text-gray-300 text-center font-semibold">{u.Planning?.startTime ? u.Planning.startTime.slice(0, 5) : "--"} - {u.Planning?.endTime ? u.Planning.endTime.slice(0, 5) : "--"}</td> */}
                                             <td className="border w-[155px] p-2 border-gray-400 dark:border-gray-300 dark:text-gray-300 text-center font-semibold">{new Date(u.createdAt ?? "").toLocaleDateString('fr-Fr', {
@@ -211,20 +224,26 @@ export default function PresencesList() {
                             </tbody>
                         </table>
                         {/* 🔄 Pagination */}
-                        <div className="flex items-center justify-center  gap-4 mt-10">
+                        <div className="flex items-center justify-center  gap-4 my-10">
                             <div className="flex flex-col">
                                 <p className="text-center">Page {page} / {maxPage}</p>
                                 <div className="flex flex-row mt-4 space-x-4">
                                     <button
                                         className="px-4 py-3  font-semibold text-white ease duration-500 hover:bg-red-600 bg-red-500 rounded disabled:opacity-40"
-                                        onClick={() => setPage(page - 1)}
+                                        onClick={() => {
+                                            setPage(page - 1);
+                                            setStart(start + 1)
+                                        }}
                                         disabled={page === 1}
                                     >
-                                        <span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronLeft} /></span> Précédent
+                                        <span className="relative top-[1px]"><FontAwesomeIcon icon={faChevronLeft} /></span> précédent
                                     </button>
                                     <button
                                         className="px-4 py-3 bg-green-500 ease duration-500 hover:bg-green-600 text-white font-semibold rounded disabled:opacity-40"
-                                        onClick={() => setPage(page + 1)}
+                                        onClick={() => {
+                                            setPage(nextPage => nextPage + 1);
+                                            setStart(start - 1)
+                                        }}
 
                                         disabled={page === maxPage}
                                     >

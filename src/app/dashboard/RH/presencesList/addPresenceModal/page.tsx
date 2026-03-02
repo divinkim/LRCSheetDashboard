@@ -9,8 +9,8 @@ import { useState } from "react";
 export default function AddPresenceModal() {
     const { usersArray, filterUserByName, onCheckBtnEvent, handleSubmit, isLoading, setInputs, inputs, selectAllProfile, deselectAllProfile } = useAddPresenceModal();
     return (
-        <div className=" bg-black/80 fixed w-screen h-screen overflow-hidden z-20">
-            <div className="flex-1 dark:bg-gray-800 shadow-md flex duration-500 rounded-xl ease  sm:top-[20%]  w-[35%] mx-auto xl:w-[35%]  z-20 overflow-hidden  p-5  bg-gray-100 lg:ml-[200px] xl:ml-[250px] 2xl:ml-[350px] mt-10">
+        <div className=" bg-black/80 fixed w-screen h-[1200px] lg:h-screen overflow-hidden z-20">
+            <div className="flex-1 dark:bg-gray-800 shadow-md flex duration-500 rounded-xl ease  sm:top-[20%] w-[90%] lg:w-[35%] mx-auto xl:w-[35%]  z-20 overflow-hidden  p-5  bg-gray-100 lg:ml-[200px] xl:ml-[250px] 2xl:ml-[350px] mt-10">
                 <form action="" className="w-full mt-2">
                     <div className="flex justify-center">
                         <h1 className="text-center dark:text-gray-300  font-semibold text-xl mb-4">Ajouter une présence
@@ -38,7 +38,7 @@ export default function AddPresenceModal() {
                                     })
                                 }} className="border dark:bg-transparent border-gray-400 outline-none dark:text-gray-300 rounded p-3 w-full" type="time" />
                             </div>
-                            <div className="w-full">
+                            <div className="w-full relative mt-4 lg:mt-0 right-2 lg:right-0">
                                 <label htmlFor="" className="mb-2 dark:text-gray-300">Date<span className="text-red-500">* </span> </label>
                                 <input onChange={(e) => {
                                     setInputs({

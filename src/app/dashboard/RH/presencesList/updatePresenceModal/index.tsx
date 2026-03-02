@@ -84,8 +84,8 @@ export default function UpdatePresenceModal() {
     }
 
     return (
-        <div className=" bg-black/80 fixed w-screen h-screen overflow-hidden z-20">
-            <div className="flex-1 dark:bg-gray-800 mt-5 shadow-md flex duration-500 rounded-xl ease sm:top-[20%] 2xl:top-[15%]  w-[35%] mx-auto xl:w-[35%]  z-20 overflow-hidden lg:ml-[200px] xl:ml-[250px] 2xl:ml-[350px] p-5  bg-gray-100 2">
+        <div className=" bg-black/80 fixed w-screen h-[1200px] lg:h-screen overflow-hidden z-20">
+            <div className="flex-1 dark:bg-gray-800 mt-5 shadow-md flex duration-500 rounded-xl ease sm:top-[20%] 2xl:top-[15%] w-[90%] lg:w-[35%] mx-auto xl:w-[35%]  z-20 overflow-hidden lg:ml-[200px] xl:ml-[250px] 2xl:ml-[350px] p-5  bg-gray-100 2">
                 <form action="" className="w-full mt-2">
                     <h1 className="text-center dark:text-gray-300  font-semibold text-xl mb-4">Modifier une présence
                     </h1>
@@ -107,7 +107,7 @@ export default function UpdatePresenceModal() {
                                 }} className="border dark:bg-transparent border-gray-400 outline-none dark:text-gray-300 rounded p-3 w-full"
                                     type="time" />
                             </div>
-                            <div className="w-full">
+                            <div className="w-full relative right-2 lg:right-0 mt-4 lg:mt-0">
                                 <label htmlFor="" className="mb-2 dark:text-gray-300">Pause</label>
                                 <input onChange={(e) => {
                                     setInputs({
@@ -128,7 +128,7 @@ export default function UpdatePresenceModal() {
                                     })
                                 }} className="border dark:bg-transparent border-gray-400 outline-none dark:text-gray-300 rounded p-3 w-full" type="time" />
                             </div>
-                            <div className="w-full">
+                            <div className="w-full relative right-2 lg:right-0 mt-4 lg:mt-0">
                                 <label htmlFor="" className="mb-2 dark:text-gray-300">Départ</label>
                                 <input onChange={(e) => {
                                     setInputs({
@@ -138,7 +138,7 @@ export default function UpdatePresenceModal() {
                                 }} className="border dark:bg-transparent border-gray-400 outline-none dark:text-gray-300 rounded p-3 w-full"
                                     type="time" />
                             </div>
-                            <div className="w-full">
+                            <div className="w-full relative right-2 lg:right-0 mt-4 lg:mt-0">
                                 <label htmlFor="" className="mb-2 dark:text-gray-300">Date</label>
                                 <input onChange={(e) => {
                                     setInputs({

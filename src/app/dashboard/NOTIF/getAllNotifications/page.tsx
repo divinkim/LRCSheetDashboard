@@ -187,10 +187,10 @@ export default function GetAllNotifications() {
 
                                                                     <div className="max-w-xs lg:max-w-md">
                                                                         <div className="bg-gray-700 rounded-2xl rounded-tl-sm p-3 shadow-lg">
-                                                                            <div className={userData.receiverId === notification.senderId ? "border-b border-gray-600" : notification.senderId === adminId ? "hidden" : "hidden"}>
+                                                                            <div className={userData.receiverId === notification.senderId ? "border-b border-gray-600 mb-3" : notification.senderId === adminId ? "hidden" : "hidden"}>
                                                                                 <p className="text-white text-[17px] font-bold">{notification.title}</p>
                                                                             </div>
-                                                                            <p className="text-white mt-3 whitespace-pre-line">{notification.content}</p>
+                                                                            <p className="text-white whitespace-pre-line">{notification.content}</p>
                                                                         </div>
                                                                         <p className="text-xs text-gray-400 mt-1 ml-2">{new Date(notification.createdAt).toLocaleTimeString("fr-FR", { minute: "2-digit", hour: "2-digit" })}</p>
                                                                     </div>
@@ -209,7 +209,7 @@ export default function GetAllNotifications() {
                                                     <FontAwesomeIcon icon={faPaperclip} className="text-gray-400 hover:text-blue-400" />
                                                 </button>
                                                 <div className="flex items-center w-full">
-                                                    <textarea onChange={(e) => {
+                                                    <textarea value={inputs.content} onChange={(e) => {
                                                         setInputs({
                                                             ...inputs,
                                                             content: e.target.value

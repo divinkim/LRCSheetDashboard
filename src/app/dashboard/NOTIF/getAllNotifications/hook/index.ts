@@ -52,7 +52,8 @@ export function useAllNotification() {
         messagingType: "notification"
     });
     const { usersIdConnected } = useSocket();
-    const { getUserNotificationsCount, setStoredNotificationsArray, storedNotificationsArray } = SidebarHook()
+    const { getUserNotificationsCount, setStoredNotificationsArray, storedNotificationsArray } = SidebarHook();
+    const [isSendMessage, setIsSendMessage] = useState(false);
 
     const filterUserByName = (value: string) => {
         const usersFiltered = usersByFcmTokensCloned.filter(user => user?.User.firstname.toLowerCase().includes(value.toLowerCase()) || user?.User.lastname.toLowerCase().includes(value.toLowerCase()));
@@ -109,12 +110,18 @@ export function useAllNotification() {
             fcmTokens: [inputs.fcmToken],
             file: inputs.file,
             EnterpriseId: inputs.EnterpriseId,
-            messagingType: "notification"
+            messagingType: "notification",
+            usersIds: [Number(inputs.receiverId)]
         }
+
+
 
         const response = await controllers.API.SendOne(urlAPI, "sendNotificationToUsers", null, formValues);
 
+        console.log("la response", response)
+
         if (response.status) {
+            setIsSendMessage(true);
             setAdminNotifications(prevData => [...prevData, {
                 title: inputs.title,
                 content: inputs.content,
@@ -124,15 +131,9 @@ export function useAllNotification() {
                 EnterpriseId: inputs.EnterpriseId,
                 file: inputs.file
             }]);
-            setInputs({
-                ...inputs,
-                title: "",
-                content: "",
-                file: ""
-            });
         }
     }
-
+    console.log("les inputs", inputs)
     useEffect(() => {
         (async () => {
             const EnterpriseId = localStorage.getItem("EnterpriseId");
@@ -154,7 +155,23 @@ export function useAllNotification() {
             );
             setNotificationsByCurrentUser(notifications)
         })()
-    }, [userData.receiverId])
+    }, [userData.receiverId]);
+
+    useEffect(() => {
+        (() => {
+            const notifications = getAdminNotifications.filter(notification =>
+                (notification.senderId === userData.receiverId && notification.receiverId === adminId)
+                || (notification.senderId === adminId && notification.receiverId === userData.receiverId)
+            );
+            setNotificationsByCurrentUser(notifications);
+            setInputs({
+                ...inputs,
+                title: "",
+                content: "",
+                file: ""
+            });
+        })()
+    }, [isSendMessage])
 
     useEffect(() => {
         (async () => {

@@ -159,7 +159,7 @@ const CalendarPage = () => {
         totalLates += finalDailySalary - deductionAmount;
       } else if (status === "En retard" && finalMinutes > 30) {
         deductionAmount = Math.round(0.5 * finalDailySalary);
-        totalAmount += finalDailySalary - deductionAmount;
+        totalLates += finalDailySalary - deductionAmount;
       } else if (status === "A temps") {
         totalePresences += finalDailySalary;
       }

@@ -17,7 +17,7 @@ import {
     faCalendarPlus,
     faGlobe,
     faCity,
-    faHouseChimney
+    faHouseChimney, faPenToSquare
 } from "@fortawesome/free-solid-svg-icons";
 import { messaging } from "@/firebase/firebaseConfig";
 import { onMessage } from "firebase/messaging";
@@ -139,7 +139,7 @@ export default function SidebarHook() {
                     index: 0,
                     title: "Envoyer une notification",
                     href: "/dashboard/NOTIF/sendNotification",
-                    icon: faBell
+                    icon: faPenToSquare
                 },
                 {
                     index: 1,

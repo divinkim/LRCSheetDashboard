@@ -93,19 +93,19 @@ export default function SingIn() {
                         <div className="absolute -bottom-40 -left-20 w-80 h-80 border-4 border-white/30 rounded-full"></div>
                         <div className="absolute top-0 -right-20 w-80 h-80 border-4 border-white/30 rounded-full"></div>
                     </div>
-                    <div className="w-full h-full flex items-center justify-center bg-[url('/images/background/background.webp')] bg-no-repeat bg-cover bg-center">
-                        <div className="w-full h-full  bg-black/60">
+                    <div className="w-full h-full flex items-center justify-center bg-white bg-no-repeat bg-cover bg-center">
+                        <div className="w-full h-full">
                             <div className={`transition-all duration-700 ${message ? "w-full py-2 bg-red-400" : "opacity-0"}`}>
-                                <p className="text-center text-white">{message}</p>
+                                <p className="text-center font-semibold text-white">{message}</p>
                             </div>
                             <div className="flex w-full h-full items-center justify-center">
                                 <div className="w-[90%] sm:w-[80%] lg:w-3/4 xl:w-[60%]">
-                                    <div className="w-full  bg-white shadow-2xl py-10 px-6 rounded-xl">
+                                    <div className="w-full  bg-white shadow-xl border border-gray-300 py-10 px-6 rounded-xl">
                                         <div className="text-center lg:text-left">
-                                            <h2 className="text-2xl leading-8 font-extrabold text-gray-600 mb-2 text-center">Authentification à  LRCSheet Admin!</h2>
+                                            <h2 className="text-2xl leading-8 font-extrabold text-blue-600 mb-2 text-center">Authentification à  LRCSheet Admin!</h2>
                                         </div>
 
-                                        <form className="space-y-6 mt-6">
+                                        <form className="space-y-6 relative mt-6">
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700">E-mail</label>
                                                 <input onChange={(input) => {
@@ -114,22 +114,30 @@ export default function SingIn() {
                                                         email: input.target.value
                                                     })
                                                 }} value={signInData.email ?? ""} type="email" id="email" name="email" className="mt-1 block w-full px-3 py-3 border bg-transparent border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="email@gmail.com" />
+                                                <div className="absolute top-10 cursor-pointer right-4">
+                                                    <FontAwesomeIcon icon={faEnvelope} className="text-gray-500 text-[18px]" />
+                                                </div>
                                             </div>
 
-                                            <div>
+                                            <div className="relative">
                                                 <label className="block text-sm font-medium text-gray-700">Mot de passe</label>
                                                 <input onChange={(input) => {
                                                     setSignInData({
                                                         ...signInData,
                                                         password: input.target.value
                                                     })
-                                                }} value={signInData.password ?? ""} type="password" id="password" name="password" className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none bg-transparent focus:ring-blue-500 focus:border-blue-500" placeholder="Votre mot de passe" />
+                                                }} value={signInData.password ?? ""} type={showPassword ? "text" : "password"} id="password" name="password" className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none bg-transparent focus:ring-blue-500 focus:border-blue-500" placeholder="Votre mot de passe" />
+                                                <div onClick={() => {
+                                                    setShowPassword(!showPassword)
+                                                }} className="absolute top-10 cursor-pointer right-4">
+                                                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} className="text-gray-500 text-[18px]" />
+                                                </div>
                                             </div>
 
                                             <div>
                                                 <button onClick={() => {
                                                     handleSingnIn()
-                                                }} type="button" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                }} type="button" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md ease duration-500 shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                                     {loadingHandleSignIn ? <ClipLoader color='#fff' size={16} /> : "Connexion"}
                                                 </button>
                                             </div>

@@ -1,4 +1,4 @@
-export const urlAPI = "https://vps101055.serveur-vps.net:8500";
+export const urlAPI = "https://vps118934.serveur-vps.net:8500";
 
 import { json } from "stream/consumers";
 import Swal from "sweetalert2";

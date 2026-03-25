@@ -137,6 +137,12 @@ export default function SidebarHook() {
             ItemLists: [
                 {
                     index: 0,
+                    title: "Envoyer une notification",
+                    href: "/dashboard/NOTIF/sendNotification",
+                    icon: faBell
+                },
+                {
+                    index: 1,
                     title: "Liste de notification",
                     href: "/dashboard/NOTIF/getAllNotifications",
                     icon: faBell
@@ -393,5 +399,5 @@ export default function SidebarHook() {
         return getNotificationsCount.length;
     }
 
-    return { ItemAside, storedNotificationsArray, setStoredNotificationsArray, getSectionNotificationsCount, getPageNotificationsCount, getUserNotificationsCount};
+    return { ItemAside, storedNotificationsArray, setStoredNotificationsArray, getSectionNotificationsCount, getPageNotificationsCount, getUserNotificationsCount };
 }

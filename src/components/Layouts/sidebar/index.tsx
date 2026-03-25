@@ -130,7 +130,9 @@ export function Sidebar() {
             <div className="w-[100px] h-[100px] mx-auto mb-5">
               <img src="/images/logo/logo.png" alt="" className='w-full h-full object-cover' />
             </div>
-            <Link href="/home" className="font-bold hover:text-gray-400 text-gray-300 ease duration-500">
+            <Link onClick={() => {
+              if (isMobile) setIsOpen(false);
+            }} href="/home" className="font-bold hover:text-gray-400 text-gray-300 ease duration-500">
               🏠 ACCUEIL
             </Link>
             <h1 className="font-bold text-[17px] mt-5 text-gray-300">Menu général</h1>
@@ -163,7 +165,7 @@ export function Sidebar() {
                     <div className={`transition-all duration-1000 ease-in-out space-y-2 pl-8 pt-4, ${toggleAsideSections.includes(sectionIndex) ? "opacity-1" : "opacity-0 absolute z-0"}`}>
                       {aside.ItemLists.map((list, pageIndex) => (
                         <Link href={list.href ?? "/"} onClick={() => {
-
+                          if (isMobile) setIsOpen(false);
                         }} className="flex flex-row space-x-3 mt-3 items-center">
                           <div className="">
                             <li className="hover:text-orange-400/90 ease duration-500 pb-2 text-gray-300">

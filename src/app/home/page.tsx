@@ -17,13 +17,15 @@ import Loader from "@/components/loader/loader";
 import GetAnnualGain from "../dashboard/STATS/annualGain/page";
 import { controllers, urlAPI } from "../main";
 import SubscriptionEpiredComponent from "@/components/subscriptionExpiredComponent/page";
+import { useSidebarContext } from "@/components/Layouts/sidebar/sidebar-context";
+
 export default function HomePage({ searchParams }: PropsType) {
     const requireAdminRoles = ['Super-Admin', 'Supervisor-Admin'];
     const [EnterpriseId, setEnterpriseId] = useState<string | null>(null);
     const [adminRole, setAdminRole] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const { cardComponent, enterprise } = HomeComponent();
-
+    const { isMobile, setIsOpen } = useSidebarContext()
     //Mise à jour ou ajout fcmToken administrateur
     useEffect(() => {
         (async () => {
@@ -95,7 +97,9 @@ export default function HomePage({ searchParams }: PropsType) {
                                             <p className="text-[25px]">{formatNumber(index, element.value)}</p>
                                             <div className="flex justify-between w-full">
                                                 <p className='text-gray-500'>{element.title}</p>
-                                                <Link href={element.path} className={cn("rounded-full  ease duration-500", index === 2 && "hidden")}><FontAwesomeIcon icon={faEye} style={{ background: element.backgroundColor }} className={"hover:scale-90 ease duration-500 rounded-full px-3.5 py-4   text-white relative left-1 -top-4"} />
+                                                <Link onClick={() => {
+                                                    if (isMobile) setIsOpen(false);
+                                                }} href={element.path} className={cn("rounded-full  ease duration-500", index === 2 && "hidden")}><FontAwesomeIcon icon={faEye} style={{ background: element.backgroundColor }} className={"hover:scale-90 ease duration-500 rounded-full px-3.5 py-4   text-white relative left-1 -top-4"} />
                                                 </Link>
                                             </div>
                                         </div>
